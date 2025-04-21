@@ -22,6 +22,9 @@
       align-items: center;
       min-height: 100vh;
       text-align: center;
+      /* Added padding to prevent overlap with bottom links on mobile */
+      padding-bottom: 100px;
+      box-sizing: border-box; /* Include padding in height calculation */
     }
 
     #tsparticles {
@@ -36,25 +39,36 @@
     .content-wrapper {
         position: relative;
         z-index: 1;
+        padding: 10px; /* Add some padding in case h1 wraps */
     }
 
     .bottom {
       position: absolute;
-      bottom: 40px;
+      /* Adjusted bottom slightly for better spacing */
+      bottom: 30px;
       left: 0;
       width: 100%;
       text-align: center;
       z-index: 1;
+      padding: 0 10px; /* Add padding for smaller screens */
+      box-sizing: border-box;
     }
 
     a {
       color: #fff;
       text-decoration: none;
+      margin: 0 5px; /* Add slight margin between links */
     }
 
     a:hover {
       text-decoration: underline;
     }
+
+    /* Style for the separators */
+    .separator {
+        margin: 0 3px; /* Adjust spacing around the pipe */
+    }
+
   </style>
 </head>
 <body>
@@ -65,7 +79,10 @@
   </div>
 
   <div class="bottom">
-    <a href="https://discord.gg/KA66dHUF4P" target="_blank">discord</a> | <a href="mailto:support@hapara.fail">support</a>
+    <a href="https://tasty-krista-brlxkn-6ee3dd68.koyeb.app/" target="_blank">proxy</a><span class="separator">|</span>
+    <a href="https://discord.gg/KA66dHUF4P" target="_blank">discord</a><span class="separator">|</span>
+    <a href="https://github.com/hapara-fail" target="_blank">github</a><span class="separator">|</span>
+    <a href="mailto:support@hapara.fail">contact</a>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
@@ -105,9 +122,9 @@
         },
         move: {
           enable: true,
-          speed: 2, // --- Keep slow speed ---
+          speed: 2,
           direction: "none",
-          random: true, // --- Keep random speed ---
+          random: true,
           straight: false,
           outModes: {
             default: "out"
@@ -121,7 +138,7 @@
         events: {
           onHover: {
             enable: true,
-            mode: "repulse" // --- Switched back to repulse ---
+            mode: "repulse"
           },
           onClick: {
             enable: true,
@@ -130,13 +147,10 @@
           resize: true
         },
         modes: {
-          repulse: { // --- Re-added repulse configuration ---
-            distance: 100, // Distance mouse pushes particles away
-            duration: 1.2,  // --- Increased duration significantly for smoother effect ---
-            // factor: 100, // Default strength factor
-            // speed: 1     // Default repulse speed
+          repulse: {
+            distance: 100,
+            duration: 1.2
           },
-          // bubble: { ... }, // Bubble config removed (or commented out)
           push: {
             quantity: 4
           }
@@ -145,10 +159,10 @@
       detectRetina: true
     })
     .then(container => {
-        console.log("tsParticles (v2 - slow/smooth repulse) loaded successfully.");
+        // console.log("tsParticles loaded successfully.");
     })
     .catch(error => {
-        console.error("Error loading tsParticles (v2):", error);
+        console.error("Error loading tsParticles:", error);
     });
   </script>
 </body>
