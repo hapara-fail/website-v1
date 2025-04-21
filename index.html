@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>hapara.fail</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #000;
+      color: #fff;
+      font-family: monospace;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    #tsparticles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .content-wrapper {
+        position: relative;
+        z-index: 1;
+    }
+
+    .bottom {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      z-index: 1;
+    }
+
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div id="tsparticles"></div>
+
+  <div class="content-wrapper">
+    <h1>make your chromebook usable again</h1>
+  </div>
+
+  <div class="bottom">
+    <a href="https://discord.gg/KA66dHUF4P" target="_blank">discord</a> | <a href="mailto:support@hapara.fail">support</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
+  <script>
+    tsParticles.load("tsparticles", {
+      fpsLimit: 60,
+      particles: {
+        number: {
+          value: 80,
+          density: {
+            enable: true,
+            area: 800
+          }
+        },
+        color: { value: "#ffffff" },
+        shape: {
+          type: "circle"
+        },
+        opacity: {
+          value: 0.5,
+          random: { enable: false }
+        },
+        size: {
+          value: 3,
+          random: {
+            enable: true,
+            minimumValue: 1
+          }
+        },
+        links: {
+          enable: true,
+          distance: 150,
+          color: "#ffffff",
+          opacity: 0.4,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 2, // --- Keep slow speed ---
+          direction: "none",
+          random: true, // --- Keep random speed ---
+          straight: false,
+          outModes: {
+            default: "out"
+          },
+          attract: {
+            enable: false
+          }
+        }
+      },
+      interactivity: {
+        events: {
+          onHover: {
+            enable: true,
+            mode: "repulse" // --- Switched back to repulse ---
+          },
+          onClick: {
+            enable: true,
+            mode: "push"
+          },
+          resize: true
+        },
+        modes: {
+          repulse: { // --- Re-added repulse configuration ---
+            distance: 100, // Distance mouse pushes particles away
+            duration: 1.2,  // --- Increased duration significantly for smoother effect ---
+            // factor: 100, // Default strength factor
+            // speed: 1     // Default repulse speed
+          },
+          // bubble: { ... }, // Bubble config removed (or commented out)
+          push: {
+            quantity: 4
+          }
+        }
+      },
+      detectRetina: true
+    })
+    .then(container => {
+        console.log("tsParticles (v2 - slow/smooth repulse) loaded successfully.");
+    })
+    .catch(error => {
+        console.error("Error loading tsParticles (v2):", error);
+    });
+  </script>
+</body>
+</html>
