@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- Added viewport-fit=cover for notch/safe-area support -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>hapara.fail</title>
   <style>
     html, body {
@@ -12,19 +13,19 @@
       background-color: #000;
       color: #fff;
       font-family: monospace;
-      overflow: hidden;
       position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     body {
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      height: 100%;
       text-align: center;
-      /* Added padding to prevent overlap with bottom links on mobile */
-      padding-bottom: 100px;
-      box-sizing: border-box; /* Include padding in height calculation */
+      padding-bottom: calc(50px + env(safe-area-inset-bottom)); /* Increased padding */
+      box-sizing: border-box;
     }
 
     #tsparticles {
@@ -37,42 +38,39 @@
     }
 
     .content-wrapper {
-        position: relative;
-        z-index: 1;
-        padding: 10px; /* Add some padding in case h1 wraps */
+      position: relative;
+      z-index: 1;
+      padding: 10px;
     }
 
     .bottom {
       position: absolute;
-      /* Adjusted bottom slightly for better spacing */
-      bottom: 30px;
+      bottom: calc(20px + env(safe-area-inset-bottom)); /* Slightly lifted from bottom */
       left: 0;
       width: 100%;
       text-align: center;
       z-index: 1;
-      padding: 0 10px; /* Add padding for smaller screens */
+      padding: 0 10px;
       box-sizing: border-box;
     }
 
     a {
       color: #fff;
       text-decoration: none;
-      margin: 0 5px; /* Add slight margin between links */
+      margin: 0 5px;
     }
 
     a:hover {
       text-decoration: underline;
     }
 
-    /* Style for the separators */
     .separator {
-        margin: 0 3px; /* Adjust spacing around the pipe */
+      margin: 0 3px;
     }
-
   </style>
 </head>
 <body>
-  <div id="tsparticles"></div>
+  <div id="tsparticles" aria-hidden="true"></div>
 
   <div class="content-wrapper">
     <h1>make your chromebook usable again</h1>
@@ -86,33 +84,21 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
-
   <script>
-    tsParticles.load("tsparticles", {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const particleSettings = {
       fpsLimit: 60,
       particles: {
         number: {
-          value: 80,
-          density: {
-            enable: true,
-            area: 800
-          }
+          value: prefersReducedMotion ? 0 : (isMobile ? 40 : 80),
+          density: { enable: true, area: 800 }
         },
         color: { value: "#ffffff" },
-        shape: {
-          type: "circle"
-        },
-        opacity: {
-          value: 0.5,
-          random: { enable: false }
-        },
-        size: {
-          value: 3,
-          random: {
-            enable: true,
-            minimumValue: 1
-          }
-        },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3, random: { enable: true, minimumValue: 1 } },
         links: {
           enable: true,
           distance: 150,
@@ -121,48 +107,43 @@
           width: 1
         },
         move: {
-          enable: true,
+          enable: !prefersReducedMotion,
           speed: 2,
-          direction: "none",
           random: true,
-          straight: false,
-          outModes: {
-            default: "out"
-          },
-          attract: {
-            enable: false
-          }
+          outModes: { default: "out" }
         }
       },
       interactivity: {
         events: {
-          onHover: {
-            enable: true,
-            mode: "repulse"
-          },
-          onClick: {
-            enable: true,
-            mode: "push"
-          },
+          onHover: { enable: !prefersReducedMotion, mode: "repulse" },
+          onClick: { enable: !prefersReducedMotion, mode: "push" },
           resize: true
         },
         modes: {
-          repulse: {
-            distance: 100,
-            duration: 1.2
-          },
-          push: {
-            quantity: 4
-          }
+          repulse: { distance: 100, duration: 1.2 },
+          push: { quantity: 4 }
         }
       },
       detectRetina: true
-    })
-    .then(container => {
-        // console.log("tsParticles loaded successfully.");
-    })
-    .catch(error => {
-        console.error("Error loading tsParticles:", error);
+    };
+
+    function loadParticles() {
+      tsParticles.load("tsparticles", particleSettings);
+    }
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadParticles);
+    } else {
+      setTimeout(loadParticles, 200);
+    }
+
+    // Debounced resize reload
+    let resizeTimeout;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        location.reload(); // reload to reapply particle settings
+      }, 200);
     });
   </script>
 </body>
