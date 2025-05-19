@@ -161,8 +161,8 @@
     <p>In restrictive school-managed environments, ChromeOS devices are often locked down using enterprise policies. These policies can block settings, enforce filters, and monitor usage through tools like Hapara. This guide explains a method to achieve DNS-level bypass using IPv4 with <code>NextDNS</code>, without needing special permissions.</p>
 
     <h2>1. NextDNS Configuration</h2>
-    <p>We utilize <a href="https://nextdns.io" target="_blank" rel="noopener noreferrer">NextDNS</a> with a curated blocklist. This list is designed to intercept and block surveillance-related domains such as <code>hapara.com</code> or <code>linewize.net</code>. The blocklist is applied via a Linked IP profile within your NextDNS account.</p>
-    <p>Once configured, these DNS resolvers, assigned to your linked IP, will automatically use the blocklist.</p>
+    <p>We utilize <a href="https://nextdns.io" target="_blank" rel="noopener noreferrer">NextDNS</a> with our curated blocklist: <a href="https://raw.githubusercontent.com/hapara-fail/blocklist/refs/heads/main/blocklist.txt" target="_blank" rel="noopener noreferrer">hapara.fail Custom Blocklist</a>. This list is designed to intercept and block surveillance-related domains such as <code>hapara.com</code> or <code>linewize.net</code>.</p>
+    <p>Once fully configured using the NextDNS denylist feature, NextDNS will automatically use the blocklist.</p>
 
     <h2>2. Applying DNS on Locked Devices</h2>
     <p>Access to system <code>Settings</code> is typically disabled on managed devices. Therefore, DNS changes must be made through the <code>chrome://network</code> interface, which allows direct editing of network properties.</p>
