@@ -2,34 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- Added viewport-fit=cover for notch/safe-area support -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>hapara.fail</title>
+  <link rel="icon" type="image/png" href="favicon.png">
   <style>
+    /* Base Styles */
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       background-color: #000;
-      color: #fff;
-      font-family: monospace;
+      color: #e0e0e0; /* Slightly softer white for text */
+      font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace; /* Reverted to monospace font stack */
       position: relative;
       overflow-x: hidden;
-      overflow-y: auto;
-    }
-
-    body {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      text-align: center;
-      padding-bottom: calc(50px + env(safe-area-inset-bottom)); /* Increased padding */
-      box-sizing: border-box;
+      flex-direction: column;
     }
 
+    /* TSparticles Container */
     #tsparticles {
-      position: absolute;
+      position: fixed;
       width: 100%;
       height: 100%;
       top: 0;
@@ -37,113 +30,195 @@
       z-index: 0;
     }
 
-    .content-wrapper {
+    /* Main Content Wrapper */
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
+      text-align: center;
       position: relative;
       z-index: 1;
-      padding: 10px;
-    }
-
-    .bottom {
-      position: absolute;
-      bottom: calc(20px + env(safe-area-inset-bottom)); /* Slightly lifted from bottom */
-      left: 0;
-      width: 100%;
-      text-align: center;
-      z-index: 1;
-      padding: 0 10px;
+      padding: 20px;
+      padding-bottom: calc(70px + env(safe-area-inset-bottom)); /* Adjusted for footer height */
       box-sizing: border-box;
     }
 
-    a {
+    /* Hero Section */
+    .hero-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 2.5rem; /* Increased margin as subtitle is removed, gives button space */
       color: #fff;
+      font-weight: bold; /* Made bold as requested */
+      letter-spacing: 0.5px;
+    }
+
+    /* Call to Action Button - Rounded, all white, no fill */
+    .cta-button {
+      display: inline-block;
+      background-color: transparent;
+      color: #fff; /* White text */
+      font-family: inherit;
+      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+      font-weight: 500;
+      padding: 12px 30px; /* Adjusted padding for better look */
+      border: 1.5px solid #fff; /* White border */
+      border-radius: 50px; /* Rounded (pill shape) */
       text-decoration: none;
-      margin: 0 5px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
     }
 
-    a:hover {
-      text-decoration: underline;
+    .cta-button:hover,
+    .cta-button:focus {
+      background-color: #fff; /* White fill on hover */
+      color: #000; /* Black text on hover */
+      outline: none;
     }
 
-    .separator {
-      margin: 0 3px;
+    /* Bottom Navigation / Footer - Transparent background, simple text links */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      z-index: 2;
+      padding: 15px 10px calc(15px + env(safe-area-inset-bottom)); /* Adjusted padding */
+      background-color: transparent; /* No background */
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px; /* Adjusted gap for simple text links */
     }
+
+    .bottom-nav a {
+      color: #aaa; /* Lighter gray for links, good contrast on particles */
+      background-color: transparent;
+      padding: 0; /* No padding for simple text */
+      border-radius: 0; /* No border-radius */
+      text-decoration: none;
+      font-size: 0.9rem; /* Slightly larger for readability */
+      transition: color 0.2s ease-in-out;
+      border: none; /* No border */
+    }
+
+    .bottom-nav a:hover,
+    .bottom-nav a:focus {
+      color: #fff; /* White on hover */
+      outline: none;
+    }
+
+    /* Reduced motion adjustments for particles (JS handles main logic) */
+    @media (prefers-reduced-motion: reduce) {
+      #tsparticles {
+        display: none !important;
+      }
+    }
+
   </style>
-</head>
+  </head>
 <body>
   <div id="tsparticles" aria-hidden="true"></div>
 
-  <div class="content-wrapper">
-    <h1>make your chromebook usable again</h1>
+  <div class="main-container">
+    <h1 class="hero-title">Make Your Chromebook Usable Again</h1>
+    <a href="bypass.html" class="cta-button" aria-label="View the DNS Bypass Guide">View DNS Bypass Guide</a>
   </div>
 
-  <div class="bottom">
-    <a href="https://tasty-krista-brlxkn-6ee3dd68.koyeb.app/" target="_blank">proxy</a><span class="separator">|</span>
-    <a href="https://discord.gg/KA66dHUF4P" target="_blank">discord</a><span class="separator">|</span>
-    <a href="https://github.com/hapara-fail" target="_blank">github</a><span class="separator">|</span>
-    <a href="mailto:support@hapara.fail">contact</a>
-  </div>
+  <nav class="bottom-nav" aria-label="Footer navigation">
+    <a href="https://tasty-krista-brlxkn-6ee3dd68.koyeb.app/" target="_blank" rel="noopener noreferrer">Proxy</a>
+    <a href="https://discord.gg/KA66dHUF4P" target="_blank" rel="noopener noreferrer">Discord</a>
+    <a href="https://github.com/hapara-fail" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="mailto:support@hapara.fail">Contact</a>
+  </nav>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
   <script>
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.addEventListener('DOMContentLoaded', () => {
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const particleSettings = {
-      fpsLimit: 60,
-      particles: {
-        number: {
-          value: prefersReducedMotion ? 0 : (isMobile ? 40 : 80),
-          density: { enable: true, area: 800 }
+      const particleSettings = {
+        fpsLimit: 60,
+        particles: {
+          number: {
+            value: prefersReducedMotion ? 0 : (isMobile ? 30 : 60),
+            density: { enable: true, area: 800 }
+          },
+          color: { value: "#666666" },
+          shape: { type: "circle" },
+          opacity: { value: 0.35 },
+          size: { value: 2.2, random: { enable: true, minimumValue: 0.8 } },
+          links: {
+            enable: true,
+            distance: 140,
+            color: "#777777",
+            opacity: 0.25,
+            width: 1
+          },
+          move: {
+            enable: !prefersReducedMotion,
+            speed: 0.9,
+            direction: "none",
+            random: true,
+            straight: false,
+            outModes: { default: "out" }
+          }
         },
-        color: { value: "#ffffff" },
-        shape: { type: "circle" },
-        opacity: { value: 0.5 },
-        size: { value: 3, random: { enable: true, minimumValue: 1 } },
-        links: {
-          enable: true,
-          distance: 150,
-          color: "#ffffff",
-          opacity: 0.4,
-          width: 1
+        interactivity: {
+          events: {
+            onHover: { enable: !prefersReducedMotion, mode: "repulse" },
+            onClick: { enable: !prefersReducedMotion, mode: "push" },
+            resize: true
+          },
+          modes: {
+            repulse: { distance: 70, duration: 0.4 },
+            push: { quantity: 2 }
+          }
         },
-        move: {
-          enable: !prefersReducedMotion,
-          speed: 2,
-          random: true,
-          outModes: { default: "out" }
+        detectRetina: true
+      };
+
+      function loadParticles() {
+        if (typeof tsParticles !== "undefined") {
+          tsParticles.load("tsparticles", particleSettings)
+            .then(container => {
+              if (container && prefersReducedMotion) {
+                 if (container.particles && typeof container.particles.setCount === 'function') {
+                   container.particles.setCount(0);
+                }
+                if (container.stop) {
+                   container.stop();
+                }
+              }
+              console.log("TSParticles v2.12.0 loaded on homepage (final refinements).");
+            })
+            .catch(error => {
+              console.error("Error loading TSPSarticles v2.12.0 on homepage (final refinements):", error);
+            });
+        } else {
+          console.error("tsParticles library not found on homepage (final refinements).");
         }
-      },
-      interactivity: {
-        events: {
-          onHover: { enable: !prefersReducedMotion, mode: "repulse" },
-          onClick: { enable: !prefersReducedMotion, mode: "push" },
-          resize: true
-        },
-        modes: {
-          repulse: { distance: 100, duration: 1.2 },
-          push: { quantity: 4 }
-        }
-      },
-      detectRetina: true
-    };
+      }
 
-    function loadParticles() {
-      tsParticles.load("tsparticles", particleSettings);
-    }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadParticles);
+      } else {
+        setTimeout(loadParticles, 100);
+      }
 
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadParticles);
-    } else {
-      setTimeout(loadParticles, 200);
-    }
-
-    // Debounced resize reload
-    let resizeTimeout;
-    window.addEventListener("resize", () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        location.reload(); // reload to reapply particle settings
-      }, 200);
+      let resizeTimeout;
+      window.addEventListener("resize", () => {
+        if (prefersReducedMotion) return;
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          // tsParticles should handle resize, reload is generally not needed
+        }, 250);
+      });
     });
   </script>
 </body>

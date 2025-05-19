@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>DNS Bypass Guide</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    /* Reset and Base Styles */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #000; /* Base background for the page */
+      color: #fff;
+      font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace; /* Consistent font */
+      overflow-x: hidden; /* Prevent horizontal scroll on body */
+      overflow-y: auto;   /* Allow vertical scroll on body */
+      position: relative; /* Crucial for #tsparticles absolute positioning context */
+    }
+
+    /* Back Button Styles */
+    .back-button {
+      position: fixed; /* Stays in place on scroll */
+      top: 20px;
+      left: 20px;
+      z-index: 1000; /* High z-index to be on top of everything */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;  /* Size of the circular button */
+      height: 40px; /* Size of the circular button */
+      background-color: rgba(40, 40, 40, 0.8); /* Semi-transparent background */
+      color: #ffffff; /* Arrow color */
+      border-radius: 50%; /* Makes it circular */
+      text-decoration: none;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .back-button svg {
+      width: 24px; /* Size of the arrow icon */
+      height: 24px; /* Size of the arrow icon */
+    }
+
+    .back-button:hover,
+    .back-button:focus {
+      background-color: rgba(70, 70, 70, 0.95); /* Darker on hover/focus */
+      outline: none;
+    }
+
+    /* TSparticles Container Style */
+    #tsparticles {
+      position: absolute; /* Positioned relative to the body */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0; /* Behind .content-wrapper but above body's base background */
+    }
+
+    /* Content Styling */
+    .content-wrapper {
+      position: relative; /* Establishes stacking context to sit above #tsparticles */
+      z-index: 1;         /* Ensures it's on top of #tsparticles */
+      padding: 20px;
+      padding-top: 70px; /* Adjust as needed: back_button_top + back_button_height + some_margin */
+      max-width: 900px;
+      margin-left: auto;  /* Centering horizontally */
+      margin-right: auto; /* Centering horizontally */
+      box-sizing: border-box;
+      line-height: 1.7;
+      color: #e0e0e0; /* Consistent text color with homepage */
+    }
+
+    .content-wrapper h1,
+    .content-wrapper h2,
+    .content-wrapper h3 {
+      color: #fff; /* Explicit white for headings */
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-weight: bold; /* Bolder headings for guide page */
+    }
+     .content-wrapper h1 {
+        font-size: clamp(1.7rem, 3.5vw, 2.5rem); /* Slightly smaller than homepage but prominent */
+    }
+    .content-wrapper h2 {
+        font-size: clamp(1.4rem, 3vw, 2rem);
+    }
+     .content-wrapper h3 {
+        font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+    }
+
+
+    .content-wrapper p {
+      margin-bottom: 1.5rem;
+      color: #ccc; /* Lighter text for paragraphs for readability */
+    }
+
+    .content-wrapper ol, .content-wrapper ul {
+      margin-bottom: 2rem;
+      padding-left: 30px; /* Slightly more indent for lists */
+      color: #ccc;
+    }
+
+    .content-wrapper li {
+      margin-bottom: 0.75rem;
+    }
+
+    .content-wrapper code {
+      background-color: #2a2a2a; /* Slightly darker code background */
+      padding: 3px 7px;
+      border-radius: 4px;
+      font-size: 0.9em; /* Slightly smaller code font */
+      color: #61dafb; /* Accent color for inline code */
+      border: 1px solid #444; /* Subtle border for inline code */
+    }
+
+    .content-wrapper pre {
+      background-color: #1e1e1e; /* Darker pre background */
+      padding: 15px;
+      border-radius: 6px; /* Slightly more rounded pre blocks */
+      overflow-x: auto;
+      white-space: pre;
+      color: #d4d4d4; /* Light gray for pre text */
+      border: 1px solid #333; /* Subtle border for pre blocks */
+      font-size: 0.9em;
+    }
+
+    .content-wrapper a {
+      color: #61dafb;
+      text-decoration: underline;
+    }
+    .content-wrapper a:hover {
+      color: #82e9ff;
+    }
+
+    /* CSS for hiding particles if reduced motion is preferred */
+    @media (prefers-reduced-motion: reduce) {
+      #tsparticles {
+        display: none !important;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+</head>
+<body>
+
+  <a href="index.html" class="back-button" aria-label="Go to homepage"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M0 0h24v24H0V0z" fill="none"/>
+      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+    </svg>
+  </a>
+
+  <div id="tsparticles" aria-hidden="true"></div>
+
+  <div class="content-wrapper">
+    <h1>ChromeOS DNS Bypass: Technical Walkthrough</h1>
+    <p><strong>Last updated:</strong> May 19th, 2025</p>
+
+    <h2>Overview</h2>
+    <p>In restrictive school-managed environments, ChromeOS devices are often locked down using enterprise policies. These policies can block settings, enforce filters, and monitor usage through tools like Hapara. This guide explains a method to achieve DNS-level bypass using IPv4 with <code>NextDNS</code>, without needing special permissions.</p>
+
+    <h2>1. NextDNS Configuration</h2>
+    <p>We utilize <a href="https://nextdns.io" target="_blank" rel="noopener noreferrer">NextDNS</a> with a curated blocklist. This list is designed to intercept and block surveillance-related domains such as <code>hapara.com</code> or <code>linewize.net</code>. The blocklist is applied via a Linked IP profile within your NextDNS account.</p>
+    <p>Once configured, these DNS resolvers, assigned to your linked IP, will automatically use the blocklist.</p>
+
+    <h2>2. Applying DNS on Locked Devices</h2>
+    <p>Access to system <code>Settings</code> is typically disabled on managed devices. Therefore, DNS changes must be made through the <code>chrome://network</code> interface, which allows direct editing of network properties.</p>
+    <ol>
+      <li>Navigate to <code>chrome://network</code> in your Chrome browser.</li>
+      <li>Click on <strong>Network Select</strong> at the top of the page.</li>
+      <li>Then, click <strong>Render Network Select</strong>.</li>
+      <li>Connect to a Wi-Fi network (e.g., <code>STAFFWIFI</code>).</li>
+      <li>If the network name is not visible, click in the area just below <strong>Render Network Select</strong> and above the first listed network (often near a <code>+</code> symbol).</li>
+      <li>Scroll down to the <strong>Name Servers</strong> section.</li>
+      <li>Change the setting from "Automatic name servers" to <code>Custom name servers</code>.</li>
+      <li>Paste your NextDNS resolver IP addresses into the four boxes that appear.</li>
+    </ol>
+
+    <p><strong>Important Note:</strong> On some ChromeOS devices, the DNS fields might revert to <code>0.0.0.0</code> while you are typing. This appears to be a UI bug. To work around this:</p>
+    <ul>
+      <li>Copy the DNS IP address to your clipboard.</li>
+      <li>Quickly paste it into the DNS field.</li>
+      <li>Immediately close the tab or window before the field has a chance to revert.</li>
+    </ul>
+    <p>Be aware that network restrictions can vary. For instance, a network like <code>WIFIONE</code> might be more heavily managed than <code>STAFFWIFI</code>. Whenever possible, choose an unmanaged or less restrictive network.</p>
+
+    <h2>3. MAC Address Randomization</h2>
+    <p>To enhance privacy and reduce device traceability across Wi-Fi networks, enable MAC address randomization. This feature is accessible via <code>chrome://flags</code>:</p>
+    <ol>
+      <li>Visit <code>chrome://flags</code> in your Chrome browser.</li>
+      <li>Use the search bar to find "MAC address randomization".</li>
+      <li>Set the corresponding flag to <code>Enabled</code>.</li>
+      <li>Restart your Chromebook for the changes to take effect.</li>
+    </ol>
+    <p>This setting helps prevent long-term Wi-Fi tracking by generating a new, randomized MAC address for each network connection.</p>
+
+    <h2>Conclusion</h2>
+    <p>By combining IPv4 DNS overrides through <code>chrome://network</code>, a custom NextDNS configuration, and MAC address randomization, users can achieve a more open and censorship-resistant internet experience on locked-down ChromeOS devices. This solution does not require elevated privileges.</p>
+    <p>Please use this information responsibly and ethically. We do not condone malicious activities or violations of acceptable use policies.</p>
+  </div>
+
+  <script>
+    // This script is for TSparticles v2.12.0
+    document.addEventListener('DOMContentLoaded', () => {
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const particleSettings = {
+        fpsLimit: 60,
+        particles: {
+          number: {
+            value: prefersReducedMotion ? 0 : (isMobile ? 30 : 60),
+            density: { enable: true, area: 800 }
+          },
+          color: { value: "#666666" },
+          shape: { type: "circle" },
+          opacity: { value: 0.35 },
+          size: { value: 2.2, random: { enable: true, minimumValue: 0.8 } },
+          links: {
+            enable: true,
+            distance: 140,
+            color: "#777777",
+            opacity: 0.25,
+            width: 1
+          },
+          move: {
+            enable: !prefersReducedMotion,
+            speed: 0.9,
+            direction: "none",
+            random: true,
+            straight: false,
+            outModes: { default: "out" }
+          }
+        },
+        interactivity: {
+          events: {
+            onHover: { enable: !prefersReducedMotion, mode: "repulse" },
+            onClick: { enable: !prefersReducedMotion, mode: "push" },
+            resize: true
+          },
+          modes: {
+            repulse: { distance: 70, duration: 0.4 },
+            push: { quantity: 2 }
+          }
+        },
+        detectRetina: true
+      };
+
+      if (typeof tsParticles !== "undefined") {
+        tsParticles.load("tsparticles", particleSettings)
+          .then(container => {
+            if (container) {
+              console.log("TSParticles v2.12.0 loaded successfully on bypass.html.");
+              if (prefersReducedMotion) {
+                if (container.particles && typeof container.particles.setCount === 'function') {
+                   container.particles.setCount(0);
+                }
+                if (container.stop) {
+                   container.stop();
+                }
+              }
+            } else {
+              console.warn("TSParticles v2.12.0 container instance not returned after load on bypass.html, but promise resolved.");
+            }
+          })
+          .catch(error => {
+            console.error("Error loading TSPSarticles v2.12.0 on bypass.html:", error);
+          });
+      } else {
+        console.error("tsParticles library object (tsParticles) not found on bypass.html. Check script tag.");
+      }
+    });
+  </script>
+
+</body>
+</html>
