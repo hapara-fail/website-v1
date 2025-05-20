@@ -3,109 +3,295 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <title>Coming Soon | hapara.fail</title>
+  <title>Google Form Unlocker Guide | hapara.fail</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
-    /* Base Styles - Consistent with index.html */
+    /* Base Styles - Consistent with bypass.html */
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      background-color: #000; /* Base background, particles will overlay this */
-      color: #e0e0e0;
+      background-color: #000;
+      color: #fff;
       font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace;
-      position: relative; /* Needed for absolute positioning of particles if not fixed */
-      overflow: hidden; /* Prevent scrollbars on the page itself */
-      display: flex;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    /* Back Button Styles - Consistent with bypass.html */
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(40, 40, 40, 0.8);
+      color: #ffffff;
+      border-radius: 50%;
+      text-decoration: none;
+      transition: background-color 0.2s ease-in-out;
     }
+    .back-button svg { width: 24px; height: 24px; }
+    .back-button:hover, .back-button:focus { background-color: rgba(70, 70, 70, 0.95); outline: none; }
 
-    /* TSparticles Container - Consistent with index.html */
+    /* TSparticles Container Style - Consistent with bypass.html */
     #tsparticles {
-      position: fixed; /* Ensures it covers the whole viewport */
-      width: 100%;
-      height: 100%;
+      position: absolute; 
       top: 0;
       left: 0;
-      z-index: 0; /* Behind the content */
+      width: 100%;
+      height: 100%;
+      z-index: 0;
     }
+    body:not(.overlay-active) { min-height: 100vh; }
 
-    /* Coming Soon Container Styling */
-    .coming-soon-container {
-      position: relative; /* To sit above particles */
+
+    /* Content Styling - Consistent with bypass.html */
+    .content-wrapper {
+      position: relative;
       z-index: 1;
-      padding: 2.5rem 3rem; /* Increased padding */
-      background: rgba(10, 10, 12, 0.65); /* Darker, more subtle semi-transparent background */
-      backdrop-filter: blur(10px); /* Frosted glass effect */
-      border-radius: 8px; /* Slightly less rounded for a sharper look */
-      border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
-      max-width: 550px; /* Adjusted max-width */
-      width: 90%; /* Responsive width */
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Softer, deeper shadow */
+      padding: 20px;
+      padding-top: 80px; 
+      padding-bottom: 40px; 
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
+      line-height: 1.7;
+      color: #e0e0e0;
     }
 
-    .coming-soon-container h1 {
-      font-size: clamp(1.8rem, 4vw, 2.5rem); /* Responsive font size */
+    .content-wrapper h1, .content-wrapper h2, .content-wrapper h3, .content-wrapper h4 {
       color: #fff;
+      margin-top: 2.5rem;
       margin-bottom: 1.2rem;
       font-weight: bold;
     }
+    .content-wrapper h1 { font-size: clamp(1.8rem, 3.8vw, 2.6rem); margin-top: 0; }
+    .content-wrapper h2 { font-size: clamp(1.5rem, 3.2vw, 2.1rem); }
+    .content-wrapper h3 { font-size: clamp(1.2rem, 2.8vw, 1.8rem); }
+    .content-wrapper h4 { font-size: clamp(1.1rem, 2.5vw, 1.6rem); color: #e0e0e0; margin-top:1.5rem; margin-bottom: 0.8rem;}
 
-    .coming-soon-container p {
-      font-size: clamp(1rem, 2.5vw, 1.15rem);
+
+    .content-wrapper p, .content-wrapper li {
+      margin-bottom: 1rem; 
       color: #ccc;
-      line-height: 1.6;
-      margin-bottom: 2rem; /* Space before the link */
+    }
+    .content-wrapper ul, .content-wrapper ol {
+      margin-bottom: 1.5rem;
+      padding-left: 30px;
     }
 
-    .home-link {
-      display: inline-block;
+    .content-wrapper code {
+      background-color: #2a2a2a;
+      padding: 3px 7px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: #61dafb;
+      border: 1px solid #444;
+    }
+    .content-wrapper pre {
+      background-color: #1e1e1e;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      white-space: pre-wrap; 
+      word-break: break-all; 
+      color: #d4d4d4;
+      border: 1px solid #333;
+      font-size: 0.9em;
+      margin-bottom: 1.5rem;
+    }
+    .content-wrapper strong { color: #fff; }
+    .content-wrapper a { color: #61dafb; text-decoration: underline; }
+    .content-wrapper a:hover { color: #82e9ff; }
+    .content-wrapper .warning { color: #ffcc00; font-weight: bold; }
+    .content-wrapper .critical-warning { color: #ff6b6b; font-weight: bold; }
+
+
+    /* Form Unlocker Demo Styles */
+    .form-unlocker-demo {
+      background-color: rgba(20, 20, 22, 0.8); 
+      backdrop-filter: blur(5px);
+      padding: 25px;
+      border-radius: 8px;
+      margin-top: 2rem;
+      margin-bottom: 3rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .form-unlocker-demo h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
       color: #fff;
-      background-color: transparent;
-      border: 1.5px solid #fff;
-      padding: 10px 25px;
-      border-radius: 50px; /* Pill shape to match homepage CTA */
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      font-size: 1.3rem;
+    }
+    .form-unlocker-demo textarea {
+      width: 100%;
+      min-height: 150px;
+      background-color: #1a1a1a;
+      color: #e0e0e0;
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 10px;
+      font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+      resize: vertical; 
+      box-sizing: border-box; 
+    }
+    .form-unlocker-demo button {
+      background-color: #61dafb;
+      color: #000;
+      border: none;
+      padding: 12px 25px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 50px; 
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+    }
+    .form-unlocker-demo button:hover {
+      background-color: #82e9ff;
+      transform: translateY(-1px);
+    }
+    .form-unlocker-demo button:active {
+      transform: translateY(0px);
+    }
+    .form-unlocker-status {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #ff6b6b; 
+      min-height: 1.2em; 
+      word-break: break-word;
+    }
+    .form-unlocker-status.success {
+        color: #50fa7b; 
     }
 
-    .home-link:hover,
-    .home-link:focus {
-      background-color: #fff;
-      color: #000;
-      outline: none;
-    }
-    
     /* Reduced motion adjustments */
     @media (prefers-reduced-motion: reduce) {
-      #tsparticles {
-        display: none !important;
-      }
-       .coming-soon-container {
-        backdrop-filter: none; /* Remove blur for reduced motion if desired */
-      }
+      #tsparticles { display: none !important; }
+      .form-unlocker-demo { backdrop-filter: none; }
     }
   </style>
 </head>
 <body>
+
+  <a href="index.html" class="back-button" aria-label="Go to homepage">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M0 0h24v24H0V0z" fill="none"/>
+      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+    </svg>
+  </a>
+
   <div id="tsparticles" aria-hidden="true"></div>
-  <div class="coming-soon-container">
-    <h1>🚧 Page Under Construction</h1>
-    <p>This section isn’t available yet. We’re working on it - check back soon!</p>
-    <a href="index.html" class="home-link">Go Back Home</a>
-  </div>
+
+  <div class="content-wrapper">
+    <h1>Google Form Unlocker Guide</h1>
+    <p><strong>Last updated:</strong> May 20, 2025</p>
+    <p>This guide explains how to use the "Form Unlocker" tool to bypass certain restrictions on Google Forms, particularly those in "locked mode." This tool is provided as open-source material for educational purposes, to raise awareness among users, bug fixers, and school districts about potential vulnerabilities.</p>
+
+    <h2>Live Form Unlocker Demo</h2>
+    <div class="form-unlocker-demo">
+      <h3>Paste your form source here:</h3>
+      <textarea id="form_source_input" placeholder="Paste the entire content from 'view-source:...' page here."></textarea>
+      <button id="launch_unlocker_button">Launch</button>
+      <p id="unlocker_status" class="form-unlocker-status"></p>
+      <form target="_blank" method="POST" id="greatest_form_hidden" style="display: none;">
+        <input type="hidden" name="token" id="token_input">
+        <input type="hidden" name="tz_offset" value="120"> <input type="submit" value="Submit" id="sub_button_hidden">
+      </form>
+    </div>
+
+    <h2>Setup Instructions</h2>
+    <ol>
+      <li>Open the locked Google Form you wish to access.
+        <ul><li>Make sure you see the page indicating "Locked mode is on" or a similar message.</li>
+        <li><strong>DO NOT</strong> click the button to launch or start the form yet.</li></ul>
+      </li>
+      <li>In your browser’s address bar, type <code>view-source:</code> directly before the current URL of the locked form page and press Enter.
+        <ul><li>Example: If the URL is <code>https://docs.google.com/forms/d/e/.../viewform</code>, change it to <code>view-source:https://docs.google.com/forms/d/e/.../viewform</code>.</li></ul>
+      </li>
+      <li>Once the source code page loads, select all the text: Press <code>CTRL + A</code> (Windows/Linux) or <code>Cmd + A</code> (Mac).</li>
+      <li>Copy the selected text: Press <code>CTRL + C</code> (Windows/Linux) or <code>Cmd + C</code> (Mac).</li>
+      <li>Return to this page (hapara.fail Form Unlocker Guide).</li>
+      <li>In the "Live Form Unlocker Demo" section above, paste the copied source code into the text area labeled "Paste your form source here:". Press <code>CTRL + V</code> (Windows/Linux) or <code>Cmd + V</code> (Mac).</li>
+      <li>Click the "Launch" button. If successful, the unlocked form should open in a new tab.</li>
+    </ol>
+
+    <h2>Technical Explanation: How This Bypass Works</h2>
+    <p class="warning">This explanation is for educational purposes only. Use this knowledge responsibly and only on forms that you own or have explicit permission to test.</p>
+    
+    <h4>The Core Vulnerability</h4>
+    <p>The bypass leverages an oversight in how Google Forms' "locked mode" was implemented. Essentially, there was a lack of robust server-side validation to confirm that the client's browser had actually entered the secure, locked state before the form content was served.</p>
+
+    <h4>Exploiting the Process</h4>
+    <p>When you normally open a locked Google Form, your browser is supposed to enter a restricted mode. After this, a request (typically a POST request) is made to Google's servers, which then responds with the actual form/test content. This tool works by:</p>
+    <ol>
+        <li><strong>Skipping Client-Side Locking:</strong> The tool allows you to construct and send the necessary request to get the form content *without* your browser ever entering the ChromeOS locked mode.</li>
+        <li><strong>Token Extraction:</strong> A crucial piece of this interaction is a security token. This token is present in the HTML source code of the initial "Locked mode is on" landing page. The tool (or a user manually) can "scrape" or extract this token.</li>
+        <li><strong>Reconstructing the Request:</strong> With the token and other necessary parameters (also found in the source), the tool can simulate the POST request that a properly locked browser would make. Since the server didn't sufficiently verify the client's locked state, it would respond with the form content.</li>
+    </ol>
+
+    <h4>Analogy</h4>
+    <p>Imagine a secure event where you need a special wristband (locked mode) to get past the main gate, and then a ticket (the token) to enter the main hall. This bypass is like finding the ticket lying around outside the gate and then convincing a less attentive guard at the main hall entrance that you're supposed to be there, without ever getting the wristband.</p>
+
+    <h2>Potential Issues & Risks</h2>
+    <h4>Detection by Form Owner</h4>
+    <p class="critical-warning"><strong>Multiple Submissions:</strong> Each time the POST request to fetch the form content is made *after the initial legitimate attempt (or what the server perceives as such)*, Google may send an email notification to the owner of the Google Form. This is a significant detection risk.</p>
+    
+    <h4>Form Behavior & Visibility</h4>
+    <ul>
+        <li><strong><code>visibilitychanged</code> Event:</strong> The Google Form, once loaded (even via this bypass), is scripted to react to changes in its visibility. If the browser tab containing the form becomes completely hidden or obscured (e.g., by switching to another full-screen application or minimizing the window entirely), the <code>visibilitychanged</code> event can fire.</li>
+        <li><strong>Consequence:</strong> When this event fires under certain conditions, the form's content can be cleared or the form session terminated by Google's scripts running within the form page.</li>
+        <li><strong>Partial Obscuration:</strong> The <code>visibilitychanged</code> event is typically triggered by *complete* obfuscation of the tab. Partial covering (like having another window side-by-side, as recommended in precautions) or the tab simply losing focus (but still being partially visible) usually does not trigger this specific event, though other less critical focus events might occur.</li>
+    </ul>
+    <p class="warning"><strong>Strict Adherence to Precautions:</strong> Following the "Important Precautions" section (keeping the tab visible, using split-screen) is absolutely critical to minimize the risk of the form closing unexpectedly or triggering detection mechanisms related to visibility changes.</p>
+
+
+    <h2>Important Precautions</h2>
+    <ul>
+      <li><strong>Keep the Form Tab Visible:</strong> Once the unlocked form is launched (in its new tab), try to keep that tab visible on your screen for the entire duration of its use. Do NOT switch to other tabs within that same browser window or minimize that window if possible, as some locked forms can detect this.</li>
+      <li><strong>Use a Second Browser Window (Recommended):</strong>
+        <ul>
+          <li>Before starting, open a completely separate browser window (not just a new tab).</li>
+          <li>Resize both windows (the one with the unlocked form and your second window) so each takes up about half of your screen. This allows you to keep the form tab visible while using the other window for other tasks.</li>
+          <li>If a teacher or proctor comes nearby, you can quickly maximize the form window using the fullscreen key (often F11, or the green maximize button on Mac).</li>
+        </ul>
+      </li>
+      <li><strong>Browsing in the Second Window:</strong> You can use the second browser window to browse other sites. However, AVOID making this second window full-screen, as this might cause the original form tab to lose focus in a way that could be detected or cause it to close.</li>
+    </ul>
+
+    <h2>Tip: If the Form Goes Blank or Closes</h2>
+    <p>Should the form tab go blank (e.g., by accidentally making another window full-screen or switching tabs in the testing window), here's a recovery method that *might* work, depending on the specific setup:</p>
+    <ol>
+      <li>Immediately close all other browser tabs except the (now blank or problematic) testing tab.</li>
+      <li>Open a new tab *within the same testing window* and navigate to Google Classroom (or wherever the original test link was provided).</li>
+      <li>Find the assignment or stream post with the test URL, but do not click to open the link yet.</li>
+      <li>At this point, you should only have the testing window open with two tabs: the Google Classroom tab and the original (problematic) test tab.</li>
+      <li>Switch back to the original test tab and make it full-screen.</li>
+      <li>Approach your teacher and calmly explain that the form seemed to break or go blank, perhaps when you tried to submit or navigate within it. If possible, avoid handing your Chromebook directly to the teacher.</li>
+      <li>They will likely instruct you to click a "CLOSE QUIZ" or similar button, often found in the bottom right of the locked form interface. Follow their instruction. This should return you to Google Classroom.</li>
+      <li>Follow the teacher's instructions to re-open the test. The system might alert the teacher that the test is being re-opened, but this should be acceptable since you've already notified them of an issue.</li>
+    </ol>
+
+    <h2>Disclaimer</h2>
+    <p>This tool and guide are provided for educational and awareness purposes. We encourage responsible use and do not condone any actions that violate acceptable use policies or academic integrity. The goal is to highlight potential vulnerabilities so they can be addressed, and to empower users with knowledge.</p>
+    </div>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
   <script>
+    // TS PARTICLES SCRIPT (Consistent with index.html and bypass.html)
     document.addEventListener('DOMContentLoaded', () => {
       const isMobile = window.matchMedia("(max-width: 768px)").matches;
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      // EXACT SAME particleSettings as index.html
       const particleSettings = {
         fpsLimit: 60,
         particles: {
@@ -159,13 +345,12 @@
                    container.stop();
                 }
               }
-              // console.log("TSParticles v2.12.0 loaded on construction page.");
             })
             .catch(error => {
-              console.error("Error loading TSPSarticles v2.12.0 on construction page:", error);
+              console.error("Error loading TSPSarticles v2.12.0 on forms.html:", error);
             });
         } else {
-          console.error("tsParticles library not found on construction page.");
+          console.error("tsParticles library not found on forms.html.");
         }
       }
 
@@ -174,6 +359,81 @@
       } else {
         setTimeout(loadParticles, 100);
       }
+
+      // --- FORM UNLOCKER DEMO SCRIPT ---
+      const formSourceInput = document.getElementById('form_source_input');
+      const launchButton = document.getElementById('launch_unlocker_button');
+      const statusDisplay = document.getElementById('unlocker_status');
+      const hiddenForm = document.getElementById('greatest_form_hidden');
+      const tokenInput = document.getElementById('token_input');
+      const hiddenSubmitButton = document.getElementById('sub_button_hidden');
+
+      function parseSource(source) {
+        const initialDataMatch = source.match(/var _docs_flag_initialData\s*=\s*(\{.*?\});<\/script>/i) || 
+                                 source.match(/_docs_flag_initialData\s*=\s*(\{.*?\});<\/script>/i); 
+        
+        if (!initialDataMatch || !initialDataMatch[1]) {
+          throw new Error("Could not find '_docs_flag_initialData'. The form source might be incomplete, incorrect, or the structure has changed.");
+        }
+        
+        let info_map_string = initialDataMatch[1];
+        // Attempt to fix common copy-paste issues like HTML entities in JSON string
+        info_map_string = info_map_string.replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+
+        const info_map = JSON.parse(info_map_string);
+        
+        if (!info_map || !info_map.info_params || !info_map.info_params.token || !info_map["docs-crp"]) {
+             throw new Error("Essential data (token or form path) missing from parsed source. Ensure you copied the entire 'view-source:' content.");
+        }
+
+        const token = info_map.info_params.token;
+        let my_query_params = new URLSearchParams();
+
+        if (info_map["docs-crq"]){
+          let url_search_params = new URLSearchParams(info_map["docs-crq"]);
+          if (url_search_params.get("hr_submission")){
+            my_query_params.append("hr_submission", url_search_params.get("hr_submission"));
+          }
+        }
+        
+        const formPath = info_map["docs-crp"];
+        const url = "https://docs.google.com" + formPath + (my_query_params.toString() ? "?" + my_query_params.toString(): "");
+        
+        return {token: token, url: url};
+      }
+
+      if (launchButton && formSourceInput && statusDisplay && hiddenForm && tokenInput && hiddenSubmitButton) {
+        launchButton.addEventListener("click", () => {
+          statusDisplay.textContent = ''; 
+          statusDisplay.className = 'form-unlocker-status'; 
+
+          if (!formSourceInput.value.trim()) {
+            statusDisplay.textContent = "Error: Please paste the form source code first.";
+            return;
+          }
+
+          try {
+            const source_info = parseSource(formSourceInput.value);
+            tokenInput.value = source_info.token;
+            hiddenForm.setAttribute("action", source_info.url);
+            
+            statusDisplay.textContent = 'Success! Launching form...';
+            statusDisplay.classList.add('success');
+
+            setTimeout(() => {
+                hiddenSubmitButton.click(); 
+            }, 500);
+
+          } catch(e) {
+            console.error("Form Unlocker Error:", e);
+            statusDisplay.textContent = "Error: " + e.message;
+          }
+        });
+      } else {
+        console.error("One or more Form Unlocker DOM elements are missing.");
+        if(statusDisplay) statusDisplay.textContent = "Error: Tool elements not found on page.";
+      }
+
     });
   </script>
 </body>
