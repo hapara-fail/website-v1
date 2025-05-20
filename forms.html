@@ -6,7 +6,7 @@
   <title>Google Form Unlocker Guide | hapara.fail</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
-    /* Base Styles - Consistent with bypass.html */
+    /* Base Styles - Consistent with other pages */
     html, body {
       margin: 0;
       padding: 0;
@@ -19,12 +19,16 @@
       position: relative;
     }
 
-    /* Back Button Styles - Consistent with bypass.html */
+    body.overlay-active {
+        overflow-y: hidden; /* Prevent scrolling when a full-screen overlay is active */
+    }
+
+    /* Back Button Styles - Consistent */
     .back-button {
       position: fixed;
       top: 20px;
       left: 20px;
-      z-index: 1000;
+      z-index: 1006; /* Above fullscreen menu, but below menu-trigger when it's an X */
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -39,19 +43,19 @@
     .back-button svg { width: 24px; height: 24px; }
     .back-button:hover, .back-button:focus { background-color: rgba(70, 70, 70, 0.95); outline: none; }
 
-    /* TSparticles Container Style - Consistent with bypass.html */
+    /* TSparticles Container Style - Consistent */
     #tsparticles {
-      position: absolute; 
+      position: fixed; /* Use fixed for guide pages too for consistency */
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       z-index: 0;
     }
-    body:not(.overlay-active) { min-height: 100vh; }
+    /* body:not(.overlay-active) { min-height: 100vh; } No longer needed with fixed particles */
 
 
-    /* Content Styling - Consistent with bypass.html */
+    /* Content Styling - Consistent */
     .content-wrapper {
       position: relative;
       z-index: 1;
@@ -174,10 +178,229 @@
         color: #50fa7b; 
     }
 
+    /* --- Navigation Systems CSS (Copied from index.html) --- */
+    .menu-trigger {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1005; 
+      background: none;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+    }
+    .menu-trigger svg {
+      width: 24px;
+      height: 18px; 
+      color: #FFFFFF;
+      transition: color 0.2s ease-in-out;
+    }
+    .menu-trigger:hover svg {
+      color: #AAAAAA;
+    }
+    .menu-trigger .line {
+      transform-origin: center center; 
+      transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19), 
+                  opacity 0.15s 0.1s linear; 
+    }
+    .menu-trigger.is-active .line1 {
+      transform: translateY(7.5px) rotate(45deg); 
+    }
+    .menu-trigger.is-active .line2 {
+      opacity: 0;
+      transition: opacity 0.1s linear; 
+    }
+    .menu-trigger.is-active .line3 {
+      transform: translateY(-7.5px) rotate(-45deg); 
+    }
+
+    .fullscreen-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0A0A0A; 
+      z-index: 1000; 
+      display: none; 
+      flex-direction: column; 
+      align-items: flex-start;  
+      justify-content: flex-end; 
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      padding: 8vh 6vw; 
+      box-sizing: border-box;
+    }
+    .fullscreen-menu.is-active {
+      display: flex;
+      opacity: 1;
+    }
+    .fullscreen-menu-list {
+      list-style: none;
+      padding: 0;
+      margin: 0; 
+      text-align: left; 
+    }
+    .fullscreen-menu-list li {
+      margin: 12px 0; 
+    }
+    .fullscreen-menu-list a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem); 
+      font-weight: 500;
+      padding: 8px 0; 
+      transition: color 0.2s ease-in-out, letter-spacing 0.2s ease-in-out;
+      display: block; 
+    }
+    .fullscreen-menu-list a:hover,
+    .fullscreen-menu-list a:focus {
+      color: #fff;
+      letter-spacing: 0.5px; 
+      outline: none;
+    }
+    .fullscreen-menu .command-palette-tip { 
+        font-size: 0.8rem;
+        color: #555;
+        margin-top: 30px; 
+        width: 100%; 
+        text-align: left;
+    }
+
+    .command-palette-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3); 
+        backdrop-filter: blur(4px); 
+        z-index: 1008; 
+        display: none; 
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+    }
+    .command-palette-backdrop.is-active {
+        display: block;
+        opacity: 1;
+    }
+
+    .command-palette {
+      position: fixed;
+      top: 20%; 
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 560px; 
+      background-color: #1C1C1E; 
+      border-radius: 12px; 
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08); 
+      z-index: 1010; 
+      display: none; 
+      flex-direction: column;
+      overflow: hidden; 
+      opacity: 0;
+      transform: translateX(-50%) scale(0.95); 
+      transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+    }
+    .command-palette.is-active {
+      display: flex;
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+    .command-palette-input-wrapper {
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+    }
+    .command-palette-input-wrapper svg { 
+        width: 20px;
+        height: 20px;
+        fill: #888;
+        margin-right: 10px;
+        flex-shrink: 0; 
+    }
+    .command-palette-input {
+      width: 100%;
+      padding: 15px 0; 
+      font-family: inherit;
+      font-size: 1.2rem; 
+      color: #f0f0f0;
+      background-color: transparent;
+      border: none;
+      outline: none;
+    }
+    .command-palette-input::placeholder {
+        color: #666;
+    }
+    .command-palette-results {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-height: 300px; 
+      overflow-y: auto;
+      padding: 8px 0; 
+    }
+    .command-palette-results li {
+      padding: 10px 20px;
+      cursor: pointer;
+      color: #ccc;
+      font-size: 0.95rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+      transition: background-color 0.1s ease-in-out;
+      display: flex; 
+      align-items: center;
+    }
+    .command-palette-results li:last-child {
+        border-bottom: none;
+    }
+    .command-palette-results li:hover,
+    .command-palette-results li.is-selected { 
+      background-color: #007AFF; 
+      color: #fff;
+    }
+    .command-palette-results li .item-name {
+        flex-grow: 1;
+    }
+    .command-palette-results li .item-type {
+        font-size: 0.8rem;
+        color: #888;
+        margin-left: 10px;
+        flex-shrink: 0;
+    }
+    .command-palette-results li:hover .item-type,
+    .command-palette-results li.is-selected .item-type {
+        color: #eee;
+    }
+    .command-palette-no-results {
+        padding: 20px;
+        text-align: center;
+        color: #888;
+        font-size: 0.95rem;
+        display: none; 
+    }
+    .visually-hidden { 
+      position: absolute; 
+      width: 1px; height: 1px; 
+      margin: -1px; padding: 0; 
+      overflow: hidden; 
+      clip: rect(0, 0, 0, 0); 
+      border: 0; 
+    }
+
+
     /* Reduced motion adjustments */
     @media (prefers-reduced-motion: reduce) {
       #tsparticles { display: none !important; }
       .form-unlocker-demo { backdrop-filter: none; }
+      .fullscreen-menu, .command-palette, .command-palette-backdrop, .menu-trigger .line { 
+        transition: none !important; 
+      }
     }
   </style>
 </head>
@@ -190,6 +413,34 @@
     </svg>
   </a>
 
+  <button class="menu-trigger" aria-label="Open navigation menu" aria-expanded="false">
+    <svg class="menu-icon-lines" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="line line1" d="M1 2H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
+      <path class="line line2" d="M1 9H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
+      <path class="line line3" d="M1 16H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
+    </svg>
+  </button>
+
+  <div class="fullscreen-menu" role="dialog" aria-modal="true" aria-labelledby="menuTitle">
+    <h2 id="menuTitle" class="visually-hidden">Site Navigation</h2> 
+    <nav>
+      <ul class="fullscreen-menu-list">
+        </ul>
+    </nav>
+     <p class="command-palette-tip">Tip: Press Ctrl+K or Cmd+K for quick search</p>
+  </div>
+
+  <div class="command-palette-backdrop"></div>
+  <div class="command-palette" role="dialog" aria-modal="true" aria-labelledby="commandPaletteLabel">
+     <div class="command-palette-input-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg>
+        <input type="search" class="command-palette-input" placeholder="Type a command or search..." id="commandPaletteLabel" autocomplete="off">
+     </div>
+    <ul class="command-palette-results">
+      </ul>
+    <div class="command-palette-no-results">No results found.</div>
+  </div>
+  <span class="visually-hidden" id="commandPaletteHint">Command Palette: Type to search site pages and links. Use arrow keys to navigate, Enter to select, Escape to close.</span>
   <div id="tsparticles" aria-hidden="true"></div>
 
   <div class="content-wrapper">
@@ -287,8 +538,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
   <script>
-    // TS PARTICLES SCRIPT (Consistent with index.html and bypass.html)
     document.addEventListener('DOMContentLoaded', () => {
+      // --- TS PARTICLES SCRIPT ---
       const isMobile = window.matchMedia("(max-width: 768px)").matches;
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -359,6 +610,8 @@
       } else {
         setTimeout(loadParticles, 100);
       }
+      // --- END TS PARTICLES SCRIPT ---
+
 
       // --- FORM UNLOCKER DEMO SCRIPT ---
       const formSourceInput = document.getElementById('form_source_input');
@@ -377,7 +630,6 @@
         }
         
         let info_map_string = initialDataMatch[1];
-        // Attempt to fix common copy-paste issues like HTML entities in JSON string
         info_map_string = info_map_string.replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 
         const info_map = JSON.parse(info_map_string);
@@ -433,7 +685,221 @@
         console.error("One or more Form Unlocker DOM elements are missing.");
         if(statusDisplay) statusDisplay.textContent = "Error: Tool elements not found on page.";
       }
+      // --- END FORM UNLOCKER DEMO SCRIPT ---
 
+
+      // --- START: NAVIGATION JAVASCRIPT (Copied from index.html) ---
+      const navItems = [
+        { name: 'Home', href: 'index.html', type: 'page' },
+        { name: 'ChromeOS DNS Bypass', href: 'bypass.html', type: 'page' },
+        { name: 'Google Form Unlocker Guide', href: 'forms.html', type: 'page' },
+        { name: 'Paramus Schools WiFi Passwords', href: 'wifi.html', type: 'page' },
+        { name: 'Discord', href: 'https://discord.gg/KA66dHUF4P', type: 'external', target: '_blank' },
+        { name: 'GitHub', href: 'https://github.com/hapara-fail', type: 'external', target: '_blank' },
+        { name: 'Contact', href: 'mailto:support@hapara.fail', type: 'external' }
+      ];
+
+      const menuTrigger = document.querySelector('.menu-trigger');
+      const fullscreenMenu = document.querySelector('.fullscreen-menu');
+      const fullscreenMenuList = document.querySelector('.fullscreen-menu-list');
+
+      const commandPaletteBackdrop = document.querySelector('.command-palette-backdrop');
+      const commandPalette = document.querySelector('.command-palette');
+      const commandPaletteInput = document.querySelector('.command-palette-input');
+      const commandPaletteResults = document.querySelector('.command-palette-results');
+      const commandPaletteNoResults = document.querySelector('.command-palette-no-results');
+
+      let currentFocusedResultIndex = -1;
+
+      function populateFullScreenMenu() {
+        if (!fullscreenMenuList) return;
+        fullscreenMenuList.innerHTML = ''; 
+        navItems.filter(item => item.type === 'page').forEach(item => {
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = item.href;
+          link.textContent = item.name;
+          // Make current page link non-interactive or styled differently
+          if (window.location.pathname.endsWith('/' + item.href) || (window.location.pathname === '/' && item.href === 'index.html')) {
+            link.style.color = '#fff'; // Example: highlight current page
+            link.style.cursor = 'default';
+            link.onclick = (e) => e.preventDefault(); // Prevent click
+          }
+          listItem.appendChild(link);
+          fullscreenMenuList.appendChild(listItem);
+        });
+      }
+
+      function toggleFullScreenMenu() {
+        if (!fullscreenMenu || !menuTrigger) return;
+        const isActive = fullscreenMenu.classList.contains('is-active');
+        if (isActive) {
+          fullscreenMenu.classList.remove('is-active');
+          menuTrigger.classList.remove('is-active'); 
+          menuTrigger.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('overlay-active');
+          menuTrigger.focus(); 
+        } else {
+          if (commandPalette && commandPalette.classList.contains('is-active')) {
+            closeCommandPalette();
+          }
+          fullscreenMenu.classList.add('is-active');
+          menuTrigger.classList.add('is-active'); 
+          menuTrigger.setAttribute('aria-expanded', 'true');
+          document.body.classList.add('overlay-active');
+          const firstLink = fullscreenMenuList.querySelector('a:not([style*="cursor: default"])'); // Focus first non-current link
+          if (firstLink) firstLink.focus();
+          else if (menuTrigger) menuTrigger.focus(); // Fallback to menu trigger
+        }
+      }
+      
+      if (menuTrigger && fullscreenMenu) {
+        menuTrigger.addEventListener('click', toggleFullScreenMenu); 
+        populateFullScreenMenu(); 
+      }
+
+      function openCommandPalette() {
+        if (!commandPalette || !commandPaletteBackdrop) return;
+        if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
+            toggleFullScreenMenu(); 
+        }
+        commandPaletteBackdrop.classList.add('is-active');
+        commandPalette.classList.add('is-active');
+        document.body.classList.add('overlay-active');
+        commandPaletteInput.value = ''; 
+        renderCommandPaletteResults(''); 
+        commandPaletteInput.focus();
+        currentFocusedResultIndex = -1; 
+      }
+
+      function closeCommandPalette() {
+        if (!commandPalette || !commandPaletteBackdrop) return;
+        commandPalette.classList.remove('is-active');
+        commandPaletteBackdrop.classList.remove('is-active');
+        document.body.classList.remove('overlay-active');
+        commandPaletteInput.value = '';
+        commandPaletteResults.innerHTML = '';
+        commandPaletteNoResults.style.display = 'none';
+      }
+
+      function renderCommandPaletteResults(query) {
+        if (!commandPaletteResults || !commandPaletteNoResults) return;
+        commandPaletteResults.innerHTML = ''; 
+        const lowerCaseQuery = query.toLowerCase();
+        
+        const filteredItems = navItems.filter(item => 
+          item.name.toLowerCase().includes(lowerCaseQuery)
+        );
+
+        if (filteredItems.length === 0 && query.length > 0) {
+          commandPaletteNoResults.style.display = 'block';
+        } else {
+          commandPaletteNoResults.style.display = 'none';
+          filteredItems.forEach((item, index) => {
+            const listItem = document.createElement('li');
+            listItem.dataset.index = index; 
+            listItem.dataset.href = item.href;
+            if (item.target) {
+                listItem.dataset.target = item.target;
+            }
+
+            const itemNameSpan = document.createElement('span');
+            itemNameSpan.className = 'item-name';
+            itemNameSpan.textContent = item.name;
+            listItem.appendChild(itemNameSpan);
+
+            const itemTypeSpan = document.createElement('span');
+            itemTypeSpan.className = 'item-type';
+            itemTypeSpan.textContent = item.type === 'page' ? 'Page' : 'External';
+            listItem.appendChild(itemTypeSpan);
+            
+            listItem.addEventListener('click', () => {
+              if (item.target === '_blank') {
+                window.open(item.href, '_blank', 'noopener,noreferrer');
+              } else if (window.location.pathname.endsWith('/' + item.href) || (window.location.pathname === '/' && item.href === 'index.html')) {
+                // If it's the current page, just close the palette
+                closeCommandPalette();
+                return;
+              }
+              else {
+                window.location.href = item.href;
+              }
+              closeCommandPalette();
+            });
+            commandPaletteResults.appendChild(listItem);
+          });
+        }
+        currentFocusedResultIndex = -1; 
+        updateCommandPaletteFocus();
+      }
+      
+      function updateCommandPaletteFocus() {
+        const resultsItems = commandPaletteResults.querySelectorAll('li');
+        resultsItems.forEach((item, index) => {
+          if (index === currentFocusedResultIndex) {
+            item.classList.add('is-selected');
+            item.scrollIntoView({ block: 'nearest' }); 
+          } else {
+            item.classList.remove('is-selected');
+          }
+        });
+      }
+
+      if (commandPaletteInput && commandPaletteResults) {
+        commandPaletteInput.addEventListener('input', (e) => {
+          renderCommandPaletteResults(e.target.value);
+        });
+      }
+      if (commandPaletteBackdrop) {
+          commandPaletteBackdrop.addEventListener('click', closeCommandPalette);
+      }
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
+            toggleFullScreenMenu(); 
+          }
+          if (commandPalette && commandPalette.classList.contains('is-active')) {
+            closeCommandPalette();
+          }
+        }
+
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault(); 
+          if (commandPalette && commandPalette.classList.contains('is-active')) {
+             commandPaletteInput.focus(); 
+          } else {
+            openCommandPalette(); 
+          }
+        }
+
+        if (commandPalette && commandPalette.classList.contains('is-active')) {
+          const resultsItems = commandPaletteResults.querySelectorAll('li');
+          if (resultsItems.length === 0 && e.key !== 'Escape') return; 
+
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (resultsItems.length > 0) {
+                currentFocusedResultIndex = (currentFocusedResultIndex + 1) % resultsItems.length;
+                updateCommandPaletteFocus();
+            }
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (resultsItems.length > 0) {
+                currentFocusedResultIndex = (currentFocusedResultIndex - 1 + resultsItems.length) % resultsItems.length;
+                updateCommandPaletteFocus();
+            }
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (currentFocusedResultIndex > -1 && resultsItems[currentFocusedResultIndex]) {
+              resultsItems[currentFocusedResultIndex].click(); 
+            } else if (resultsItems.length > 0 && currentFocusedResultIndex === -1) {
+                resultsItems[0].click(); 
+            }
+          }
+        }
+      });
+      // --- END: NAVIGATION JAVASCRIPT ---
     });
   </script>
 </body>
