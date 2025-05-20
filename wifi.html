@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>Coming Soon | hapara.fail</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    /* Base Styles - Consistent with index.html */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #000; /* Base background, particles will overlay this */
+      color: #e0e0e0;
+      font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace;
+      position: relative; /* Needed for absolute positioning of particles if not fixed */
+      overflow: hidden; /* Prevent scrollbars on the page itself */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* TSparticles Container - Consistent with index.html */
+    #tsparticles {
+      position: fixed; /* Ensures it covers the whole viewport */
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0; /* Behind the content */
+    }
+
+    /* Coming Soon Container Styling */
+    .coming-soon-container {
+      position: relative; /* To sit above particles */
+      z-index: 1;
+      padding: 2.5rem 3rem; /* Increased padding */
+      background: rgba(10, 10, 12, 0.65); /* Darker, more subtle semi-transparent background */
+      backdrop-filter: blur(10px); /* Frosted glass effect */
+      border-radius: 8px; /* Slightly less rounded for a sharper look */
+      border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+      max-width: 550px; /* Adjusted max-width */
+      width: 90%; /* Responsive width */
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Softer, deeper shadow */
+    }
+
+    .coming-soon-container h1 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem); /* Responsive font size */
+      color: #fff;
+      margin-bottom: 1.2rem;
+      font-weight: bold;
+    }
+
+    .coming-soon-container p {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 2rem; /* Space before the link */
+    }
+
+    .home-link {
+      display: inline-block;
+      color: #fff;
+      background-color: transparent;
+      border: 1.5px solid #fff;
+      padding: 10px 25px;
+      border-radius: 50px; /* Pill shape to match homepage CTA */
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    }
+
+    .home-link:hover,
+    .home-link:focus {
+      background-color: #fff;
+      color: #000;
+      outline: none;
+    }
+    
+    /* Reduced motion adjustments */
+    @media (prefers-reduced-motion: reduce) {
+      #tsparticles {
+        display: none !important;
+      }
+       .coming-soon-container {
+        backdrop-filter: none; /* Remove blur for reduced motion if desired */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="tsparticles" aria-hidden="true"></div>
+  <div class="coming-soon-container">
+    <h1>🚧 Page Under Construction</h1>
+    <p>This section isn’t available yet. We’re working on it - check back soon!</p>
+    <a href="index.html" class="home-link">Go Back Home</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // EXACT SAME particleSettings as index.html
+      const particleSettings = {
+        fpsLimit: 60,
+        particles: {
+          number: {
+            value: prefersReducedMotion ? 0 : (isMobile ? 30 : 60),
+            density: { enable: true, area: 800 }
+          },
+          color: { value: "#666666" },
+          shape: { type: "circle" },
+          opacity: { value: 0.35 },
+          size: { value: 2.2, random: { enable: true, minimumValue: 0.8 } },
+          links: {
+            enable: true,
+            distance: 140,
+            color: "#777777",
+            opacity: 0.25,
+            width: 1
+          },
+          move: {
+            enable: !prefersReducedMotion,
+            speed: 0.9,
+            direction: "none",
+            random: true,
+            straight: false,
+            outModes: { default: "out" }
+          }
+        },
+        interactivity: {
+          events: {
+            onHover: { enable: !prefersReducedMotion, mode: "repulse" },
+            onClick: { enable: !prefersReducedMotion, mode: "push" },
+            resize: true
+          },
+          modes: {
+            repulse: { distance: 70, duration: 0.4 },
+            push: { quantity: 2 }
+          }
+        },
+        detectRetina: true
+      };
+
+      function loadParticles() {
+        if (typeof tsParticles !== "undefined") {
+          tsParticles.load("tsparticles", particleSettings)
+            .then(container => {
+              if (container && prefersReducedMotion) {
+                 if (container.particles && typeof container.particles.setCount === 'function') {
+                   container.particles.setCount(0);
+                }
+                if (container.stop) {
+                   container.stop();
+                }
+              }
+              // console.log("TSParticles v2.12.0 loaded on construction page.");
+            })
+            .catch(error => {
+              console.error("Error loading TSPSarticles v2.12.0 on construction page:", error);
+            });
+        } else {
+          console.error("tsParticles library not found on construction page.");
+        }
+      }
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadParticles);
+      } else {
+        setTimeout(loadParticles, 100);
+      }
+    });
+  </script>
+</body>
+</html>
