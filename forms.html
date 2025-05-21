@@ -15,15 +15,16 @@
       color: #fff;
       font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace;
       overflow-x: hidden;
-      overflow-y: auto;
+      /* overflow-y: auto; /* Body will scroll naturally */
       position: relative;
+    }
+    body {
+        min-height: 100%;
     }
 
     body.overlay-active {
         overflow-y: hidden; /* Prevent scrolling when a full-screen overlay is active */
     }
-
-    /* Back Button Styles REMOVED */
 
     /* TSparticles Container Style - Consistent */
     #tsparticles {
@@ -33,6 +34,7 @@
       width: 100%;
       height: 100%;
       z-index: 0;
+      pointer-events: none; /* Allows scroll/click events to pass through */
     }
 
     /* Content Styling - Consistent */
@@ -48,6 +50,7 @@
       box-sizing: border-box;
       line-height: 1.7;
       color: #e0e0e0;
+      min-height: calc(100vh - 120px); /* Ensure content can fill viewport height */
     }
 
     .content-wrapper h1, .content-wrapper h2, .content-wrapper h3, .content-wrapper h4 {
@@ -88,14 +91,24 @@
       word-break: break-all; 
       color: #d4d4d4;
       border: 1px solid #333;
-      font-size: 0.9em;
+      font-size: 0.85em; 
+      line-height: 1.6; 
       margin-bottom: 1.5rem;
     }
     .content-wrapper strong { color: #fff; }
     .content-wrapper a { color: #61dafb; text-decoration: underline; }
     .content-wrapper a:hover { color: #82e9ff; }
-    .content-wrapper .warning { color: #ffcc00; font-weight: bold; }
-    .content-wrapper .critical-warning { color: #ff6b6b; font-weight: bold; }
+    .content-wrapper .warning { color: #ffcc00; } 
+    .content-wrapper .critical-warning { color: #ff6b6b; } 
+    .content-wrapper .note {
+        background-color: rgba(40,40,45,0.7);
+        border-left: 4px solid #61dafb;
+        padding: 10px 15px;
+        margin: 1.5rem 0;
+        border-radius: 0 4px 4px 0;
+        font-size: 0.95rem;
+    }
+     .content-wrapper .note strong { color: #61dafb;}
 
 
     /* Form Unlocker Demo Styles - Refined */
@@ -108,7 +121,7 @@
       margin-bottom: 3rem;
       border: 1px solid rgba(255, 255, 255, 0.15); 
     }
-    .form-unlocker-demo h3 {
+    .form-unlocker-demo h3 { /* Was h2 for "Method 1", now h3 under the main h2 */
       margin-top: 0;
       margin-bottom: 20px; 
       color: #fff;
@@ -383,7 +396,6 @@
       border: 0; 
     }
 
-
     /* Reduced motion adjustments */
     @media (prefers-reduced-motion: reduce) {
       #tsparticles { display: none !important; }
@@ -510,7 +522,7 @@
     <ol>
       <li>Immediately close all other browser tabs except the (now blank or problematic) testing tab.</li>
       <li>Open a new tab *within the same testing window* and navigate to Google Classroom (or wherever the original test link was provided).</li>
-      <li>Find the assignment or stream post with the test URL, but do not click to open the link yet.</li>
+      <li>Find the assignment or stream post with the test URL, but do not click to open the link.</li>
       <li>At this point, you should only have the testing window open with two tabs: the Google Classroom tab and the original (problematic) test tab.</li>
       <li>Switch back to the original test tab and make it full-screen.</li>
       <li>Approach your teacher and calmly explain that the form seemed to break or go blank, perhaps when you tried to submit or navigate within it. If possible, avoid handing your Chromebook directly to the teacher.</li>
@@ -528,74 +540,11 @@
       // --- TS PARTICLES SCRIPT ---
       const isMobile = window.matchMedia("(max-width: 768px)").matches;
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      const particleSettings = {
-        fpsLimit: 60,
-        particles: {
-          number: {
-            value: prefersReducedMotion ? 0 : (isMobile ? 30 : 60),
-            density: { enable: true, area: 800 }
-          },
-          color: { value: "#666666" },
-          shape: { type: "circle" },
-          opacity: { value: 0.35 },
-          size: { value: 2.2, random: { enable: true, minimumValue: 0.8 } },
-          links: {
-            enable: true,
-            distance: 140,
-            color: "#777777",
-            opacity: 0.25,
-            width: 1
-          },
-          move: {
-            enable: !prefersReducedMotion,
-            speed: 0.9,
-            direction: "none",
-            random: true,
-            straight: false,
-            outModes: { default: "out" }
-          }
-        },
-        interactivity: {
-          events: {
-            onHover: { enable: !prefersReducedMotion, mode: "repulse" },
-            onClick: { enable: !prefersReducedMotion, mode: "push" },
-            resize: true
-          },
-          modes: {
-            repulse: { distance: 70, duration: 0.4 },
-            push: { quantity: 2 }
-          }
-        },
-        detectRetina: true
+      const particleSettings = { 
+        fpsLimit: 60, particles: { number: { value: prefersReducedMotion ? 0 : (isMobile ? 30 : 60), density: { enable: true, area: 800 } }, color: { value: "#666666" }, shape: { type: "circle" }, opacity: { value: 0.35 }, size: { value: 2.2, random: { enable: true, minimumValue: 0.8 } }, links: { enable: true, distance: 140, color: "#777777", opacity: 0.25, width: 1 }, move: { enable: !prefersReducedMotion, speed: 0.9, direction: "none", random: true, straight: false, outModes: { default: "out" } } }, interactivity: { events: { onHover: { enable: !prefersReducedMotion, mode: "repulse" }, onClick: { enable: !prefersReducedMotion, mode: "push" }, resize: true }, modes: { repulse: { distance: 70, duration: 0.4 }, push: { quantity: 2 } } }, detectRetina: true
       };
-
-      function loadParticles() {
-        if (typeof tsParticles !== "undefined") {
-          tsParticles.load("tsparticles", particleSettings)
-            .then(container => {
-              if (container && prefersReducedMotion) {
-                 if (container.particles && typeof container.particles.setCount === 'function') {
-                   container.particles.setCount(0);
-                }
-                if (container.stop) {
-                   container.stop();
-                }
-              }
-            })
-            .catch(error => {
-              console.error("Error loading TSPSarticles v2.12.0 on forms.html:", error);
-            });
-        } else {
-          console.error("tsParticles library not found on forms.html.");
-        }
-      }
-
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadParticles);
-      } else {
-        setTimeout(loadParticles, 100);
-      }
+      function loadParticles() { if (typeof tsParticles !== "undefined") { tsParticles.load("tsparticles", particleSettings).then(container => { if (container && prefersReducedMotion) { if (container.particles && typeof container.particles.setCount === 'function') { container.particles.setCount(0); } if (container.stop) { container.stop(); } } }).catch(error => { console.error("Error loading TSPSarticles v2.12.0 on forms.html:", error); }); } else { console.error("tsParticles library not found on forms.html."); } }
+      if ('requestIdleCallback' in window) { requestIdleCallback(loadParticles); } else { setTimeout(loadParticles, 100); }
       // --- END TS PARTICLES SCRIPT ---
 
 
@@ -663,14 +612,13 @@
             }, 500);
 
           } catch(e) {
-            console.error("Form Unlocker Detailed Error:", e); // Log the whole error object
-            let errorMessage = "An unexpected error occurred. Check console for details."; // Default message
+            console.error("Form Unlocker Detailed Error:", e); 
+            let errorMessage = "An unexpected error occurred. Check console for details."; 
             if (e instanceof Error && e.message) {
                 errorMessage = e.message;
-            } else if (typeof e === 'string' && e.length > 0) { // Check if e itself is a non-empty string
+            } else if (typeof e === 'string' && e.length > 0) { 
                 errorMessage = e;
             } else if (e && typeof e.toString === 'function' && e.toString() !== '[object Object]' && e.toString() !== '') {
-                 // Try toString if it's not the default Object.toString() and not empty
                 errorMessage = e.toString();
             }
             statusDisplay.textContent = "Error: " + errorMessage;
@@ -682,228 +630,12 @@
       }
       // --- END FORM UNLOCKER DEMO SCRIPT ---
 
-
-      // --- START: NAVIGATION JAVASCRIPT (Copied from index.html) ---
-      const navItems = [
-        { name: 'Home', href: 'index.html', type: 'page' },
-        { name: 'ChromeOS DNS Bypass', href: 'bypass.html', type: 'page' },
-        { name: 'Google Form Unlocker Guide', href: 'forms.html', type: 'page' },
-        { name: 'Paramus Schools WiFi Passwords', href: 'wifi.html', type: 'page' },
-        { name: 'Discord', href: 'https://discord.gg/KA66dHUF4P', type: 'external', target: '_blank' },
-        { name: 'GitHub', href: 'https://github.com/hapara-fail', type: 'external', target: '_blank' },
-        { name: 'Contact', href: 'mailto:support@hapara.fail', type: 'external' }
-      ];
-
-      const menuTrigger = document.querySelector('.menu-trigger');
-      const fullscreenMenu = document.querySelector('.fullscreen-menu');
-      const fullscreenMenuList = document.querySelector('.fullscreen-menu-list');
-
-      const commandPaletteBackdrop = document.querySelector('.command-palette-backdrop');
-      const commandPalette = document.querySelector('.command-palette');
-      const commandPaletteInput = document.querySelector('.command-palette-input');
-      const commandPaletteResults = document.querySelector('.command-palette-results');
-      const commandPaletteNoResults = document.querySelector('.command-palette-no-results');
-
-      let currentFocusedResultIndex = -1;
-
-      function populateFullScreenMenu() {
-        if (!fullscreenMenuList) return;
-        fullscreenMenuList.innerHTML = ''; 
-        navItems.filter(item => item.type === 'page').forEach(item => { 
-          const listItem = document.createElement('li');
-          const link = document.createElement('a');
-          link.href = item.href;
-          link.textContent = item.name;
-          
-          const currentPath = window.location.pathname;
-          const itemPath = '/' + item.href; // Assuming item.href is relative like "forms.html"
-          const isCurrentPage = currentPath === itemPath || (currentPath.endsWith('/') && item.href === 'index.html') || currentPath === item.href;
-
-
-          if (isCurrentPage) {
-            link.style.color = '#fff'; 
-            link.style.cursor = 'default';
-            link.onclick = (e) => e.preventDefault(); 
-          }
-          listItem.appendChild(link);
-          fullscreenMenuList.appendChild(listItem);
-        });
-      }
-
-      function toggleFullScreenMenu() {
-        if (!fullscreenMenu || !menuTrigger) return;
-        const isActive = fullscreenMenu.classList.contains('is-active');
-        if (isActive) {
-          fullscreenMenu.classList.remove('is-active');
-          menuTrigger.classList.remove('is-active'); 
-          menuTrigger.setAttribute('aria-expanded', 'false');
-          document.body.classList.remove('overlay-active');
-          menuTrigger.focus(); 
-        } else {
-          if (commandPalette && commandPalette.classList.contains('is-active')) {
-            closeCommandPalette();
-          }
-          fullscreenMenu.classList.add('is-active');
-          menuTrigger.classList.add('is-active'); 
-          menuTrigger.setAttribute('aria-expanded', 'true');
-          document.body.classList.add('overlay-active');
-          const firstLink = fullscreenMenuList.querySelector('a:not([style*="cursor: default"])'); 
-          if (firstLink) firstLink.focus();
-          else if (menuTrigger) menuTrigger.focus(); 
-        }
-      }
-      
-      if (menuTrigger && fullscreenMenu) {
-        menuTrigger.addEventListener('click', toggleFullScreenMenu); 
-        populateFullScreenMenu(); 
-      }
-
-      function openCommandPalette() {
-        if (!commandPalette || !commandPaletteBackdrop) return;
-        if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
-            toggleFullScreenMenu(); 
-        }
-        commandPaletteBackdrop.classList.add('is-active');
-        commandPalette.classList.add('is-active');
-        document.body.classList.add('overlay-active');
-        commandPaletteInput.value = ''; 
-        renderCommandPaletteResults(''); 
-        commandPaletteInput.focus();
-        currentFocusedResultIndex = -1; 
-      }
-
-      function closeCommandPalette() {
-        if (!commandPalette || !commandPaletteBackdrop) return;
-        commandPalette.classList.remove('is-active');
-        commandPaletteBackdrop.classList.remove('is-active');
-        document.body.classList.remove('overlay-active');
-        commandPaletteInput.value = '';
-        commandPaletteResults.innerHTML = '';
-        if(commandPaletteNoResults) commandPaletteNoResults.style.display = 'none';
-      }
-
-      function renderCommandPaletteResults(query) {
-        if (!commandPaletteResults || !commandPaletteNoResults) return;
-        commandPaletteResults.innerHTML = ''; 
-        const lowerCaseQuery = query.toLowerCase();
-        
-        const filteredItems = navItems.filter(item => 
-          item.name.toLowerCase().includes(lowerCaseQuery)
-        );
-
-        if (filteredItems.length === 0 && query.length > 0) {
-          commandPaletteNoResults.style.display = 'block';
-        } else {
-          commandPaletteNoResults.style.display = 'none';
-          filteredItems.forEach((item, index) => {
-            const listItem = document.createElement('li');
-            listItem.dataset.index = index; 
-            listItem.dataset.href = item.href;
-            if (item.target) {
-                listItem.dataset.target = item.target;
-            }
-
-            const itemNameSpan = document.createElement('span');
-            itemNameSpan.className = 'item-name';
-            itemNameSpan.textContent = item.name;
-            listItem.appendChild(itemNameSpan);
-
-            const itemTypeSpan = document.createElement('span');
-            itemTypeSpan.className = 'item-type';
-            itemTypeSpan.textContent = item.type === 'page' ? 'Page' : 'External';
-            listItem.appendChild(itemTypeSpan);
-            
-            listItem.addEventListener('click', () => {
-              const currentPath = window.location.pathname;
-              const itemPath = '/' + item.href;
-              const isCurrentPage = currentPath === itemPath || (currentPath.endsWith('/') && item.href === 'index.html') || currentPath === item.href;
-
-              if (item.target === '_blank') {
-                window.open(item.href, '_blank', 'noopener,noreferrer');
-              } else if (isCurrentPage) {
-                closeCommandPalette();
-                return;
-              }
-              else {
-                window.location.href = item.href;
-              }
-              closeCommandPalette();
-            });
-            commandPaletteResults.appendChild(listItem);
-          });
-        }
-        currentFocusedResultIndex = -1; 
-        updateCommandPaletteFocus();
-      }
-      
-      function updateCommandPaletteFocus() {
-        const resultsItems = commandPaletteResults.querySelectorAll('li');
-        resultsItems.forEach((item, index) => {
-          if (index === currentFocusedResultIndex) {
-            item.classList.add('is-selected');
-            item.scrollIntoView({ block: 'nearest' }); 
-          } else {
-            item.classList.remove('is-selected');
-          }
-        });
-      }
-
-      if (commandPaletteInput && commandPaletteResults) {
-        commandPaletteInput.addEventListener('input', (e) => {
-          renderCommandPaletteResults(e.target.value);
-        });
-      }
-      if (commandPaletteBackdrop) {
-          commandPaletteBackdrop.addEventListener('click', closeCommandPalette);
-      }
-
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
-            toggleFullScreenMenu(); 
-          }
-          if (commandPalette && commandPalette.classList.contains('is-active')) {
-            closeCommandPalette();
-          }
-        }
-
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-          e.preventDefault(); 
-          if (commandPalette && commandPalette.classList.contains('is-active')) {
-             commandPaletteInput.focus(); 
-          } else {
-            openCommandPalette(); 
-          }
-        }
-
-        if (commandPalette && commandPalette.classList.contains('is-active')) {
-          const resultsItems = commandPaletteResults.querySelectorAll('li');
-          if (resultsItems.length === 0 && e.key !== 'Escape') return; 
-
-          if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            if (resultsItems.length > 0) {
-                currentFocusedResultIndex = (currentFocusedResultIndex + 1) % resultsItems.length;
-                updateCommandPaletteFocus();
-            }
-          } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            if (resultsItems.length > 0) {
-                currentFocusedResultIndex = (currentFocusedResultIndex - 1 + resultsItems.length) % resultsItems.length;
-                updateCommandPaletteFocus();
-            }
-          } else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (currentFocusedResultIndex > -1 && resultsItems[currentFocusedResultIndex]) {
-              resultsItems[currentFocusedResultIndex].click(); 
-            } else if (resultsItems.length > 0 && currentFocusedResultIndex === -1) {
-                resultsItems[0].click(); 
-            }
-          }
-        }
-      });
-      // --- END: NAVIGATION JAVASCRIPT ---
+      // --- Navigation JavaScript is now in external files ---
     });
   </script>
+
+  <script src="nav-data.js"></script>
+  <script src="navigation.js"></script>
+
 </body>
 </html>

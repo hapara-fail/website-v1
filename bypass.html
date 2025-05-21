@@ -10,15 +10,20 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
+      height: 100%; /* Ensures html and body can be scroll containers if needed */
       background-color: #000;
       color: #e0e0e0;
       font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace;
-      position: relative;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
+      position: relative; /* Keep for potential absolute children if any, though not strictly needed for this layout */
+      overflow-x: hidden; /* Prevent horizontal scroll */
+      /* overflow-y: auto; /* Let body handle its own scroll based on content */
     }
+
+    body {
+        /* display: flex; flex-direction: column; /* Removed as it can interfere with natural body scrolling */
+        min-height: 100%; /* Ensure body takes at least full viewport height */
+    }
+
 
     body.overlay-active {
         overflow-y: hidden;
@@ -26,39 +31,38 @@
 
     /* TSparticles Container - Consistent with index.html */
     #tsparticles {
-      position: fixed; /* Use fixed to ensure it's always a background layer */
+      position: fixed; 
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
       z-index: 0;
+      pointer-events: none; /* Allows scroll and click events to pass through */
     }
-    /* Ensure body allows particles to be truly background if content is shorter than viewport */
-    body:not(.overlay-active) { min-height: 100vh; }
 
-
-    /* Content Styling - Adapted from original bypass.html, with minor consistency tweaks */
+    /* Content Styling */
     .content-wrapper {
       position: relative;
       z-index: 1;
       padding: 20px;
-      padding-top: 80px; /* Consistent top padding for fixed menu trigger */
-      padding-bottom: 40px; /* Added bottom padding */
+      padding-top: 80px; 
+      padding-bottom: 40px; 
       max-width: 900px;
       margin-left: auto;
       margin-right: auto;
       box-sizing: border-box;
       line-height: 1.7;
       color: #e0e0e0;
+      min-height: calc(100vh - 120px); /* Ensure content wrapper can fill screen if content is short, adjust 120px based on header/footer */
     }
 
     .content-wrapper h1, .content-wrapper h2, .content-wrapper h3, .content-wrapper h4 {
       color: #fff;
-      margin-top: 2.5rem; /* Consistent heading margin */
-      margin-bottom: 1.2rem; /* Consistent heading margin */
+      margin-top: 2.5rem; 
+      margin-bottom: 1.2rem; 
       font-weight: bold;
     }
-    .content-wrapper h1 { font-size: clamp(1.8rem, 3.8vw, 2.6rem); margin-top: 0; } /* First heading no top margin */
+    .content-wrapper h1 { font-size: clamp(1.8rem, 3.8vw, 2.6rem); margin-top: 0; } 
     .content-wrapper h2 { font-size: clamp(1.5rem, 3.2vw, 2.1rem); }
     .content-wrapper h3 { font-size: clamp(1.2rem, 2.8vw, 1.8rem); }
     .content-wrapper h4 { font-size: clamp(1.1rem, 2.5vw, 1.6rem); color: #e0e0e0; margin-top:1.5rem; margin-bottom: 0.8rem;}
@@ -100,8 +104,6 @@
 
 
     /* --- Navigation Systems CSS (Copied from index.html) --- */
-
-    /* Menu Trigger (Hamburger/X Icon) */
     .menu-trigger {
       position: fixed;
       top: 20px;
@@ -141,7 +143,6 @@
       transform: translateY(-7.5px) rotate(-45deg);
     }
 
-    /* Full-Screen Overlay Menu */
     .fullscreen-menu {
       position: fixed;
       top: 0;
@@ -196,7 +197,6 @@
         text-align: left;
     }
 
-    /* Command Palette (macOS Spotlight Style) */
     .command-palette-backdrop {
         position: fixed;
         top: 0;
@@ -310,6 +310,7 @@
         font-size: 0.95rem;
         display: none; 
     }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
 
     /* Reduced motion adjustments */
     @media (prefers-reduced-motion: reduce) {
@@ -318,7 +319,6 @@
         transition: none !important; 
       }
     }
-    .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
   </style>
 </head>
 <body>
@@ -351,7 +351,6 @@
   </div>
   
   <span class="visually-hidden" id="commandPaletteHintBypass">Command Palette: Type to search site pages and links. Use arrow keys to navigate, Enter to select, Escape to close.</span>
-
 
   <div id="tsparticles" aria-hidden="true"></div>
 
@@ -477,215 +476,12 @@
         setTimeout(loadParticles, 100);
       }
 
-      let resizeTimeout; // Keep for potential future use, though TSparticles handles resize
-      window.addEventListener("resize", () => {
-        if (prefersReducedMotion) return;
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {}, 250);
-      });
-
-      // --- START: NAVIGATION JAVASCRIPT (Copied and adapted from index.html) ---
-      const navItems = [
-        { name: 'Home', href: 'index.html', type: 'page' },
-        { name: 'ChromeOS DNS Bypass', href: 'bypass.html', type: 'page' },
-        { name: 'Google Form Unlocker Guide', href: 'forms.html', type: 'page' },
-        { name: 'Paramus Schools WiFi Passwords', href: 'wifi.html', type: 'page' },
-        { name: 'Discord', href: 'https://discord.gg/KA66dHUF4P', type: 'external', target: '_blank' },
-        { name: 'GitHub', href: 'https://github.com/hapara-fail', type: 'external', target: '_blank' },
-        { name: 'Contact', href: 'mailto:support@hapara.fail', type: 'external' }
-      ];
-
-      const menuTrigger = document.querySelector('.menu-trigger');
-      const fullscreenMenu = document.querySelector('.fullscreen-menu');
-      const fullscreenMenuList = document.querySelector('.fullscreen-menu-list');
-
-      const commandPaletteBackdrop = document.querySelector('.command-palette-backdrop');
-      const commandPalette = document.querySelector('.command-palette');
-      const commandPaletteInput = document.querySelector('.command-palette-input');
-      const commandPaletteResults = document.querySelector('.command-palette-results');
-      const commandPaletteNoResults = document.querySelector('.command-palette-no-results');
-
-      let currentFocusedResultIndex = -1;
-
-      function populateFullScreenMenu() {
-        if (!fullscreenMenuList) return;
-        fullscreenMenuList.innerHTML = ''; 
-        navItems.filter(item => item.type === 'page' || item.name === 'Home').forEach(item => { // Include Home
-          const listItem = document.createElement('li');
-          const link = document.createElement('a');
-          link.href = item.href;
-          link.textContent = item.name;
-          // Internal page links in fullscreen menu usually don't open in new tab
-          listItem.appendChild(link);
-          fullscreenMenuList.appendChild(listItem);
-        });
-      }
-
-      function toggleFullScreenMenu() {
-        if (!fullscreenMenu || !menuTrigger) return;
-        const isActive = fullscreenMenu.classList.contains('is-active');
-        if (isActive) {
-          fullscreenMenu.classList.remove('is-active');
-          menuTrigger.classList.remove('is-active'); 
-          menuTrigger.setAttribute('aria-expanded', 'false');
-          document.body.classList.remove('overlay-active');
-          menuTrigger.focus(); 
-        } else {
-          if (commandPalette && commandPalette.classList.contains('is-active')) {
-            closeCommandPalette();
-          }
-          fullscreenMenu.classList.add('is-active');
-          menuTrigger.classList.add('is-active'); 
-          menuTrigger.setAttribute('aria-expanded', 'true');
-          document.body.classList.add('overlay-active');
-          const firstLink = fullscreenMenuList.querySelector('a');
-          if (firstLink) firstLink.focus();
-        }
-      }
-      
-      if (menuTrigger && fullscreenMenu) {
-        menuTrigger.addEventListener('click', toggleFullScreenMenu); 
-        populateFullScreenMenu(); 
-      }
-
-      function openCommandPalette() {
-        if (!commandPalette || !commandPaletteBackdrop) return;
-        if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
-            toggleFullScreenMenu(); 
-        }
-        commandPaletteBackdrop.classList.add('is-active');
-        commandPalette.classList.add('is-active');
-        document.body.classList.add('overlay-active');
-        commandPaletteInput.value = ''; 
-        renderCommandPaletteResults(''); 
-        commandPaletteInput.focus();
-        currentFocusedResultIndex = -1; 
-      }
-
-      function closeCommandPalette() {
-        if (!commandPalette || !commandPaletteBackdrop) return;
-        commandPalette.classList.remove('is-active');
-        commandPaletteBackdrop.classList.remove('is-active');
-        document.body.classList.remove('overlay-active');
-        commandPaletteInput.value = '';
-        commandPaletteResults.innerHTML = '';
-        if (commandPaletteNoResults) commandPaletteNoResults.style.display = 'none';
-      }
-
-      function renderCommandPaletteResults(query) {
-        if (!commandPaletteResults || !commandPaletteNoResults) return;
-        commandPaletteResults.innerHTML = ''; 
-        const lowerCaseQuery = query.toLowerCase();
-        
-        const filteredItems = navItems.filter(item => 
-          item.name.toLowerCase().includes(lowerCaseQuery)
-        );
-
-        if (filteredItems.length === 0 && query.length > 0) {
-          commandPaletteNoResults.style.display = 'block';
-        } else {
-          commandPaletteNoResults.style.display = 'none';
-          filteredItems.forEach((item, index) => {
-            const listItem = document.createElement('li');
-            listItem.dataset.index = index; 
-            listItem.dataset.href = item.href;
-            if (item.target) {
-                listItem.dataset.target = item.target;
-            }
-
-            const itemNameSpan = document.createElement('span');
-            itemNameSpan.className = 'item-name';
-            itemNameSpan.textContent = item.name;
-            listItem.appendChild(itemNameSpan);
-
-            const itemTypeSpan = document.createElement('span');
-            itemTypeSpan.className = 'item-type';
-            itemTypeSpan.textContent = item.type === 'page' ? 'Page' : 'External';
-            listItem.appendChild(itemTypeSpan);
-            
-            listItem.addEventListener('click', () => {
-              if (item.target === '_blank') {
-                window.open(item.href, '_blank', 'noopener,noreferrer');
-              } else {
-                window.location.href = item.href;
-              }
-              closeCommandPalette();
-            });
-            commandPaletteResults.appendChild(listItem);
-          });
-        }
-        currentFocusedResultIndex = -1; 
-        updateCommandPaletteFocus();
-      }
-      
-      function updateCommandPaletteFocus() {
-        const resultsItems = commandPaletteResults.querySelectorAll('li');
-        resultsItems.forEach((item, index) => {
-          if (index === currentFocusedResultIndex) {
-            item.classList.add('is-selected');
-            item.scrollIntoView({ block: 'nearest' }); 
-          } else {
-            item.classList.remove('is-selected');
-          }
-        });
-      }
-
-      if (commandPaletteInput && commandPaletteResults) {
-        commandPaletteInput.addEventListener('input', (e) => {
-          renderCommandPaletteResults(e.target.value);
-        });
-      }
-      if (commandPaletteBackdrop) {
-          commandPaletteBackdrop.addEventListener('click', closeCommandPalette);
-      }
-
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
-            toggleFullScreenMenu(); 
-          }
-          if (commandPalette && commandPalette.classList.contains('is-active')) {
-            closeCommandPalette();
-          }
-        }
-
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-          e.preventDefault(); 
-          if (commandPalette && commandPalette.classList.contains('is-active')) {
-             commandPaletteInput.focus(); 
-          } else {
-            openCommandPalette(); 
-          }
-        }
-
-        if (commandPalette && commandPalette.classList.contains('is-active')) {
-          const resultsItems = commandPaletteResults.querySelectorAll('li');
-          if (resultsItems.length === 0 && e.key !== 'Escape') return; 
-
-          if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            if (resultsItems.length > 0) {
-                currentFocusedResultIndex = (currentFocusedResultIndex + 1) % resultsItems.length;
-                updateCommandPaletteFocus();
-            }
-          } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            if (resultsItems.length > 0) {
-                currentFocusedResultIndex = (currentFocusedResultIndex - 1 + resultsItems.length) % resultsItems.length;
-                updateCommandPaletteFocus();
-            }
-          } else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (currentFocusedResultIndex > -1 && resultsItems[currentFocusedResultIndex]) {
-              resultsItems[currentFocusedResultIndex].click(); 
-            } else if (resultsItems.length > 0 && currentFocusedResultIndex === -1) {
-                resultsItems[0].click(); 
-            }
-          }
-        }
-      });
-      // --- END: NAVIGATION JAVASCRIPT ---
+      // Navigation JavaScript is now in external files, so inline block is removed.
     });
   </script>
+
+  <script src="nav-data.js"></script>
+  <script src="navigation.js"></script>
+
 </body>
 </html>
