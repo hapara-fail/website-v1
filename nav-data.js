@@ -6,7 +6,7 @@ const siteNavItems = [
   { name: 'Home', href: 'index.html', type: 'page' },
   { name: 'ChromeOS DNS Bypass', href: 'bypass.html', type: 'page' },
   { name: 'Google Form Unlocker Guide', href: 'forms.html', type: 'page' },
-  { name: 'Paramus Schools WiFi Passwords', href: 'wifi.html', type: 'page' },
+  { name: 'ChromeOS WiFi Password Extractor', href: 'wifi.html', type: 'page' },
   // Add new site pages here in the future, e.g.:
   // { name: 'New Awesome Guide', href: 'new-guide.html', type: 'page' },
 

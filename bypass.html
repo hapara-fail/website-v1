@@ -101,6 +101,13 @@
     .content-wrapper a:hover { color: #82e9ff; }
     .content-wrapper .warning { color: #ffcc00; font-weight: bold; }
     .content-wrapper .critical-warning { color: #ff6b6b; font-weight: bold; }
+    .content-wrapper .credits {
+        font-size: 0.9rem;
+        color: #aaa;
+        margin-top: 3rem; /* More space before credits */
+        margin-bottom: 1rem;
+        text-align: left; /* Left aligned credits */
+    }
 
 
     /* --- Navigation Systems CSS (Copied from index.html) --- */
@@ -398,7 +405,7 @@
 
     <h2>Conclusion</h2>
     <p>By combining IPv4 DNS overrides through <code>chrome://network</code>, a custom NextDNS configuration, and MAC address randomization, users can achieve a more open and censorship-resistant internet experience on locked-down ChromeOS devices. This solution does not require elevated privileges.</p>
-    <p>Please use this information responsibly and ethically. We do not condone malicious activities or violations of acceptable use policies.</p>
+    <p class="credits">Developed by hapara.fail team.<br>This tool and guide are for educational purposes only. Please use responsibly.</p>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
