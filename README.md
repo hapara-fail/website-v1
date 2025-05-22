@@ -6,7 +6,7 @@ This repository contains the source code for the [hapara.fail](https://hapara.fa
 
 Visit the live website at: **[https://hapara.fail](https://hapara.fail)**
 
-## Project Overview (v2.0)
+## Project Overview
 
 The website has been significantly updated with a focus on improved navigation, expanded content, and a consistent, modern aesthetic.
 
@@ -20,35 +20,38 @@ The website has been significantly updated with a focus on improved navigation, 
 2.  **ChromeOS DNS Bypass Guide (`bypass.html`):**
     * A detailed technical walkthrough explaining how to configure NextDNS and adjust ChromeOS settings for DNS-level bypass.
     * Includes a direct link to the `hapara.fail` custom blocklist.
-    * Features a consistent particle background and a "back to homepage" button.
+    * Features consistent styling, particle background, and unified navigation.
 
 3.  **Google Form Unlocker Guide (`forms.html`):**
-    * *(Placeholder for content)* Intended to guide users on methods related to Google Forms.
-    * Currently uses a polished "Under Construction" page template.
+    * Provides a detailed guide and a live "view-source" demo tool for bypassing certain Google Forms locked mode restrictions.
+    * Includes setup instructions, a technical explanation of the bypass method, potential risks, and usage precautions.
+    * Features consistent styling, particle background, and unified navigation.
 
-4.  **Paramus Schools WiFi Passwords (`wifi.html`):**
-    * *(Placeholder for content)* Intended to provide information related to WiFi access.
-    * Currently uses a polished "Under Construction" page template.
+4.  **ChromeOS WiFi Password Extractor (`wifi.html`):**
+    * Offers a guide and an interactive tool to help users find saved WiFi passwords on ChromeOS by leveraging data from `chrome://sync-internals`.
+    * Includes step-by-step instructions, troubleshooting tips, and credits for the original method.
+    * Features consistent styling, particle background, and unified navigation.
 
-5.  **Under Construction Page:**
-    * A reusable, styled template for pages that are not yet complete, matching the site's overall design and featuring the particle background.
+5.  **Under Construction Page (`under-construction.html`):**
+    * A reusable, styled template for pages that are planned or not yet complete, matching the site's overall design and featuring the particle background.
 
 **Supporting Resources:**
 
-* **DNS Blocklist:** A curated blocklist hosted on GitHub, designed to block surveillance and filtering domains. Includes its own `README.md` for usage instructions.
+* **DNS Blocklist:** A curated blocklist hosted on a separate GitHub repository, designed to block surveillance and filtering domains. Includes its own `README.md` for usage instructions and is linked from the `bypass.html` guide.
 
-## Key Features (v2.0)
+## Key Features
 
-* **Modern & Consistent Design:** All pages share a dark theme, monospace font, and animated particle backgrounds powered by TSparticles for a unified, sleek look.
-* **Dual Navigation System:**
+* **Modern & Consistent Design:** All pages share a dark theme, monospace font, and animated particle backgrounds (powered by TSparticles) for a unified, sleek look.
+* **Unified Dual Navigation System:**
+    * Navigation data is centralized in `nav-data.js` for easy updates across the entire site.
+    * Functionality is handled by a shared `navigation.js` script.
     * **Full-Screen Overlay Menu:** Triggered by an animated hamburger-to-X icon in the top-right corner, providing a visually clear list of main site pages aligned to the bottom-left.
     * **Command Palette:** Activated via `Ctrl+K` (or `Cmd+K`), offering a macOS Spotlight-style search interface to quickly find and navigate to all site pages and external links.
-* **Responsive Layout:** Designed for optimal viewing and usability across various screen sizes (desktop, tablet, mobile).
+* **Responsive Layout:** Designed for optimal viewing and usability across various screen sizes.
 * **Accessibility Considerations:**
-    * Includes `prefers-reduced-motion` checks to disable animations for users who prefer it.
+    * Includes `prefers-reduced-motion` checks to disable animations.
     * ARIA attributes are used for better screen reader compatibility with navigation elements.
-* **Informative Content:** Guides provide step-by-step instructions for technical processes.
-* **Integrated Blocklist:** The DNS Bypass guide directly links to the custom-maintained blocklist.
+* **Informative Content & Tools:** Guides provide step-by-step instructions, technical explanations, and interactive demo tools.
 
 ## Technologies Used
 
@@ -56,25 +59,10 @@ The website has been significantly updated with a focus on improved navigation, 
 * **CSS3:** For styling, layout, animations (including the hamburger/X icon), and responsiveness.
 * **JavaScript (ES6+):**
     * Powers the dynamic TSparticles animation.
-    * Manages the functionality of the full-screen overlay menu and the command palette (toggling visibility, populating links, search filtering, keyboard navigation).
+    * Manages the centralized functionality of the full-screen overlay menu and the command palette (toggling visibility, populating links from `nav-data.js`, search filtering, keyboard navigation).
+    * Provides client-side logic for interactive tools (e.g., Form Unlocker Demo, WiFi Password Extractor).
 * **TSparticles (v2.12.0):** A lightweight JavaScript library for creating animated particle backgrounds.
 * **SVG:** Used for icons (menu trigger, command palette search icon).
-
-## Folder Structure
-
-The project currently has the following main files in its root directory:
-
-.
-├── index.html              # Homepage
-├── under-construction.html # Placeholder for pages being worked on
-├── bypass.html             # ChromeOS DNS Bypass Guide page
-├── forms.html              # Placeholder for Google Form Unlocker Guide (uses construction template)
-├── wifi.html               # Placeholder for Paramus Schools WiFi Passwords (uses construction template)
-├── favicon.png             # Favicon for the website
-├── LICENCE                 # Contains the GPL-3.0 licence
-└── README.md               # This file
-
-*(The actual blocklist and its README are hosted in a separate repository, linked from `bypass.html`)*
 
 ## Purpose
 
