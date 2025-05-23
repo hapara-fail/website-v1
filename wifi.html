@@ -74,7 +74,16 @@
 
     .content-wrapper h2 {
       font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+      border-top: 1px solid #333; /* Separator for major tool sections */
+      padding-top: 2rem;
+      margin-top: 3rem;
     }
+     .content-wrapper h2:first-of-type { /* No border/padding for the first H2 on the page */
+        border-top: none;
+        padding-top: 0;
+        margin-top: 2.5rem; /* Default H2 margin */
+    }
+
 
     .content-wrapper h3 {
       font-size: clamp(1.2rem, 2.8vw, 1.8rem);
@@ -160,45 +169,34 @@
       /* Left aligned credits */
     }
 
-    /* WiFi Extractor Tool Styles */
-    .wifi-extractor-tool {
+    /* Tool Styles (Generic for both tools) */
+    .extractor-tool-section {
       background-color: rgba(20, 20, 22, 0.85);
       backdrop-filter: blur(8px);
       padding: 20px 25px;
       border-radius: 8px;
-      margin-top: 2.5rem;
-      margin-bottom: 2rem;
+      margin-top: 1.5rem; /* Reduced from h2 margin */
+      margin-bottom: 2.5rem;
       border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    .wifi-extractor-tool h3 {
+    .extractor-tool-section h3 {
       margin-top: 0;
       margin-bottom: 15px;
       color: #fff;
       font-size: 1.25rem;
     }
 
-    .wifi-extractor-tool .tool-step {
-      margin-bottom: 20px;
-      padding-bottom: 20px;
-      border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-    }
-
-    .wifi-extractor-tool .tool-step:last-child {
-      margin-bottom: 0;
-      padding-bottom: 0;
-      border-bottom: none;
-    }
-
-    .wifi-extractor-tool label {
+    .extractor-tool-section label {
       display: block;
       margin-bottom: 8px;
       color: #ccc;
       font-size: 0.9rem;
     }
 
-    .wifi-extractor-tool input[type="text"],
-    .wifi-extractor-tool textarea {
+    .extractor-tool-section input[type="text"],
+    .extractor-tool-section textarea,
+    .extractor-tool-section input[type="file"] {
       width: 100%;
       background-color: #18181a;
       color: #e8e8e8;
@@ -210,14 +208,28 @@
       box-sizing: border-box;
       margin-bottom: 10px;
     }
+    .extractor-tool-section input[type="file"] {
+        padding: 8px 10px; /* Specific padding for file input */
+        color: #ccc; /* Placeholder-like color */
+    }
+    .extractor-tool-section input[type="file"]::file-selector-button {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
 
-    .wifi-extractor-tool textarea {
+
+    .extractor-tool-section textarea {
       min-height: 100px;
       max-height: 200px;
       resize: vertical;
     }
 
-    .wifi-extractor-tool button {
+    .extractor-tool-section button {
       background-color: #61dafb;
       color: #000;
       border: none;
@@ -229,300 +241,92 @@
       cursor: pointer;
       transition: background-color 0.2s ease-in-out, transform 0.1s ease;
       display: inline-block;
-      /* Allow margin-top */
       margin-top: 5px;
     }
 
-    .wifi-extractor-tool button:hover {
+    .extractor-tool-section button:hover {
       background-color: #82e9ff;
       transform: translateY(-1px);
     }
-
-    .wifi-extractor-tool button:active {
+    .extractor-tool-section button:active {
       transform: translateY(0px);
     }
 
-    .wifi-extractor-output-container {
+    .tool-output-container { /* Renamed for clarity */
       margin-top: 15px;
     }
-
-    .wifi-extractor-output-container pre {
+    .tool-output-container h3 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        color: #fff;
+    }
+    .tool-output-container pre {
       margin-top: 0;
       max-height: 300px;
       overflow-y: auto;
       font-size: 0.85rem;
-      /* Smaller font for output */
+    }
+    .tool-output-container .error { color: #ff6b6b; }
+    .tool-output-container .success { color: #50fa7b; }
+
+    /* NPPE Table Styles */
+    #nppe_output_table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        font-size: 0.85rem;
+    }
+    #nppe_output_table th,
+    #nppe_output_table td {
+        border: 1px solid #333;
+        padding: 8px 10px;
+        text-align: left;
+        color: #ccc;
+    }
+    #nppe_output_table th {
+        background-color: #2a2a2a;
+        color: #fff;
+        font-weight: bold;
+    }
+    #nppe_output_table tr:nth-child(even) {
+        background-color: #131313;
     }
 
-    .wifi-extractor-output-container .error {
-      color: #ff6b6b;
-    }
-
-    .wifi-extractor-output-container .success {
-      color: #50fa7b;
-    }
 
     /* --- Navigation Systems CSS (Copied from index.html) --- */
-    .menu-trigger {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1005;
-      background: none;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 0;
-    }
+    .menu-trigger { position: fixed; top: 20px; right: 20px; z-index: 1005; background: none; border: none; padding: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 0; }
+    .menu-trigger svg { width: 24px; height: 18px; color: #FFFFFF; transition: color 0.2s ease-in-out; }
+    .menu-trigger:hover svg { color: #AAAAAA; }
+    .menu-trigger .line { transform-origin: center center; transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19), opacity 0.15s 0.1s linear; }
+    .menu-trigger.is-active .line1 { transform: translateY(7.5px) rotate(45deg); }
+    .menu-trigger.is-active .line2 { opacity: 0; transition: opacity 0.1s linear; }
+    .menu-trigger.is-active .line3 { transform: translateY(-7.5px) rotate(-45deg); }
+    .fullscreen-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0A0A0A; z-index: 1000; display: none; flex-direction: column; align-items: flex-start; justify-content: flex-end; opacity: 0; transition: opacity 0.3s ease-in-out; padding: 8vh 6vw; box-sizing: border-box; overflow-y: auto; }
+    .fullscreen-menu.is-active { display: flex; opacity: 1; }
+    .fullscreen-menu-list { list-style: none; padding: 0; margin: 0; text-align: left; }
+    .fullscreen-menu-list li { margin: 12px 0; }
+    .fullscreen-menu-list a { color: #ccc; text-decoration: none; font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 500; padding: 8px 0; transition: color 0.2s ease-in-out, letter-spacing 0.2s ease-in-out; display: block; }
+    .fullscreen-menu-list a:hover, .fullscreen-menu-list a:focus { color: #fff; letter-spacing: 0.5px; outline: none; }
+    .fullscreen-menu .command-palette-tip { font-size: 0.8rem; color: #555; margin-top: 30px; width: 100%; text-align: left; }
+    .command-palette-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(4px); z-index: 1008; display: none; opacity: 0; transition: opacity 0.2s ease-in-out; }
+    .command-palette-backdrop.is-active { display: block; opacity: 1; }
+    .command-palette { position: fixed; top: 20%; left: 50%; transform: translateX(-50%); width: 90%; max-width: 560px; background-color: #1C1C1E; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08); z-index: 1010; display: none; flex-direction: column; overflow: hidden; opacity: 0; transform: translateX(-50%) scale(0.95); transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out; }
+    .command-palette.is-active { display: flex; opacity: 1; transform: translateX(-50%) scale(1); }
+    .command-palette-input-wrapper { display: flex; align-items: center; padding: 0 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+    .command-palette-input-wrapper svg { width: 20px; height: 20px; fill: #888; margin-right: 10px; flex-shrink: 0; }
+    .command-palette-input { width: 100%; padding: 15px 0; font-family: inherit; font-size: 1.2rem; color: #f0f0f0; background-color: transparent; border: none; outline: none; }
+    .command-palette-input::placeholder { color: #666; }
+    .command-palette-results { list-style: none; padding: 0; margin: 0; max-height: 300px; overflow-y: auto; padding: 8px 0; }
+    .command-palette-results li { padding: 10px 20px; cursor: pointer; color: #ccc; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: background-color 0.1s ease-in-out; display: flex; align-items: center; }
+    .command-palette-results li:last-child { border-bottom: none; }
+    .command-palette-results li:hover, .command-palette-results li.is-selected { background-color: #007AFF; color: #fff; }
+    .command-palette-results li .item-name { flex-grow: 1; }
+    .command-palette-results li .item-type { font-size: 0.8rem; color: #888; margin-left: 10px; flex-shrink: 0; }
+    .command-palette-results li:hover .item-type, .command-palette-results li.is-selected .item-type { color: #eee; }
+    .command-palette-no-results { padding: 20px; text-align: center; color: #888; font-size: 0.95rem; display: none; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
 
-    .menu-trigger svg {
-      width: 24px;
-      height: 18px;
-      color: #FFFFFF;
-      transition: color 0.2s ease-in-out;
-    }
-
-    .menu-trigger:hover svg {
-      color: #AAAAAA;
-    }
-
-    .menu-trigger .line {
-      transform-origin: center center;
-      transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19),
-        opacity 0.15s 0.1s linear;
-    }
-
-    .menu-trigger.is-active .line1 {
-      transform: translateY(7.5px) rotate(45deg);
-    }
-
-    .menu-trigger.is-active .line2 {
-      opacity: 0;
-      transition: opacity 0.1s linear;
-    }
-
-    .menu-trigger.is-active .line3 {
-      transform: translateY(-7.5px) rotate(-45deg);
-    }
-
-    .fullscreen-menu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #0A0A0A;
-      z-index: 1000;
-      display: none;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-end;
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-      padding: 8vh 6vw;
-      box-sizing: border-box;
-      overflow-y: auto;
-    }
-
-    .fullscreen-menu.is-active {
-      display: flex;
-      opacity: 1;
-    }
-
-    .fullscreen-menu-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      text-align: left;
-    }
-
-    .fullscreen-menu-list li {
-      margin: 12px 0;
-    }
-
-    .fullscreen-menu-list a {
-      color: #ccc;
-      text-decoration: none;
-      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-      font-weight: 500;
-      padding: 8px 0;
-      transition: color 0.2s ease-in-out, letter-spacing 0.2s ease-in-out;
-      display: block;
-    }
-
-    .fullscreen-menu-list a:hover,
-    .fullscreen-menu-list a:focus {
-      color: #fff;
-      letter-spacing: 0.5px;
-      outline: none;
-    }
-
-    .fullscreen-menu .command-palette-tip {
-      font-size: 0.8rem;
-      color: #555;
-      margin-top: 30px;
-      width: 100%;
-      text-align: left;
-    }
-
-    .command-palette-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(4px);
-      z-index: 1008;
-      display: none;
-      opacity: 0;
-      transition: opacity 0.2s ease-in-out;
-    }
-
-    .command-palette-backdrop.is-active {
-      display: block;
-      opacity: 1;
-    }
-
-    .command-palette {
-      position: fixed;
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 560px;
-      background-color: #1C1C1E;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
-      z-index: 1010;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateX(-50%) scale(0.95);
-      transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
-    }
-
-    .command-palette.is-active {
-      display: flex;
-      opacity: 1;
-      transform: translateX(-50%) scale(1);
-    }
-
-    .command-palette-input-wrapper {
-      display: flex;
-      align-items: center;
-      padding: 0 15px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .command-palette-input-wrapper svg {
-      width: 20px;
-      height: 20px;
-      fill: #888;
-      margin-right: 10px;
-      flex-shrink: 0;
-    }
-
-    .command-palette-input {
-      width: 100%;
-      padding: 15px 0;
-      font-family: inherit;
-      font-size: 1.2rem;
-      color: #f0f0f0;
-      background-color: transparent;
-      border: none;
-      outline: none;
-    }
-
-    .command-palette-input::placeholder {
-      color: #666;
-    }
-
-    .command-palette-results {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      max-height: 300px;
-      overflow-y: auto;
-      padding: 8px 0;
-    }
-
-    .command-palette-results li {
-      padding: 10px 20px;
-      cursor: pointer;
-      color: #ccc;
-      font-size: 0.95rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      transition: background-color 0.1s ease-in-out;
-      display: flex;
-      align-items: center;
-    }
-
-    .command-palette-results li:last-child {
-      border-bottom: none;
-    }
-
-    .command-palette-results li:hover,
-    .command-palette-results li.is-selected {
-      background-color: #007AFF;
-      color: #fff;
-    }
-
-    .command-palette-results li .item-name {
-      flex-grow: 1;
-    }
-
-    .command-palette-results li .item-type {
-      font-size: 0.8rem;
-      color: #888;
-      margin-left: 10px;
-      flex-shrink: 0;
-    }
-
-    .command-palette-results li:hover .item-type,
-    .command-palette-results li.is-selected .item-type {
-      color: #eee;
-    }
-
-    .command-palette-no-results {
-      padding: 20px;
-      text-align: center;
-      color: #888;
-      font-size: 0.95rem;
-      display: none;
-    }
-
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      margin: -1px;
-      padding: 0;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      #tsparticles {
-        display: none !important;
-      }
-
-      .wifi-extractor-tool {
-        backdrop-filter: none;
-      }
-
-      .fullscreen-menu,
-      .command-palette,
-      .command-palette-backdrop,
-      .menu-trigger .line {
-        transition: none !important;
-      }
-    }
+    @media (prefers-reduced-motion: reduce) { #tsparticles { display: none !important; } .wifi-extractor-tool, .nppe-tool { backdrop-filter: none; } .fullscreen-menu, .command-palette, .command-palette-backdrop, .menu-trigger .line { transition: none !important; } }
   </style>
 </head>
 
@@ -539,8 +343,7 @@
   <div class="fullscreen-menu" role="dialog" aria-modal="true" aria-labelledby="menuTitleWifi">
     <h2 id="menuTitleWifi" class="visually-hidden">Site Navigation</h2>
     <nav>
-      <ul class="fullscreen-menu-list">
-        </ul>
+      <ul class="fullscreen-menu-list"></ul>
     </nav>
     <p class="command-palette-tip">Tip: Press Ctrl+K or Cmd+K for quick search</p>
   </div>
@@ -548,13 +351,10 @@
   <div class="command-palette-backdrop"></div>
   <div class="command-palette" role="dialog" aria-modal="true" aria-labelledby="commandPaletteLabelWifi">
     <div class="command-palette-input-wrapper">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z" />
-      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z" /></svg>
       <input type="search" class="command-palette-input" placeholder="Type a command or search..." id="commandPaletteLabelWifi" autocomplete="off">
     </div>
-    <ul class="command-palette-results">
-      </ul>
+    <ul class="command-palette-results"></ul>
     <div class="command-palette-no-results">No results found.</div>
   </div>
   <span class="visually-hidden" id="commandPaletteHintWifi">Command Palette: Type to search site pages and links. Use arrow keys to navigate, Enter to select, Escape to close.</span>
@@ -565,71 +365,89 @@
     <h1>ChromeOS WiFi Password Extractor</h1>
     <p class="meta-info"><strong>Last updated:</strong> May 22, 2025</p>
 
-    <p>This tool helps you find saved WiFi passwords on ChromeOS by leveraging data from <code>chrome://sync-internals</code>. Please use this responsibly and for educational purposes only.</p>
+    <p>This page provides two tools to help find saved WiFi passwords on ChromeOS, each for different scenarios. Please use these responsibly and for educational purposes only.</p>
 
     <div class="note">
-      <p><strong>Important:</strong> This method may <strong>not</strong> work for managed school Wi-Fi networks if your device's network settings (like DNS) are strictly enforced by school policy (often configured via <code>chrome://policy</code>). It is primarily for networks using WPA/WPA2-Personal (PSK) where the passphrase is saved directly.</p>
-      <p>If you are looking for ways to connect to managed school Wi-Fi, this tool is unlikely to provide the necessary credentials. For other methods, you might explore resources like <a href="https://t3rm-expl-dump.vercel.app/caub.html" target="_blank" rel="noopener noreferrer">CAUB</a> or <a href="https://t3rm-expl-dump.vercel.app/nppe.html" target="_blank" rel="noopener noreferrer">NPPE</a>.</p>
+        <p><strong>Important General Note:</strong> The success of these methods can depend on your ChromeOS version, device management policies, and the type of WiFi network. For networks managed by school/enterprise policy (e.g., using EAP with certificates, or where settings are strictly enforced via <code>chrome://policy</code>), these tools may not work or provide useful credentials.</p>
     </div>
 
-    <h2>WiFi Password Finder Tool</h2>
-    <div class="wifi-extractor-tool">
+    <h2>Tool 1: Sync Internals Password Extractor (for PSK Networks)</h2>
+    <p>This tool is primarily for networks using WPA/WPA2-Personal (PSK), where a simple passphrase is saved. It attempts to extract this from <code>chrome://sync-internals</code> data.</p>
+    <div class="extractor-tool-section wifi-extractor-tool">
       <div class="tool-step">
-        <h3>Step 1: Get Search Term</h3>
+        <h3>Step 1.1: Get Search Term</h3>
         <label for="wifi_name_input">Enter SSID (WiFi Name) (Optional):</label>
         <input type="text" id="wifi_name_input" placeholder="e.g., MyHomeWiFi (or leave blank)">
         <button id="get_instructions_button">Get Search Instructions</button>
       </div>
       <div class="tool-step">
-        <h3>Step 2: Extract Password</h3>
+        <h3>Step 1.2: Extract Password from Sync Data</h3>
         <label for="sync_data_input">Paste Full JSON Data from <code>chrome://sync-internals</code> Here:</label>
         <textarea id="sync_data_input" placeholder="Paste the entire JSON object for the WiFi network here..."></textarea>
-        <button id="extract_password_button">Extract Password</button>
+        <button id="extract_password_button_sync">Extract from Sync Data</button>
       </div>
-      <div class="wifi-extractor-output-container">
-        <h3>Output:</h3>
-        <pre id="wifi_tool_output">Complete Step 1 or Step 2 above.</pre>
+      <div class="tool-output-container">
+        <h3>Output (Sync Internals):</h3>
+        <pre id="sync_tool_output">Complete Step 1.1 or Step 1.2 above.</pre>
       </div>
     </div>
 
-    <h3>Detailed Instructions for Using the Tool:</h3>
+    <h3>Detailed Instructions for Tool 1 (Sync Internals):</h3>
     <ol>
-      <li>
-        <strong>Optional - Enter WiFi Name:</strong> In "Step 1" of the tool above, you can type the exact SSID (name) of the WiFi network. This helps generate a more specific search term later. If you don't know it or want to browse, leave it blank.
-      </li>
-      <li>
-        <strong>Get Search Instructions:</strong> Click the "Get Search Instructions" button. The "Output" area below the tool will update with instructions and a search term to use.
-      </li>
-      <li>
-        <strong>Navigate to Sync Internals:</strong> Open a new tab and go to <code>chrome://sync-internals</code>.
-      </li>
-      <li>
-        <strong>Search for WiFi Data:</strong>
+      <li><strong>Optional - Enter SSID:</strong> In "Step 1.1" of the tool, you can type the SSID. This helps generate a specific search term.</li>
+      <li><strong>Get Search Instructions:</strong> Click "Get Search Instructions". The "Output (Sync Internals)" area will update.</li>
+      <li><strong>Navigate to Sync Internals:</strong> Go to <code>chrome://sync-internals</code>.</li>
+      <li><strong>Search for WiFi Data:</strong>
         <ul>
-          <li>In <code>chrome://sync-internals</code>, click on the <strong>"Search"</strong> tab at the top.</li>
-          <li>In the search box provided on that page, type <code>wifi_</code> and press Enter.</li>
-          <li>A list of results will appear on the left. If you provided an SSID in Step 1, look for an entry on the left that looks like <code>[HEXADECIMAL_SSID]&lt;||&gt;psk</code>. Otherwise, browse the list for entries containing "psk" that might correspond to your network.</li>
+          <li>Click the <strong>"Search"</strong> tab.</li>
+          <li>In the search box, type <code>wifi_</code> and press Enter.</li>
+          <li>On the left, look for an entry like <code>[HEXADECIMAL_SSID]&lt;||&gt;psk</code> if you provided an SSID, or browse for entries containing "psk".</li>
         </ul>
       </li>
-      <li>
-        <strong>Copy the JSON Data:</strong> Click on the relevant WiFi network entry on the left (e.g., <code>535441464657494649&lt;||&gt;psk</code>). The full JSON data for that entry will appear on the right side of the page. Select ALL of this JSON data (from the opening <code>{</code> to the closing <code>}</code>) and copy it (<code>CTRL+A</code> then <code>CTRL+C</code>, or <code>Cmd+A</code> then <code>Cmd+C</code>).
-      </li>
-      <li>
-        <strong>Paste JSON Data:</strong> Return to this page. In "Step 2" of the tool, paste the copied JSON data into the larger text area.
-      </li>
-      <li>
-        <strong>Extract Password:</strong> Click the "Extract Password" button. If the JSON data is correct and contains a recognizable password, the tool will display the **SSID** and **Password** in the "Output" area.
-      </li>
+      <li><strong>Copy JSON:</strong> Click the relevant entry on the left. Copy ALL JSON data from the right.</li>
+      <li><strong>Paste & Extract:</strong> Return here. In "Step 1.2", paste the JSON into the text area and click "Extract from Sync Data". The SSID and Password should appear in the "Output (Sync Internals)" area.</li>
     </ol>
 
-    <h3>Troubleshooting:</h3>
+    <h2>Tool 2: Network Policy Password Extractor (NPPE)</h2>
+    <p>This tool attempts to find WiFi configurations, including some enterprise network details, by analyzing a network log file. This might be useful if network settings are pushed via policy.</p>
+    <div class="extractor-tool-section nppe-tool">
+        <h3>Step 2.1: Generate & Upload Network Log</h3>
+        <p>Follow these steps carefully to generate the required <code>chrome-net-export-log.json</code> file:</p>
+        <ol style="margin-bottom: 15px;">
+            <li>Open a new tab and go to <code>chrome://net-export</code>.</li>
+            <li>Under "OPTIONS", select **"Include raw bytes"**. (Do NOT select "Include private information" unless you understand the implications and are sure it's necessary and safe for your use case).</li>
+            <li>Click **"Start Logging to Disk"**. Save the file (it will be named <code>chrome-net-export-log.json</code>).</li>
+            <li>Open another new tab and go to <code>chrome://policy</code>.</li>
+            <li>Click the **"Reload policies"** button. Wait a few seconds for policies to apply.</li>
+            <li>Go back to the <code>chrome://net-export</code> tab and click **"Stop Logging"**.</li>
+            <li>Now, upload the saved <code>chrome-net-export-log.json</code> file using the button below:</li>
+        </ol>
+        <label for="net_export_log_input">Upload <code>chrome-net-export-log.json</code>:</label>
+        <input type="file" id="net_export_log_input" accept=".json">
+        <div class="tool-output-container">
+            <h3>Output (Network Policy):</h3>
+            <table id="nppe_output_table">
+              <thead>
+                <tr>
+                  <th>SSID</th>
+                  <th>Credentials</th>
+                  <th>Security</th>
+                  <th>HiddenSSID</th>
+                </tr>
+              </thead>
+              <tbody>
+                </tbody>
+            </table>
+            <pre id="nppe_log_output" style="font-size: 0.8em; margin-top:10px; max-height: 150px;"></pre> </div>
+    </div>
+    
+    <h3>Troubleshooting (Both Tools):</h3>
     <ul>
-      <li>If you get an error, ensure you copied the *entire and correct* JSON object.</li>
-      <li>The structure of <code>chrome://sync-internals</code> can change with ChromeOS updates, which might affect this tool.</li>
-      <li>This method relies on the passphrase being stored retrievably. For many enterprise networks (using EAP, certificates, etc.), this tool will not work.</li>
+      <li>If you get an error, ensure you copied/uploaded the correct and complete data.</li>
+      <li>The structure of <code>chrome://sync-internals</code> or <code>chrome://net-export</code> logs can change with ChromeOS updates, which might affect these tools.</li>
     </ul>
 
-    <p class="credits">Original method discovery by SimonTheCat#0651 in <a href="https://discord.gg/unblock" target="_blank" rel="noopener noreferrer">TitaniumNetwork</a>.<br>This tool and guide are for educational purposes only. Please use responsibly.</p>
+    <p class="credits">Sync Internals method original discovery by SimonTheCat#0651 in <a href="https://discord.gg/unblock" target="_blank" rel="noopener noreferrer">TitaniumNetwork</a>.<br>NPPE tool concept adapted from similar public research.<br>These tools and guides are for educational purposes only. Please use responsibly.</p>
 
   </div>
 
@@ -640,200 +458,204 @@
       const isMobile = window.matchMedia("(max-width: 768px)").matches;
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const particleSettings = {
-        fpsLimit: 60,
-        particles: {
-          number: {
-            value: prefersReducedMotion ? 0 : (isMobile ? 30 : 60),
-            density: {
-              enable: true,
-              area: 800
-            }
-          },
-          color: {
-            value: "#666666"
-          },
-          shape: {
-            type: "circle"
-          },
-          opacity: {
-            value: 0.35
-          },
-          size: {
-            value: 2.2,
-            random: {
-              enable: true,
-              minimumValue: 0.8
-            }
-          },
-          links: {
-            enable: true,
-            distance: 140,
-            color: "#777777",
-            opacity: 0.25,
-            width: 1
-          },
-          move: {
-            enable: !prefersReducedMotion,
-            speed: 0.9,
-            direction: "none",
-            random: true,
-            straight: false,
-            outModes: {
-              default: "out"
-            }
-          }
-        },
-        interactivity: {
-          events: {
-            onHover: {
-              enable: !prefersReducedMotion,
-              mode: "repulse"
-            },
-            onClick: {
-              enable: !prefersReducedMotion,
-              mode: "push"
-            },
-            resize: true
-          },
-          modes: {
-            repulse: {
-              distance: 70,
-              duration: 0.4
-            },
-            push: {
-              quantity: 2
-            }
-          }
-        },
-        detectRetina: true
+        fpsLimit: 60, particles: { number: { value: prefersReducedMotion ? 0 : (isMobile ? 30 : 60), density: { enable: true, area: 800 } }, color: { value: "#666666" }, shape: { type: "circle" }, opacity: { value: 0.35 }, size: { value: 2.2, random: { enable: true, minimumValue: 0.8 } }, links: { enable: true, distance: 140, color: "#777777", opacity: 0.25, width: 1 }, move: { enable: !prefersReducedMotion, speed: 0.9, direction: "none", random: true, straight: false, outModes: { default: "out" } } }, interactivity: { events: { onHover: { enable: !prefersReducedMotion, mode: "repulse" }, onClick: { enable: !prefersReducedMotion, mode: "push" }, resize: true }, modes: { repulse: { distance: 70, duration: 0.4 }, push: { quantity: 2 } } }, detectRetina: true
       };
-      function loadParticles() {
-        if (typeof tsParticles !== "undefined") {
-          tsParticles.load("tsparticles", particleSettings).then(container => {
-            if (container && prefersReducedMotion) {
-              if (container.particles && typeof container.particles.setCount === 'function') {
-                container.particles.setCount(0);
-              }
-              if (container.stop) {
-                container.stop();
-              }
-            }
-          }).catch(error => {
-            console.error("Error loading TSPSarticles v2.12.0 on wifi.html:", error);
-          });
-        } else {
-          console.error("tsParticles library not found on wifi.html.");
-        }
-      }
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadParticles);
-      } else {
-        setTimeout(loadParticles, 100);
-      }
+      function loadParticles() { if (typeof tsParticles !== "undefined") { tsParticles.load("tsparticles", particleSettings).then(container => { if (container && prefersReducedMotion) { if (container.particles && typeof container.particles.setCount === 'function') { container.particles.setCount(0); } if (container.stop) { container.stop(); } } }).catch(error => { console.error("Error loading TSPSarticles v2.12.0 on wifi.html:", error); }); } else { console.error("tsParticles library not found on wifi.html."); } }
+      if ('requestIdleCallback' in window) { requestIdleCallback(loadParticles); } else { setTimeout(loadParticles, 100); }
       // --- END TS PARTICLES SCRIPT ---
 
-      // --- WIFI EXTRACTOR SCRIPT (Revised for 2-step process) ---
-      const wifiNameInput = document.getElementById("wifi_name_input");
-      const getInstructionsButton = document.getElementById("get_instructions_button");
-      const syncDataInput = document.getElementById("sync_data_input");
-      const extractPasswordButton = document.getElementById("extract_password_button");
-      const wifiToolOutputPre = document.getElementById("wifi_tool_output");
+      // --- SYNC INTERNALS WIFI EXTRACTOR SCRIPT ---
+      const wifiNameInput_sync = document.getElementById("wifi_name_input");
+      const getInstructionsButton_sync = document.getElementById("get_instructions_button");
+      const syncDataInput_sync = document.getElementById("sync_data_input");
+      const extractPasswordButton_sync = document.getElementById("extract_password_button_sync");
+      const syncToolOutputPre = document.getElementById("sync_tool_output");
 
-      if (getInstructionsButton && wifiNameInput && wifiToolOutputPre) {
-        getInstructionsButton.addEventListener("click", showSyncInstructions);
-        wifiNameInput.addEventListener("keydown", function(e) {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            showSyncInstructions();
-          }
+      if (getInstructionsButton_sync && wifiNameInput_sync && syncToolOutputPre) {
+        getInstructionsButton_sync.addEventListener("click", showSyncInstructions_sync);
+        wifiNameInput_sync.addEventListener("keydown", function(e) {
+          if (e.key === "Enter") { e.preventDefault(); showSyncInstructions_sync(); }
         });
-      } else {
-        console.error("WiFi Extractor tool elements (Step 1) not found.");
-        if (wifiToolOutputPre) wifiToolOutputPre.textContent = "Error: Tool UI (Step 1) elements missing from page.";
-      }
+      } else { console.error("Sync Internals Extractor elements (Step 1.1) not found."); if(syncToolOutputPre) syncToolOutputPre.textContent = "Error: Tool UI (Step 1.1) missing.";}
+      
+      if (extractPasswordButton_sync && syncDataInput_sync && syncToolOutputPre) {
+        extractPasswordButton_sync.addEventListener("click", extractPasswordFromSyncData_sync);
+      } else { console.error("Sync Internals Extractor elements (Step 1.2) not found."); if(syncToolOutputPre && !getInstructionsButton_sync) syncToolOutputPre.textContent = "Error: Tool UI (Step 1.2) missing.";}
 
-      if (extractPasswordButton && syncDataInput && wifiToolOutputPre) {
-        extractPasswordButton.addEventListener("click", extractPasswordFromSyncData);
-      } else {
-        console.error("WiFi Extractor tool elements (Step 2) not found.");
-        if (wifiToolOutputPre && !getInstructionsButton) wifiToolOutputPre.textContent = "Error: Tool UI (Step 2) elements missing from page.";
-      }
-
-      function showSyncInstructions() {
-        if (!wifiNameInput || !wifiToolOutputPre) return;
-        let value = wifiNameInput.value.trim();
+      function showSyncInstructions_sync() {
+        if (!wifiNameInput_sync || !syncToolOutputPre) return;
+        let value = wifiNameInput_sync.value.trim();
         let searchTermUserGuidance;
         let baseSearch = "<code>wifi_</code>";
 
         if (value) {
-          searchTermUserGuidance = `On the left, look for an entry that looks like <strong>${hexEncode(value)}&lt;||&gt;psk</strong>.`;
+          searchTermUserGuidance = `On the left, look for an entry that looks like <strong>${hexEncode_sync(value)}&lt;||&gt;psk</strong>.`;
         } else {
           searchTermUserGuidance = `On the left, browse the list for entries containing "psk" that might correspond to your network.`;
         }
-
-        wifiToolOutputPre.innerHTML = `<strong>Instructions to Get Sync Data:</strong>\n\n1. Open a new tab and go to: <code>chrome://sync-internals</code>\n2. Click on the "<strong>Search</strong>" tab at the top.\n3. In the search box on that page, type ${baseSearch} and press Enter.\n4. ${searchTermUserGuidance}\n5. Click the relevant entry on the left to view its JSON data on the right.\n6. Copy <strong>ALL</strong> the JSON data (starts with { and ends with }).\n7. Paste the copied JSON into the "Step 2" text area below and click "Extract Password".`;
-        wifiToolOutputPre.className = ''; // Clear any error/success classes
+        syncToolOutputPre.innerHTML = `<strong>Instructions to Get Sync Data:</strong>\n\n1. Open a new tab and go to: <code>chrome://sync-internals</code>\n2. Click on the "<strong>Search</strong>" tab at the top.\n3. In the search box on that page, type ${baseSearch} and press Enter.\n4. ${searchTermUserGuidance}\n5. Click the relevant entry on the left to view its JSON data on the right.\n6. Copy <strong>ALL</strong> the JSON data (starts with { and ends with }).\n7. Paste the copied JSON into the "Step 1.2" text area above and click "Extract from Sync Data".`;
+        syncToolOutputPre.className = '';
       }
 
-      function extractPasswordFromSyncData() {
-        if (!syncDataInput || !wifiToolOutputPre) return;
-        let jsonData = syncDataInput.value.trim();
-        wifiToolOutputPre.className = '';
+      function extractPasswordFromSyncData_sync() {
+        if (!syncDataInput_sync || !syncToolOutputPre) return;
+        let jsonData = syncDataInput_sync.value.trim();
+        syncToolOutputPre.className = '';
 
-        if (!jsonData) {
-          wifiToolOutputPre.innerHTML = `<span class="error">Error: Please paste the JSON data from chrome://sync-internals into the Step 2 text area.</span>`;
-          return;
-        }
-        if (!jsonData.startsWith("{") || !jsonData.endsWith("}")) {
-          wifiToolOutputPre.innerHTML = `<span class="error">Error: Pasted data does not appear to be a valid JSON object. Ensure you copied the entire data block starting with { and ending with }.</span>`;
-          return;
-        }
+        if (!jsonData) { syncToolOutputPre.innerHTML = `<span class="error">Error: Please paste the JSON data from chrome://sync-internals.</span>`; return; }
+        if (!jsonData.startsWith("{") || !jsonData.endsWith("}")) { syncToolOutputPre.innerHTML = `<span class="error">Error: Pasted data is not a valid JSON object.</span>`; return; }
 
         try {
           const json = JSON.parse(jsonData);
           if (json.SPECIFICS && json.SPECIFICS.wifi_configuration && json.NON_UNIQUE_NAME) {
             let ssid = json.NON_UNIQUE_NAME.split("<")[0];
-            // Only attempt hex decode if it strictly looks like a hex string of even length > 2
-            if (/^[0-9A-F]+$/.test(ssid) && ssid.length % 2 === 0 && ssid.length > 2) {
-              ssid = hexDecode(ssid);
-            }
-
+            if (/^[0-9A-F]+$/.test(ssid) && ssid.length % 2 === 0 && ssid.length > 2) { ssid = hexDecode_sync(ssid); }
             const passphrase = atob(json.SPECIFICS.wifi_configuration.passphrase);
-            wifiToolOutputPre.innerHTML = `<span class="success">Data successfully extracted:</span>\n\n<strong>SSID (WiFi Name):</strong> ${ssid}\n<strong>Password:</strong> ${passphrase}`;
-          } else {
-            throw new Error("Pasted JSON is missing required fields (SPECIFICS.wifi_configuration or NON_UNIQUE_NAME). Please ensure you copied the correct and complete JSON data.");
+            syncToolOutputPre.innerHTML = `<span class="success">Data successfully extracted:</span>\n\n<strong>SSID (WiFi Name):</strong> ${ssid}\n<strong>Password:</strong> ${passphrase}`;
+          } else { throw new Error("Pasted JSON is missing required fields."); }
+        } catch (e) { console.error("Sync Internals Extractor Error:", e); syncToolOutputPre.innerHTML = `<span class="error">Error:</span> ${e.message || e.toString().toLowerCase()}`; }
+      }
+
+      function hexEncode_sync(text) { return text.split("").map((char) => char.charCodeAt(0).toString(16).padStart(2, "0")).join("").toUpperCase(); }
+      function hexDecode_sync(hexString) { if (!/^[0-9A-Fa-f]{2,}$/i.test(hexString.replace(/[^0-9A-Fa-f]/g, ''))) { return hexString; } try { return hexString.match(/.{1,2}/g).filter((pair) => !!pair && /^[0-9A-Fa-f]{2}$/i.test(pair)).map((byte) => String.fromCharCode(parseInt(byte, 16))).join(""); } catch (e) { console.warn("Could not hex decode:", hexString, e); return hexString; } }
+      // --- END SYNC INTERNALS WIFI EXTRACTOR SCRIPT ---
+
+      // --- NPPE SCRIPT ---
+      const nppeFileInput = document.getElementById("net_export_log_input");
+      const nppeOutputTableBody = document.querySelector("#nppe_output_table tbody");
+      const nppeLogOutput = document.getElementById("nppe_log_output");
+
+      function nppeLog(txt, isError = false) {
+          console.log(txt);
+          if (nppeLogOutput) {
+              const entry = document.createElement("div");
+              entry.textContent = (isError ? "ERROR: " : "") + txt;
+              if(isError) entry.style.color = "#ff6b6b";
+              nppeLogOutput.appendChild(entry);
+              nppeLogOutput.scrollTop = nppeLogOutput.scrollHeight; // Scroll to bottom
           }
-        } catch (e) {
-          console.error("WiFi Extractor Error:", e);
-          wifiToolOutputPre.innerHTML = `<span class="error">Error parsing JSON or extracting data:</span>\n${e.message || e.toString().toLowerCase()}`;
-        }
       }
 
-      function hexEncode(text) {
-        return text
-          .split("")
-          .map((char) => char.charCodeAt(0).toString(16).padStart(2, "0"))
-          .join("")
-          .toUpperCase();
+      function extractNPPE(event) {
+        if (!nppeOutputTableBody || !nppeLogOutput) return;
+        nppeOutputTableBody.innerHTML = ''; // Clear previous results
+        nppeLogOutput.innerHTML = 'Processing log file...\n'; // Clear previous log
+
+        let file = event.target.files[0];
+        if (!file) { nppeLog("No file selected.", true); return; }
+        if (!file.name.endsWith(".json")) { nppeLog("Invalid file type. Please upload a .json file.", true); return; }
+        
+        let reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = (e) => {
+          let netlog = e.target.result;
+          let split_netlog = netlog.split("\n");
+          let policyNetsLines = [];
+          // Keywords that might indicate NetworkConfiguration data in base64
+          const keywords = ["ya0NvbmZpZ3VyYXRpb2", "vcmtDb25maWd1cmF0aW", "rQ29uZmlndXJhdGlvbn", "Db25maWd1cmF0aW9ucw"];
+          
+          for (let i = 0; i < split_netlog.length; i++) {
+            if (keywords.some(keyword => split_netlog[i].includes(keyword))) {
+              policyNetsLines.push(split_netlog[i]);
+            }
+          }
+
+          if (policyNetsLines.length === 0) {
+            nppeLog("No potential NetworkConfiguration data found in the log.", true);
+            return;
+          }
+          nppeLog(`Found ${policyNetsLines.length} potential lines with network configuration data.`);
+
+          let networksFound = 0;
+          policyNetsLines.forEach((line, index) => {
+            try {
+              // Extract base64 part more robustly
+              const bytesMatch = line.match(/"bytes":"([^"]+)"/);
+              if (!bytesMatch || !bytesMatch[1]) {
+                nppeLog(`Line ${index+1}: Could not find "bytes" field. Skipping.`, true);
+                return;
+              }
+              let decodedPolicyNet = atob(bytesMatch[1]);
+              
+              // Attempt to find NetworkConfigurations JSON array
+              // This regex is complex and might need adjustment based on actual log structure
+              const networkConfigsMatch = decodedPolicyNet.match(/"NetworkConfigurations"\s*:\s*(\[.*?\])/s);
+              if (!networkConfigsMatch || !networkConfigsMatch[1]) {
+                nppeLog(`Line ${index+1}: Could not find "NetworkConfigurations" array in decoded data. Skipping.`, true);
+                return;
+              }
+              
+              let networkConfigurationsStr = networkConfigsMatch[1];
+              let networkConfigurations;
+              try {
+                networkConfigurations = JSON.parse(networkConfigurationsStr);
+              } catch (jsonErr) {
+                nppeLog(`Line ${index+1}: Error parsing NetworkConfigurations JSON: ${jsonErr.message}. Skipping.`, true);
+                console.error("Problematic JSON string for NetworkConfigurations:", networkConfigurationsStr);
+                return;
+              }
+
+              nppeLog(`Line ${index+1}: Parsed ${networkConfigurations.length} network(s).`);
+
+              for (const wifiConfig of networkConfigurations) {
+                if (!wifiConfig || !wifiConfig.WiFi || !wifiConfig.WiFi.SSID) {
+                    nppeLog("Skipping an invalid or incomplete WiFi configuration entry.", true);
+                    continue;
+                }
+                networksFound++;
+                let tr = document.createElement("tr");
+                
+                let ssidTd = document.createElement("td");
+                ssidTd.textContent = wifiConfig.WiFi.SSID;
+                
+                let securityTd = document.createElement("td");
+                securityTd.textContent = wifiConfig.WiFi.Security || "Unknown";
+                
+                let passphraseTd = document.createElement("td");
+                if (wifiConfig.WiFi.Passphrase) {
+                  passphraseTd.textContent = wifiConfig.WiFi.Passphrase;
+                } else if (securityTd.textContent === "WPA-EAP" && wifiConfig.WiFi.EAP) {
+                  let creds = `Identity: ${wifiConfig.WiFi.EAP.Identity || "N/A"}`;
+                  if (wifiConfig.WiFi.EAP.Password) {
+                    creds += `\nPassword: ${wifiConfig.WiFi.EAP.Password}`;
+                  }
+                  passphraseTd.innerText = creds; // Use innerText to preserve newlines in table cell
+                } else {
+                  passphraseTd.textContent = "NOT FOUND";
+                }
+                
+                let hiddenSsidTd = document.createElement("td");
+                hiddenSsidTd.textContent = wifiConfig.WiFi.HiddenSSID ? "Yes" : "No";
+                
+                tr.appendChild(ssidTd);
+                tr.appendChild(passphraseTd);
+                tr.appendChild(securityTd);
+                tr.appendChild(hiddenSsidTd);
+                nppeOutputTableBody.appendChild(tr);
+              }
+            } catch (err) {
+              nppeLog(`Error processing line ${index+1}: ${err.message}`, true);
+              console.error("Detailed error on line:", line, err);
+            }
+          });
+          if (networksFound === 0 && policyNetsLines.length > 0) {
+             nppeLog("Processed potential lines but found no extractable WiFi configurations.", true);
+          } else if (networksFound > 0) {
+             nppeLog(`Extraction complete. Displayed ${networksFound} network(s).`, false);
+          }
+        };
+        reader.onerror = () => {
+            nppeLog("Error reading file.", true);
+        };
       }
 
-      function hexDecode(hexString) {
-        // A more conservative check for hex before attempting decode
-        if (!/^[0-9A-Fa-f]{2,}$/i.test(hexString.replace(/[^0-9A-Fa-f]/g, ''))) {
-          return hexString; // Return original if not a clear hex string of at least one byte
-        }
-        try {
-          return hexString
-            .match(/.{1,2}/g)
-            .filter((pair) => !!pair && /^[0-9A-Fa-f]{2}$/i.test(pair))
-            .map((byte) => String.fromCharCode(parseInt(byte, 16)))
-            .join("");
-        } catch (e) {
-          console.warn("Could not hex decode:", hexString, e);
-          return hexString;
-        }
+      if (nppeFileInput) {
+        nppeFileInput.addEventListener("change", extractNPPE);
+      } else {
+        console.error("NPPE file input not found.");
+        if(nppeLogOutput) nppeLog("Error: NPPE file input element missing from page.", true);
       }
-      // --- END WIFI EXTRACTOR SCRIPT ---
+      // --- END NPPE SCRIPT ---
 
       // --- Navigation JavaScript is now in external files ---
     });
