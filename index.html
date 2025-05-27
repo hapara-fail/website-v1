@@ -127,29 +127,44 @@
       justify-content: center;
       line-height: 0;
     }
+
     .menu-trigger svg {
       width: 24px;
-      height: 18px; 
+      height: 24px;
       color: #FFFFFF;
       transition: color 0.2s ease-in-out;
     }
+
     .menu-trigger:hover svg {
       color: #AAAAAA;
     }
+
     .menu-trigger .line {
-      transform-origin: center center; 
+      transform-origin: 12px 12px;
       transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19), 
-                  opacity 0.15s 0.1s linear; 
+              opacity 0.15s 0.1s linear; 
     }
+
+    /* Initial hamburger state - spread the lines out */
+    .line1 {
+      transform: translateY(-6px);
+    }
+
+    .line3 {
+      transform: translateY(6px);
+    }
+
     .menu-trigger.is-active .line1 {
-      transform: translateY(7.5px) rotate(45deg);
+      transform: rotate(45deg);
     }
+
     .menu-trigger.is-active .line2 {
       opacity: 0;
       transition: opacity 0.1s linear; 
     }
+
     .menu-trigger.is-active .line3 {
-      transform: translateY(-7.5px) rotate(-45deg);
+      transform: rotate(-45deg);
     }
 
     .fullscreen-menu {
@@ -346,10 +361,10 @@
   <div id="tsparticles" aria-hidden="true"></div>
 
   <button class="menu-trigger" aria-label="Open navigation menu" aria-expanded="false">
-    <svg class="menu-icon-lines" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="line line1" d="M1 2H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
-      <path class="line line2" d="M1 9H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
-      <path class="line line3" d="M1 16H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
+    <svg class="menu-icon-lines" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+     <path class="line line1" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+     <path class="line line2" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+     <path class="line line3" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     </svg>
   </button>
 

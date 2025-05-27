@@ -108,8 +108,8 @@
         border-radius: 0 4px 4px 0;
         font-size: 0.95rem;
     }
-     .content-wrapper .note strong { color: #61dafb;}
-     .content-wrapper .credits {
+      .content-wrapper .note strong { color: #61dafb;}
+      .content-wrapper .credits {
         font-size: 0.9rem;
         color: #aaa;
         margin-top: 3rem; /* More space before credits */
@@ -204,27 +204,40 @@
     }
     .menu-trigger svg {
       width: 24px;
-      height: 18px; 
+      height: 24px;  /* UPDATED from 18px */
       color: #FFFFFF;
       transition: color 0.2s ease-in-out;
     }
     .menu-trigger:hover svg {
       color: #AAAAAA;
     }
+    
     .menu-trigger .line {
-      transform-origin: center center; 
+      transform-origin: 12px 12px; /* Adjusted for a 24x24 viewBox */
       transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19), 
                   opacity 0.15s 0.1s linear; 
     }
-    .menu-trigger.is-active .line1 {
-      transform: translateY(7.5px) rotate(45deg); 
+
+    /* Initial hamburger state - spread the lines out */
+    .line1 {
+      transform: translateY(-6px);
     }
+
+    .line3 {
+      transform: translateY(6px);
+    }
+
+    .menu-trigger.is-active .line1 {
+      transform: rotate(45deg);
+    }
+
     .menu-trigger.is-active .line2 {
       opacity: 0;
       transition: opacity 0.1s linear; 
     }
+
     .menu-trigger.is-active .line3 {
-      transform: translateY(-7.5px) rotate(-45deg); 
+      transform: rotate(-45deg);
     }
 
     .fullscreen-menu {
@@ -416,10 +429,10 @@
 <body>
 
   <button class="menu-trigger" aria-label="Open navigation menu" aria-expanded="false">
-    <svg class="menu-icon-lines" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="line line1" d="M1 2H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
-      <path class="line line2" d="M1 9H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
-      <path class="line line3" d="M1 16H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
+    <svg class="menu-icon-lines" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="line line1" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path class="line line2" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path class="line line3" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     </svg>
   </button>
 
@@ -429,15 +442,15 @@
       <ul class="fullscreen-menu-list">
         </ul>
     </nav>
-     <p class="command-palette-tip">Tip: Press Ctrl+K or Cmd+K for quick search</p>
+      <p class="command-palette-tip">Tip: Press Ctrl+K or Cmd+K for quick search</p>
   </div>
 
   <div class="command-palette-backdrop"></div>
   <div class="command-palette" role="dialog" aria-modal="true" aria-labelledby="commandPaletteLabelForms">
-     <div class="command-palette-input-wrapper">
+      <div class="command-palette-input-wrapper">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg>
         <input type="search" class="command-palette-input" placeholder="Type a command or search..." id="commandPaletteLabelForms" autocomplete="off">
-     </div>
+      </div>
     <ul class="command-palette-results">
       </ul>
     <div class="command-palette-no-results">No results found.</div>
@@ -521,7 +534,7 @@
           <li>If a teacher or proctor comes nearby, you can quickly maximize the form window using the fullscreen key (often F11, or the green maximize button on Mac).</li>
         </ul>
       </li>
-      <li><strong>Browsing in the Second Window:</strong> You can use the second browser window to browse other sites. However, AVOID making this second window full-screen, as this might cause the original form tab to lose focus in a way that could be detected or cause it to close.</li>
+      <li><strong>Browse in the Second Window:</strong> You can use the second browser window to browse other sites. However, AVOID making this second window full-screen, as this might cause the original form tab to lose focus in a way that could be detected or cause it to close.</li>
     </ul>
 
     <h2>Tip: If the Form Goes Blank or Closes</h2>
@@ -538,8 +551,7 @@
     </ol>
 
     <p class="credits">Original method discovery by @sprinkzmc in <a href="https://discord.gg/unblock" target="_blank" rel="noopener noreferrer">TitaniumNetwork</a>.<br>This tool and guide are for educational purposes only. Please use responsibly.</p>
-
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+  </div> <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // --- TS PARTICLES SCRIPT ---
@@ -563,7 +575,7 @@
 
       function parseSource(source) {
         const initialDataMatch = source.match(/var _docs_flag_initialData\s*=\s*(\{.*?\});<\/script>/i) || 
-                                 source.match(/_docs_flag_initialData\s*=\s*(\{.*?\});<\/script>/i); 
+                                  source.match(/_docs_flag_initialData\s*=\s*(\{.*?\});<\/script>/i); 
         
         if (!initialDataMatch || !initialDataMatch[1]) {
           throw new Error("Could not find '_docs_flag_initialData'. The form source might be incomplete, incorrect, or the structure has changed.");
@@ -575,7 +587,7 @@
         const info_map = JSON.parse(info_map_string);
         
         if (!info_map || !info_map.info_params || !info_map.info_params.token || !info_map["docs-crp"]) {
-             throw new Error("Essential data (token or form path) missing from parsed source. Ensure you copied the entire 'view-source:' content.");
+            throw new Error("Essential data (token or form path) missing from parsed source. Ensure you copied the entire 'view-source:' content.");
         }
 
         const token = info_map.info_params.token;
