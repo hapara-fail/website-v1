@@ -26,7 +26,6 @@
 
     body.overlay-active {
       overflow-y: hidden;
-      /* Prevent scrolling when a full-screen overlay is active */
     }
 
     /* TSparticles Container Style - Consistent */
@@ -38,7 +37,6 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      /* Allows scroll/click events to pass through */
     }
 
     /* Content Styling - Consistent */
@@ -55,12 +53,12 @@
       line-height: 1.7;
       color: #e0e0e0;
       min-height: calc(100vh - 120px);
-      /* Ensure content can fill viewport height */
     }
 
     .content-wrapper h1,
     .content-wrapper h2,
-    .content-wrapper h3 {
+    .content-wrapper h3,
+    .content-wrapper h4 { /* Added h4 for consistency */
       color: #fff;
       margin-top: 2.5rem;
       margin-bottom: 1.2rem;
@@ -74,20 +72,27 @@
 
     .content-wrapper h2 {
       font-size: clamp(1.5rem, 3.2vw, 2.1rem);
-      border-top: 1px solid #333; /* Separator for major tool sections */
+      border-top: 1px solid #333; 
       padding-top: 2rem;
       margin-top: 3rem;
     }
-      .content-wrapper h2:first-of-type { /* No border/padding for the first H2 on the page */
+    .content-wrapper h2.first-tool-heading { /* Special class for the first H2 tool heading */
         border-top: none;
         padding-top: 0;
-        margin-top: 2.5rem; /* Default H2 margin */
+        margin-top: 2.5rem; 
     }
 
 
     .content-wrapper h3 {
       font-size: clamp(1.2rem, 2.8vw, 1.8rem);
     }
+    .content-wrapper h4 { /* Style for H4 used in new structure */
+        font-size: clamp(1.1rem, 2.5vw, 1.6rem); 
+        color: #e0e0e0; 
+        margin-top:2rem; 
+        margin-bottom: 1rem;
+    }
+
 
     .content-wrapper p,
     .content-wrapper li {
@@ -102,11 +107,9 @@
     }
 
     .content-wrapper .meta-info {
-      /* For "Last updated" */
       font-size: 0.9rem;
       color: #aaa;
-      margin-bottom: 2rem;
-      /* Space after it */
+      margin-bottom: 1.5rem; /* Adjusted margin */
       margin-top: 0.5rem;
     }
 
@@ -145,6 +148,8 @@
     .content-wrapper a:hover {
       color: #82e9ff;
     }
+    .content-wrapper .warning { color: #ffcc00; } 
+    .content-wrapper .critical-warning { color: #ff6b6b; } 
 
     .content-wrapper .note {
       background-color: rgba(40, 40, 45, 0.7);
@@ -163,11 +168,18 @@
       font-size: 0.9rem;
       color: #aaa;
       margin-top: 3rem;
-      /* More space before credits */
       margin-bottom: 1rem;
       text-align: left;
-      /* Left aligned credits */
     }
+    
+    .quick-guide ul {
+        list-style-type: disc; /* Or 'circle' or 'square' */
+        padding-left: 25px; /* Indent list */
+    }
+    .quick-guide li {
+        margin-bottom: 0.5rem; /* Space between list items */
+    }
+
 
     /* Tool Styles (Generic for both tools) */
     .extractor-tool-section {
@@ -175,17 +187,21 @@
       backdrop-filter: blur(8px);
       padding: 20px 25px;
       border-radius: 8px;
-      margin-top: 1.5rem; /* Reduced from h2 margin */
+      margin-top: 1rem; /* Space after H4 */
       margin-bottom: 2.5rem;
       border: 1px solid rgba(255, 255, 255, 0.15);
     }
-
-    .extractor-tool-section h3 {
-      margin-top: 0;
-      margin-bottom: 15px;
-      color: #fff;
-      font-size: 1.25rem;
+    
+    /* Specific styling for tool step headings if needed, or just use H4 */
+    .tool-step-heading { /* Example if we need distinct styling for "Step A/B/C" */
+        font-size: 1.1rem;
+        color: #61dafb; /* Accent color for step headings */
+        margin-top: 1.8rem;
+        margin-bottom: 0.8rem;
+        /* border-bottom: 1px dashed #444; */
+        /* padding-bottom: 0.5rem; */
     }
+
 
     .extractor-tool-section label {
       display: block;
@@ -209,8 +225,8 @@
       margin-bottom: 10px;
     }
     .extractor-tool-section input[type="file"] {
-        padding: 8px 10px; /* Specific padding for file input */
-        color: #ccc; /* Placeholder-like color */
+        padding: 8px 10px; 
+        color: #ccc; 
     }
     .extractor-tool-section input[type="file"]::file-selector-button {
         background-color: #333;
@@ -242,6 +258,7 @@
       transition: background-color 0.2s ease-in-out, transform 0.1s ease;
       display: inline-block;
       margin-top: 5px;
+      margin-bottom: 10px; /* Added margin for spacing */
     }
 
     .extractor-tool-section button:hover {
@@ -252,13 +269,12 @@
       transform: translateY(0px);
     }
 
-    .tool-output-container { /* Renamed for clarity */
+    .tool-output-container { 
       margin-top: 15px;
     }
-    .tool-output-container h3 {
-        font-size: 1.1rem;
+    .tool-output-container h4 { /* Output heading matches other H4s */
+        margin-top: 0; /* Reset top margin as it's inside container */
         margin-bottom: 10px;
-        color: #fff;
     }
     .tool-output-container pre {
       margin-top: 0;
@@ -269,7 +285,6 @@
     .tool-output-container .error { color: #ff6b6b; }
     .tool-output-container .success { color: #50fa7b; }
 
-    /* NPPE Table Styles */
     #nppe_output_table {
         width: 100%;
         border-collapse: collapse;
@@ -291,7 +306,6 @@
     #nppe_output_table tr:nth-child(even) {
         background-color: #131313;
     }
-
 
     /* --- UPDATED Navigation Systems CSS --- */
     .menu-trigger {
@@ -317,38 +331,18 @@
     .menu-trigger:hover svg {
       color: #AAAAAA;
     }
-    
     .menu-trigger .line {
       transform-origin: 12px 12px;
       transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19), 
                   opacity 0.15s 0.1s linear; 
     }
+    .line1 { transform: translateY(-6px); }
+    .line3 { transform: translateY(6px); }
+    .menu-trigger.is-active .line1 { transform: rotate(45deg); }
+    .menu-trigger.is-active .line2 { opacity: 0; transition: opacity 0.1s linear; }
+    .menu-trigger.is-active .line3 { transform: rotate(-45deg); }
 
-    /* Initial hamburger state - spread the lines out */
-    .line1 {
-      transform: translateY(-6px);
-    }
-
-    .line3 {
-      transform: translateY(6px);
-    }
-
-    .menu-trigger.is-active .line1 {
-      transform: rotate(45deg);
-    }
-
-    .menu-trigger.is-active .line2 {
-      opacity: 0;
-      transition: opacity 0.1s linear; 
-    }
-
-    .menu-trigger.is-active .line3 {
-      transform: rotate(-45deg);
-    }
-
-    .fullscreen-menu { 
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0A0A0A; z-index: 1000; display: none; flex-direction: column; align-items: flex-start; justify-content: flex-end; opacity: 0; transition: opacity 0.3s ease-in-out; padding: 8vh 6vw; box-sizing: border-box; overflow-y: auto; 
-    }
+    .fullscreen-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0A0A0A; z-index: 1000; display: none; flex-direction: column; align-items: flex-start; justify-content: flex-end; opacity: 0; transition: opacity 0.3s ease-in-out; padding: 8vh 6vw; box-sizing: border-box; overflow-y: auto; }
     .fullscreen-menu.is-active { display: flex; opacity: 1; }
     .fullscreen-menu-list { list-style: none; padding: 0; margin: 0; text-align: left; }
     .fullscreen-menu-list li { margin: 12px 0; }
@@ -377,7 +371,7 @@
 
     @media (prefers-reduced-motion: reduce) { 
         #tsparticles { display: none !important; } 
-        .extractor-tool-section { backdrop-filter: none; } /* Corrected class names for reduced motion */
+        .extractor-tool-section { backdrop-filter: none; } 
         .fullscreen-menu, .command-palette, .command-palette-backdrop, .menu-trigger .line { transition: none !important; } 
     }
   </style>
@@ -418,89 +412,132 @@
     <h1>ChromeOS WiFi Password Extractor</h1>
     <p class="meta-info"><strong>Last updated:</strong> May 22, 2025</p>
 
-    <p>This page provides two tools to help find saved WiFi passwords on ChromeOS, each for different scenarios. Please use these responsibly and for educational purposes only.</p>
+    <p>This page provides two tools to help find saved WiFi passwords or configuration details on ChromeOS. Each tool approaches the problem differently and is suited for different scenarios.</p>
+
+    <div class="quick-guide">
+        <h3>Quick Guide: Which Tool to Use?</h3>
+        <p>Not sure where to start? Here’s a quick tip:</p>
+        <ul>
+            <li><strong>Use Tool 1 (Sync Internals Extractor) if:</strong> You're trying to find the password for a WiFi network that uses a simple shared passphrase (like those common in homes, often using WPA2-Personal/PSK authentication) AND you believe ChromeOS might have synced this password with your Google account.</li>
+            <li><strong>Use Tool 2 (Network Policy Extractor - NPPE) if:</strong> You suspect the WiFi network details were configured by an administrator via policy (common in schools or businesses), the network uses more complex enterprise authentication (like WPA-EAP), or Tool 1 didn't provide any results. This tool looks for configurations that might be "pushed" to the device as part of its management policies.</li>
+        </ul>
+    </div>
 
     <div class="note">
-        <p><strong>Important General Note:</strong> The success of these methods can depend on your ChromeOS version, device management policies, and the type of WiFi network. For networks managed by school/enterprise policy (e.g., using EAP with certificates, or where settings are strictly enforced via <code>chrome://policy</code>), these tools may not work or provide useful credentials.</p>
+        <p><strong>Important General Note:</strong> The success of these methods heavily depends on your ChromeOS version, how your device is managed by any administrative policies, and the specific type of WiFi network. For many enterprise networks (e.g., those requiring individual user credentials via WPA-EAP with certificates), these tools will likely not reveal a simple user-enterable password but might show other configuration details such as EAP type or server names.</p>
     </div>
 
-    <h2>Tool 1: Sync Internals Password Extractor (for PSK Networks)</h2>
-    <p>This tool is primarily for networks using WPA/WPA2-Personal (PSK), where a simple passphrase is saved. It attempts to extract this from <code>chrome://sync-internals</code> data.</p>
-    <div class="extractor-tool-section wifi-extractor-tool">
-      <div class="tool-step">
-        <h3>Step 1.1: Get Search Term</h3>
-        <label for="wifi_name_input">Enter SSID (WiFi Name) (Optional):</label>
-        <input type="text" id="wifi_name_input" placeholder="e.g., MyHomeWiFi (or leave blank)">
-        <button id="get_instructions_button">Get Search Instructions</button>
-      </div>
-      <div class="tool-step">
-        <h3>Step 1.2: Extract Password from Sync Data</h3>
-        <label for="sync_data_input">Paste Full JSON Data from <code>chrome://sync-internals</code> Here:</label>
-        <textarea id="sync_data_input" placeholder="Paste the entire JSON object for the WiFi network here..."></textarea>
-        <button id="extract_password_button_sync">Extract from Sync Data</button>
-      </div>
-      <div class="tool-output-container">
-        <h3>Output (Sync Internals):</h3>
-        <pre id="sync_tool_output">Complete Step 1.1 or Step 1.2 above.</pre>
-      </div>
-    </div>
+    <h2 class="first-tool-heading">Tool 1: Sync Internals Password Extractor (for Networks Using a Passphrase)</h2>
+    <p>This tool is designed to find passphrases for WiFi networks that use a pre-shared key (commonly WPA/WPA2-Personal). It works by examining data that ChromeOS may have synced with your Google account.</p>
 
-    <h3>Detailed Instructions for Tool 1 (Sync Internals):</h3>
+    <h4>Technical Explanation: How This Tool Works</h4>
+    <p>When you connect to a WiFi network on ChromeOS and are signed into your Google account with sync enabled, certain network configurations can be saved as part of your synced preferences. This often includes details for networks that use a simple passphrase for authentication.</p>
+    <p>The <code>chrome://sync-internals</code> page provides a low-level view into this synchronized data. For WiFi networks, the Service Set Identifier (SSID, or WiFi name) is often stored in a hexadecimal (hex) encoded format, and the corresponding passphrase is typically stored in a base64 encoded format within a specific JSON (JavaScript Object Notation) data structure, usually under a key like <code>wifi_configuration</code>.</p>
+    <p>This tool automates the process by:</p>
     <ol>
-      <li><strong>Optional - Enter SSID:</strong> In "Step 1.1" of the tool, you can type the SSID. This helps generate a specific search term.</li>
-      <li><strong>Get Search Instructions:</strong> Click "Get Search Instructions". The "Output (Sync Internals)" area will update.</li>
-      <li><strong>Navigate to Sync Internals:</strong> Go to <code>chrome://sync-internals</code>.</li>
-      <li><strong>Search for WiFi Data:</strong>
-        <ul>
-          <li>Click the <strong>"Search"</strong> tab.</li>
-          <li>In the search box, type <code>wifi_</code> and press Enter.</li>
-          <li>On the left, look for an entry like <code>[HEXADECIMAL_SSID]&lt;||&gt;psk</code> if you provided an SSID, or browse for entries containing "psk".</li>
-        </ul>
+        <li>Guiding you to find the correct JSON data block within <code>chrome://sync-internals</code> (optionally by helping you convert your target SSID to its hex form for easier searching).</li>
+        <li>Allowing you to paste this JSON data.</li>
+        <li>Parsing the JSON to locate the SSID and the base64 encoded passphrase.</li>
+        <li>Decoding the passphrase back into a human-readable format.</li>
+    </ol>
+    
+    <h4>Step A: Prepare Your Search Term in Sync Internals (Optional but Recommended)</h4>
+    <div class="extractor-tool-section">
+        <label for="wifi_name_input">Enter SSID (WiFi Name) to get its Hex-Encoded version for searching:</label>
+        <input type="text" id="wifi_name_input" placeholder="e.g., MyHomeWiFi (or leave blank to browse)">
+        <button id="get_instructions_button">Get Hex-Encoded Search Term</button>
+        <div class="tool-output-container" style="margin-top:10px;"> <pre id="sync_search_term_output" style="font-size:0.85em; min-height: 40px;">Enter an SSID above to see the recommended search key for Step B.</pre>
+        </div>
+    </div>
+
+    <h4>Step B: Retrieve Data from <code>chrome://sync-internals</code></h4>
+    <ol>
+      <li>Open a new tab in your Chrome browser and navigate to <code>chrome://sync-internals</code>.</li>
+      <li>Click on the "<strong>Search</strong>" tab located at the top of the page.</li>
+      <li>In the search box on that page:
+          <ul>
+              <li>If you generated a hex-encoded search term in Step A, paste it here (e.g., <code>4D79486F6D6557694669&lt;||&gt;psk</code>) and press Enter.</li>
+              <li>Otherwise, type <code>wifi_</code> and press Enter. You will then need to browse the results on the left for entries containing "<code>psk</code>" in their name that might correspond to your network.</li>
+          </ul>
       </li>
-      <li><strong>Copy JSON:</strong> Click the relevant entry on the left. Copy ALL JSON data from the right.</li>
-      <li><strong>Paste & Extract:</strong> Return here. In "Step 1.2", paste the JSON into the text area and click "Extract from Sync Data". The SSID and Password should appear in the "Output (Sync Internals)" area.</li>
+      <li>Click the relevant entry from the list on the left side. This will display its detailed JSON data in the panel on the right.</li>
+      <li>Carefully select and copy <strong>ALL</strong> of the JSON data shown on the right (it should start with <code>{</code> and end with <code>}</code>).</li>
     </ol>
 
+    <h4>Step C: Extract Password with the Tool</h4>
+    <div class="extractor-tool-section">
+      <label for="sync_data_input">Paste Full JSON Data from <code>chrome://sync-internals</code> Here:</label>
+      <textarea id="sync_data_input" placeholder="Paste the entire JSON object for the WiFi network here..."></textarea>
+      <button id="extract_password_button_sync">Extract from Sync Data</button>
+      <div class="tool-output-container">
+        <h4>Output (Sync Internals):</h4>
+        <pre id="sync_tool_output">Paste JSON data above and click extract.</pre>
+      </div>
+    </div>
+
+
     <h2>Tool 2: Network Policy Password Extractor (NPPE)</h2>
-    <p>This tool attempts to find WiFi configurations, including some enterprise network details, by analyzing a network log file. This might be useful if network settings are pushed via policy.</p>
+    <p>This tool attempts to find WiFi configurations by analyzing a network log file (<code>chrome-net-export-log.json</code>). It can be particularly useful if network settings are distributed via administrative policies on managed ChromeOS devices.</p>
+
+    <h4>Technical Explanation: How This Tool Works</h4>
+    <p>ChromeOS devices in managed environments (like schools or businesses) often receive their network configurations, including WiFi settings, through policies pushed by an administrator. These policies ensure devices connect to approved networks with specific settings.</p>
+    <p>When network events occur or policies are updated, details of these configurations can sometimes be recorded in the comprehensive network logs generated by ChromeOS. The <code>chrome://net-export</code> utility allows users to capture these logs. Critically, selecting the "Include raw bytes" option during log generation is necessary, as policy data containing network configurations is often embedded as a base64 encoded string within the larger JSON log structure.</p>
+    <p>The NPPE tool works by:</p>
+    <ol>
+        <li>Guiding you to generate a <code>chrome-net-export-log.json</code> file with the correct options (including the crucial step of reloading policies while logging is active to maximize the chance of capturing the configurations).</li>
+        <li>Allowing you to upload this log file.</li>
+        <li>Parsing the potentially large JSON log file to find specific event entries that contain policy data.</li>
+        <li>Identifying and decoding any base64 encoded policy blobs.</li>
+        <li>Parsing the decoded policy data (which itself is often JSON) to find a list called <code>NetworkConfigurations</code>.</li>
+        <li>Extracting and displaying details for each configured WiFi network found, such as SSID, security type (e.g., WPA-PSK, WPA-EAP), and any available credentials (like a pre-shared key/passphrase, or EAP identity and settings).</li>
+    </ol>
+    <p>It's important to note that for EAP (Enterprise) networks, this tool will typically show configuration parameters (like EAP method, identity, server CA certificate info) rather than the user's actual password, as those are usually not stored or transmitted in a directly extractable way.</p>
+
+    <h4>Step A: Generate and Save the <code>chrome-net-export-log.json</code> File</h4>
+    <p>Follow these steps carefully on your ChromeOS device:</p>
+    <ol>
+        <li>Open a new tab and navigate to <code>chrome://net-export</code>.</li>
+        <li>Under the "OPTIONS" section, ensure you select <strong>"Include raw bytes (includes cookies and credentials)"</strong>.
+            <br><span class="warning">Warning:</span> This option captures sensitive data. Only proceed if you understand the implications and are handling the log file securely. Do NOT select "Include private information from all users" unless absolutely necessary and you are certain of the privacy implications.</li>
+        <li>Click the <strong>"Start Logging to Disk"</strong> button. You will be prompted to save a file; it will typically be named <code>chrome-net-export-log.json</code>. Choose a location to save it.</li>
+        <li><strong>Keep the <code>chrome://net-export</code> tab open and logging.</strong> Open another new tab and navigate to <code>chrome://policy</code>.</li>
+        <li>On the <code>chrome://policy</code> page, click the <strong>"Reload policies"</strong> button. Wait a few seconds for the policies to refresh. This step is crucial for ensuring current network policies are captured in the log.</li>
+        <li>Go back to the <code>chrome://net-export</code> tab and click the <strong>"Stop Logging"</strong> button.</li>
+        <li>You now have the <code>chrome-net-export-log.json</code> file saved in the location you chose.</li>
+    </ol>
+
+    <h4>Step B: Upload and Analyze the Log</h4>
     <div class="extractor-tool-section nppe-tool">
-        <h3>Step 2.1: Generate & Upload Network Log</h3>
-        <p>Follow these steps carefully to generate the required <code>chrome-net-export-log.json</code> file:</p>
-        <ol style="margin-bottom: 15px;">
-            <li>Open a new tab and go to <code>chrome://net-export</code>.</li>
-            <li>Under "OPTIONS", select **"Include raw bytes"**. (Do NOT select "Include private information" unless you understand the implications and are sure it's necessary and safe for your use case).</li>
-            <li>Click **"Start Logging to Disk"**. Save the file (it will be named <code>chrome-net-export-log.json</code>).</li>
-            <li>Open another new tab and go to <code>chrome://policy</code>.</li>
-            <li>Click the **"Reload policies"** button. Wait a few seconds for policies to apply.</li>
-            <li>Go back to the <code>chrome://net-export</code> tab and click **"Stop Logging"**.</li>
-            <li>Now, upload the saved <code>chrome-net-export-log.json</code> file using the button below:</li>
-        </ol>
-        <label for="net_export_log_input">Upload <code>chrome-net-export-log.json</code>:</label>
+        <label for="net_export_log_input">Upload your saved <code>chrome-net-export-log.json</code> file:</label>
         <input type="file" id="net_export_log_input" accept=".json">
         <div class="tool-output-container">
-            <h3>Output (Network Policy):</h3>
+            <h4>Output (Network Policy Extractor):</h4>
             <table id="nppe_output_table">
               <thead>
                 <tr>
                   <th>SSID</th>
-                  <th>Credentials</th>
+                  <th>Credentials / Details</th>
                   <th>Security</th>
                   <th>HiddenSSID</th>
                 </tr>
               </thead>
               <tbody>
-              </tbody>
+                </tbody>
             </table>
-            <pre id="nppe_log_output" style="font-size: 0.8em; margin-top:10px; max-height: 150px;"></pre> </div>
+            <pre id="nppe_log_output" style="font-size: 0.8em; margin-top:10px; max-height: 150px;">Upload a log file to see results.</pre>
+        </div>
+        <p style="font-size:0.85em; color:#aaa; margin-top:10px;">Note: For EAP networks, 'Credentials / Details' will show configuration parameters (like EAP method, identity) rather than a user-specific password.</p>
     </div>
     
-    <h3>Troubleshooting (Both Tools):</h3>
+    <h2>Troubleshooting (Both Tools)</h2>
     <ul>
-      <li>If you get an error, ensure you copied/uploaded the correct and complete data.</li>
-      <li>The structure of <code>chrome://sync-internals</code> or <code>chrome://net-export</code> logs can change with ChromeOS updates, which might affect these tools.</li>
+      <li><strong>No Data Found:</strong> If a tool doesn't find anything, it means the WiFi information isn't stored or accessible via that specific method on your device configuration or ChromeOS version. The network might be configured in a way that isn't captured by these techniques (e.g., manual setup without sync, or policies not logged as expected).</li>
+      <li><strong>Errors During Extraction:</strong> Ensure you copied the entire, correct JSON data for Tool 1, or uploaded the correct, unaltered log file for Tool 2. The structure of ChromeOS internal data or logs can change with updates, which might occasionally break these tools until they are adapted.</li>
+      <li><strong>Tool 1 Specific - SSID Hex Encoding:</strong> If you manually search in `chrome://sync-internals` and your SSID has special characters, direct searching might be tricky. Using the "Get Hex-Encoded Search Term" feature is recommended.</li>
+      <li><strong>Tool 2 Specific - Log File Size:</strong> <code>chrome-net-export-log.json</code> files can be very large. The tool processes it in your browser, which might be slow on less powerful devices. Ensure you stop logging reasonably quickly after reloading policies to keep the file size manageable.</li>
     </ul>
 
-    <p class="credits">Sync Internals method original discovery by SimonTheCat#0651 in <a href="https://discord.gg/unblock" target="_blank" rel="noopener noreferrer">TitaniumNetwork</a>.<br>NPPE tool concept adapted from similar public research.<br>These tools and guides are for educational purposes only. Please use responsibly.</p>
+    <p class="credits">Sync Internals method original discovery by SimonTheCat#0651 in <a href="https://discord.gg/unblock" target="_blank" rel="noopener noreferrer">TitaniumNetwork</a>.<br>NPPE tool concept adapted from similar public research and tools.<br>This tool and guide are for educational purposes only. Please use responsibly.</p>
 
   </div> <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
   <script>
@@ -521,54 +558,86 @@
       const syncDataInput_sync = document.getElementById("sync_data_input");
       const extractPasswordButton_sync = document.getElementById("extract_password_button_sync");
       const syncToolOutputPre = document.getElementById("sync_tool_output");
+      const syncSearchTermOutputPre = document.getElementById("sync_search_term_output");
 
-      if (getInstructionsButton_sync && wifiNameInput_sync && syncToolOutputPre) {
-        getInstructionsButton_sync.addEventListener("click", showSyncInstructions_sync);
+
+      if (getInstructionsButton_sync && wifiNameInput_sync && syncSearchTermOutputPre) {
+        getInstructionsButton_sync.addEventListener("click", showSyncSearchTerm);
         wifiNameInput_sync.addEventListener("keydown", function(e) {
-          if (e.key === "Enter") { e.preventDefault(); showSyncInstructions_sync(); }
+          if (e.key === "Enter") { e.preventDefault(); showSyncSearchTerm(); }
         });
-      } else { console.error("Sync Internals Extractor elements (Step 1.1) not found."); if(syncToolOutputPre) syncToolOutputPre.textContent = "Error: Tool UI (Step 1.1) missing.";}
+      } else { console.error("Sync Internals Extractor elements (Step A) not found."); if(syncSearchTermOutputPre) syncSearchTermOutputPre.textContent = "Error: Tool UI (Step A) missing.";}
       
       if (extractPasswordButton_sync && syncDataInput_sync && syncToolOutputPre) {
         extractPasswordButton_sync.addEventListener("click", extractPasswordFromSyncData_sync);
-      } else { console.error("Sync Internals Extractor elements (Step 1.2) not found."); if(syncToolOutputPre && !getInstructionsButton_sync) syncToolOutputPre.textContent = "Error: Tool UI (Step 1.2) missing.";}
+      } else { console.error("Sync Internals Extractor elements (Step C) not found."); if(syncToolOutputPre) syncToolOutputPre.textContent = "Error: Tool UI (Step C) missing.";}
 
-      function showSyncInstructions_sync() {
-        if (!wifiNameInput_sync || !syncToolOutputPre) return;
-        let value = wifiNameInput_sync.value.trim();
-        let searchTermUserGuidance;
-        let baseSearch = "<code>wifi_</code>";
-
-        if (value) {
-          searchTermUserGuidance = `On the left, look for an entry that looks like <strong>${hexEncode_sync(value)}&lt;||&gt;psk</strong>.`;
+      function showSyncSearchTerm() {
+        if (!wifiNameInput_sync || !syncSearchTermOutputPre) return;
+        let ssid = wifiNameInput_sync.value.trim();
+        if (ssid) {
+          const hexSsid = hexEncode_sync(ssid);
+          syncSearchTermOutputPre.innerHTML = `For SSID "<strong>${ssid}</strong>", try searching for this key in <code>chrome://sync-internals</code> (Search tab):<br><code style="font-size:0.9em; color:#61dafb;">${hexSsid}&lt;||&gt;psk</code>`;
         } else {
-          searchTermUserGuidance = `On the left, browse the list for entries containing "psk" that might correspond to your network.`;
+          syncSearchTermOutputPre.innerHTML = `If you leave the SSID field blank, you will need to manually browse <code>wifi_</code> entries containing "<code>psk</code>" in <code>chrome://sync-internals</code> (Search tab) to find your network.`;
         }
-        syncToolOutputPre.innerHTML = `<strong>Instructions to Get Sync Data:</strong>\n\n1. Open a new tab and go to: <code>chrome://sync-internals</code>\n2. Click on the "<strong>Search</strong>" tab at the top.\n3. In the search box on that page, type ${baseSearch} and press Enter.\n4. ${searchTermUserGuidance}\n5. Click the relevant entry on the left to view its JSON data on the right.\n6. Copy <strong>ALL</strong> the JSON data (starts with { and ends with }).\n7. Paste the copied JSON into the "Step 1.2" text area above and click "Extract from Sync Data".`;
-        syncToolOutputPre.className = '';
       }
 
       function extractPasswordFromSyncData_sync() {
         if (!syncDataInput_sync || !syncToolOutputPre) return;
         let jsonData = syncDataInput_sync.value.trim();
-        syncToolOutputPre.className = '';
+        syncToolOutputPre.className = ''; // Clear any previous error/success classes
 
         if (!jsonData) { syncToolOutputPre.innerHTML = `<span class="error">Error: Please paste the JSON data from chrome://sync-internals.</span>`; return; }
-        if (!jsonData.startsWith("{") || !jsonData.endsWith("}")) { syncToolOutputPre.innerHTML = `<span class="error">Error: Pasted data is not a valid JSON object.</span>`; return; }
-
+        
+        // Basic JSON validation (more can be added)
+        if (!jsonData.startsWith("{") || !jsonData.endsWith("}")) { 
+            syncToolOutputPre.innerHTML = `<span class="error">Error: Pasted data does not appear to be a valid JSON object. Please ensure you copied the entire object.</span>`; 
+            return; 
+        }
+        
         try {
           const json = JSON.parse(jsonData);
-          if (json.SPECIFICS && json.SPECIFICS.wifi_configuration && json.NON_UNIQUE_NAME) {
-            let ssid = json.NON_UNIQUE_NAME.split("<")[0];
-            if (/^[0-9A-F]+$/.test(ssid) && ssid.length % 2 === 0 && ssid.length > 2) { ssid = hexDecode_sync(ssid); }
+          // Updated to check more specific path based on typical sync_internals structure
+          if (json.SPECIFICS && json.SPECIFICS.wifi_configuration && json.SPECIFICS.wifi_configuration.hex_ssid && json.SPECIFICS.wifi_configuration.passphrase) {
+            let hexSsidFromData = json.SPECIFICS.wifi_configuration.hex_ssid;
+            let decodedSsid = hexDecode_sync(hexSsidFromData); // hex_ssid is already hex
+            const passphrase = atob(json.SPECIFICS.wifi_configuration.passphrase); // Passphrase is base64
+            
+            syncToolOutputPre.innerHTML = `<span class="success">Data successfully extracted:</span>\n\n<strong>SSID (from Hex):</strong> ${decodedSsid}\n<strong>Password:</strong> ${passphrase}`;
+          } else if (json.NON_UNIQUE_NAME && json.SPECIFICS && json.SPECIFICS.wifi_configuration && json.SPECIFICS.wifi_configuration.passphrase) {
+            // Fallback for older potential structures if NON_UNIQUE_NAME was used for hex SSID
+            let ssidPart = json.NON_UNIQUE_NAME.split("<")[0];
+             // NON_UNIQUE_NAME might already be hex or plain text. If it's hex, decode it.
+            let decodedSsid = ssidPart;
+            if (/^[0-9A-F]+$/i.test(ssidPart) && ssidPart.length % 2 === 0) { // Check if it looks like hex
+                try { decodedSsid = hexDecode_sync(ssidPart); } catch(e) { /* keep original if decode fails */ }
+            }
             const passphrase = atob(json.SPECIFICS.wifi_configuration.passphrase);
-            syncToolOutputPre.innerHTML = `<span class="success">Data successfully extracted:</span>\n\n<strong>SSID (WiFi Name):</strong> ${ssid}\n<strong>Password:</strong> ${passphrase}`;
-          } else { throw new Error("Pasted JSON is missing required fields."); }
-        } catch (e) { console.error("Sync Internals Extractor Error:", e); syncToolOutputPre.innerHTML = `<span class="error">Error:</span> ${e.message || e.toString().toLowerCase()}`; }
+            syncToolOutputPre.innerHTML = `<span class="success">Data successfully extracted (using NON_UNIQUE_NAME):</span>\n\n<strong>SSID (from NON_UNIQUE_NAME):</strong> ${decodedSsid}\n<strong>Password:</strong> ${passphrase}`;
+          }
+          else { 
+            throw new Error("The pasted JSON does not contain the expected WiFi configuration fields (SPECIFICS.wifi_configuration.hex_ssid and .passphrase). Please ensure you copied the correct JSON object for a WiFi network node."); 
+          }
+        } catch (e) { 
+          console.error("Sync Internals Extractor Error:", e); 
+          syncToolOutputPre.innerHTML = `<span class="error">Error processing JSON:</span> ${e.message || e.toString().toLowerCase()}. Check console for more details.`; 
+        }
       }
 
       function hexEncode_sync(text) { return text.split("").map((char) => char.charCodeAt(0).toString(16).padStart(2, "0")).join("").toUpperCase(); }
-      function hexDecode_sync(hexString) { if (!/^[0-9A-Fa-f]{2,}$/i.test(hexString.replace(/[^0-9A-Fa-f]/g, ''))) { return hexString; } try { return hexString.match(/.{1,2}/g).filter((pair) => !!pair && /^[0-9A-Fa-f]{2}$/i.test(pair)).map((byte) => String.fromCharCode(parseInt(byte, 16))).join(""); } catch (e) { console.warn("Could not hex decode:", hexString, e); return hexString; } }
+      function hexDecode_sync(hexString) { 
+        if (!hexString || typeof hexString !== 'string' || !/^[0-9A-Fa-f]+$/i.test(hexString.replace(/[^0-9A-Fa-f]/g, '')) || hexString.length % 2 !== 0) { 
+            // console.warn("Invalid hex string for decoding:", hexString);
+            return hexString; // Return original if not valid hex
+        } 
+        try { 
+            return hexString.match(/.{1,2}/g).map((byte) => String.fromCharCode(parseInt(byte, 16))).join(""); 
+        } catch (e) { 
+            // console.warn("Could not hex decode:", hexString, e); 
+            return hexString; // Return original on error
+        } 
+      }
       // --- END SYNC INTERNALS WIFI EXTRACTOR SCRIPT ---
 
       // --- NPPE SCRIPT ---
@@ -576,133 +645,136 @@
       const nppeOutputTableBody = document.querySelector("#nppe_output_table tbody");
       const nppeLogOutput = document.getElementById("nppe_log_output");
 
-      function nppeLog(txt, isError = false) {
+      function nppeLog(txt, isError = false, isSuccess = false) {
           if (nppeLogOutput) {
               const entry = document.createElement("div");
-              entry.textContent = (isError ? "ERROR: " : "") + txt;
-              if(isError) entry.style.color = "#ff6b6b";
+              entry.textContent = txt;
+              if(isError) entry.className = 'error';
+              if(isSuccess) entry.className = 'success';
               nppeLogOutput.appendChild(entry);
-              nppeLogOutput.scrollTop = nppeLogOutput.scrollHeight; // Scroll to bottom
+              nppeLogOutput.scrollTop = nppeLogOutput.scrollHeight; 
           }
       }
 
       function extractNPPE(event) {
         if (!nppeOutputTableBody || !nppeLogOutput) return;
-        nppeOutputTableBody.innerHTML = ''; // Clear previous results
-        nppeLogOutput.innerHTML = 'Processing log file...\n'; // Clear previous log
+        nppeOutputTableBody.innerHTML = ''; 
+        nppeLogOutput.innerHTML = ''; // Clear previous log entries
+        nppeLog("Processing log file...", false);
 
         let file = event.target.files[0];
         if (!file) { nppeLog("No file selected.", true); return; }
-        if (!file.name.endsWith(".json")) { nppeLog("Invalid file type. Please upload a .json file.", true); return; }
+        if (!file.name.endsWith(".json")) { nppeLog("Invalid file type. Please upload a .json file generated by chrome://net-export.", true); return; }
         
         let reader = new FileReader();
         reader.readAsText(file);
         reader.onload = (e) => {
-          let netlog = e.target.result;
-          let split_netlog = netlog.split("\n");
+          let netlogContent = e.target.result;
           let policyNetsLines = [];
-          // Keywords that might indicate NetworkConfiguration data in base64
-          const keywords = ["ya0NvbmZpZ3VyYXRpb2", "vcmtDb25maWd1cmF0aW", "rQ29uZmlndXJhdGlvbn", "Db25maWd1cmF0aW9ucw"];
+          const keywords = ["ya0NvbmZpZ3VyYXRpb2", "vcmtDb25maWd1cmF0aW", "rQ29uZmlndXJhdGlvbn", "Db25maWd1cmF0aW9ucw"]; // Base64 snippets of "NetworkConfigurations" or similar
           
-          for (let i = 0; i < split_netlog.length; i++) {
-            if (keywords.some(keyword => split_netlog[i].includes(keyword))) {
-              policyNetsLines.push(split_netlog[i]);
+          // Split by lines, but also handle cases where the entire log is one massive line (less common for net-export)
+          const lines = netlogContent.split('\n');
+          for (const line of lines) {
+            if (keywords.some(keyword => line.includes(keyword))) {
+              policyNetsLines.push(line);
             }
           }
 
           if (policyNetsLines.length === 0) {
-            nppeLog("No potential NetworkConfiguration data found in the log.", true);
+            nppeLog("No lines containing typical NetworkConfiguration policy keywords found in the log. Ensure 'Include raw bytes' was enabled and policies were reloaded during logging.", true);
             return;
           }
-          nppeLog(`Found ${policyNetsLines.length} potential lines with network configuration data.`);
+          nppeLog(`Found ${policyNetsLines.length} potential lines containing policy data. Attempting to parse...`);
 
           let networksFound = 0;
-          policyNetsLines.forEach((line, index) => {
+          policyNetsLines.forEach((line, lineIndex) => {
             try {
-              // Extract base64 part more robustly
-              const bytesMatch = line.match(/"bytes":"([^"]+)"/);
-              if (!bytesMatch || !bytesMatch[1]) {
-                nppeLog(`Line ${index+1}: Could not find "bytes" field. Skipping.`, true);
-                return;
-              }
-              let decodedPolicyNet = atob(bytesMatch[1]);
-              
-              // Attempt to find NetworkConfigurations JSON array
-              const networkConfigsMatch = decodedPolicyNet.match(/"NetworkConfigurations"\s*:\s*(\[.*?\])/s);
-              if (!networkConfigsMatch || !networkConfigsMatch[1]) {
-                nppeLog(`Line ${index+1}: Could not find "NetworkConfigurations" array in decoded data. Skipping.`, true);
-                return;
-              }
-              
-              let networkConfigurationsStr = networkConfigsMatch[1];
-              let networkConfigurations;
-              try {
-                networkConfigurations = JSON.parse(networkConfigurationsStr);
-              } catch (jsonErr) {
-                nppeLog(`Line ${index+1}: Error parsing NetworkConfigurations JSON: ${jsonErr.message}. Skipping.`, true);
-                console.error("Problematic JSON string for NetworkConfigurations:", networkConfigurationsStr);
-                return;
-              }
-
-              nppeLog(`Line ${index+1}: Parsed ${networkConfigurations.length} network(s).`);
-
-              for (const wifiConfig of networkConfigurations) {
-                if (!wifiConfig || !wifiConfig.WiFi || !wifiConfig.WiFi.SSID) {
-                    nppeLog("Skipping an invalid or incomplete WiFi configuration entry.", true);
-                    continue;
+              const lineJson = JSON.parse(line); // Each line from net-export log is typically a JSON object
+              if (lineJson.params && lineJson.params.bytes) {
+                let decodedBytes = "";
+                try {
+                    decodedBytes = atob(lineJson.params.bytes);
+                } catch (decodeError) {
+                    nppeLog(`Line ${lineIndex+1}: Error decoding base64 bytes: ${decodeError.message}. Skipping.`, true);
+                    return; // continue to next line
                 }
-                networksFound++;
-                let tr = document.createElement("tr");
-                
-                let ssidTd = document.createElement("td");
-                ssidTd.textContent = wifiConfig.WiFi.SSID;
-                
-                let securityTd = document.createElement("td");
-                securityTd.textContent = wifiConfig.WiFi.Security || "Unknown";
-                
-                let passphraseTd = document.createElement("td");
-                if (wifiConfig.WiFi.Passphrase) {
-                  passphraseTd.textContent = wifiConfig.WiFi.Passphrase;
-                } else if (securityTd.textContent === "WPA-EAP" && wifiConfig.WiFi.EAP) {
-                  let creds = `Identity: ${wifiConfig.WiFi.EAP.Identity || "N/A"}`;
-                  if (wifiConfig.WiFi.EAP.Password) {
-                    creds += `\nPassword: ${wifiConfig.WiFi.EAP.Password}`;
+
+                // The decodedBytes might be a complex string, try to find JSON within it
+                // Looking for "NetworkConfigurations": [...]
+                const networkConfigsMatch = decodedBytes.match(/"NetworkConfigurations"\s*:\s*(\[.*?\])/s);
+                if (networkConfigsMatch && networkConfigsMatch[1]) {
+                  let networkConfigurationsArray;
+                  try {
+                    networkConfigurationsArray = JSON.parse(networkConfigsMatch[1]);
+                  } catch (jsonErr) {
+                    nppeLog(`Line ${lineIndex+1}: Error parsing NetworkConfigurations JSON: ${jsonErr.message}. Skipping.`, true);
+                    return; // continue to next line
                   }
-                  passphraseTd.innerText = creds; // Use innerText to preserve newlines in table cell
-                } else {
-                  passphraseTd.textContent = "NOT FOUND";
+
+                  if (networkConfigurationsArray.length > 0) {
+                    nppeLog(`Line ${lineIndex+1}: Found and parsed ${networkConfigurationsArray.length} network(s) within this entry.`);
+                  }
+
+                  for (const wifiConfig of networkConfigurationsArray) {
+                    if (!wifiConfig || !wifiConfig.WiFi || !wifiConfig.WiFi.SSID) {
+                      continue; // Skip invalid/incomplete entries silently or add a log
+                    }
+                    networksFound++;
+                    let tr = document.createElement("tr");
+                    
+                    let ssidTd = document.createElement("td");
+                    ssidTd.textContent = wifiConfig.WiFi.SSID;
+                    
+                    let securityTd = document.createElement("td");
+                    securityTd.textContent = wifiConfig.WiFi.Security || "Unknown";
+                    
+                    let credsTd = document.createElement("td");
+                    if (wifiConfig.WiFi.Passphrase) {
+                      credsTd.textContent = wifiConfig.WiFi.Passphrase;
+                    } else if (wifiConfig.WiFi.EAP) {
+                      let eapDetails = `Type: ${wifiConfig.WiFi.EAP.Outer || 'N/A'}`;
+                      if(wifiConfig.WiFi.EAP.Identity) eapDetails += `\nIdentity: ${wifiConfig.WiFi.EAP.Identity}`;
+                      // Add more EAP fields if needed, e.g., AnonymousIdentity, Inner, ServerCARefs, etc.
+                      credsTd.innerText = eapDetails; 
+                    } else {
+                      credsTd.textContent = "NOT FOUND/N.A.";
+                    }
+                    
+                    let hiddenSsidTd = document.createElement("td");
+                    hiddenSsidTd.textContent = wifiConfig.WiFi.HiddenSSID ? "Yes" : "No";
+                    
+                    tr.appendChild(ssidTd);
+                    tr.appendChild(credsTd);
+                    tr.appendChild(securityTd);
+                    tr.appendChild(hiddenSsidTd);
+                    nppeOutputTableBody.appendChild(tr);
+                  }
                 }
-                
-                let hiddenSsidTd = document.createElement("td");
-                hiddenSsidTd.textContent = wifiConfig.WiFi.HiddenSSID ? "Yes" : "No";
-                
-                tr.appendChild(ssidTd);
-                tr.appendChild(passphraseTd);
-                tr.appendChild(securityTd);
-                tr.appendChild(hiddenSsidTd);
-                nppeOutputTableBody.appendChild(tr);
               }
             } catch (err) {
-              nppeLog(`Error processing line ${index+1}: ${err.message}`, true);
-              console.error("Detailed error on line:", line, err);
+              // This catches errors from parsing the individual line `lineJson = JSON.parse(line);`
+              // nppeLog(`Line ${lineIndex+1}: Not a valid JSON line or unexpected structure. Skipping.`, true);
+              // console.warn("Skipping non-JSON line or line with unexpected structure in net-export log:", line);
             }
           });
-          if (networksFound === 0 && policyNetsLines.length > 0) {
-             nppeLog("Processed potential lines but found no extractable WiFi configurations.", true);
-          } else if (networksFound > 0) {
-             nppeLog(`Extraction complete. Displayed ${networksFound} network(s).`, false);
+          
+          if (networksFound === 0) {
+             nppeLog("Processing complete. No extractable WiFi configurations found in the provided log matching expected policy structures.", true);
+          } else {
+             nppeLog(`Extraction complete. Displayed ${networksFound} network configuration(s).`, false, true);
           }
         };
         reader.onerror = () => {
-            nppeLog("Error reading file.", true);
+            nppeLog("Error reading the uploaded file.", true);
         };
       }
 
       if (nppeFileInput) {
         nppeFileInput.addEventListener("change", extractNPPE);
       } else {
-        console.error("NPPE file input not found.");
-        if(nppeLogOutput) nppeLog("Error: NPPE file input element missing from page.", true);
+        console.error("NPPE file input element not found.");
+        if(nppeLogOutput) nppeLog("Critical Error: NPPE file input UI element is missing from the page.", true);
       }
       // --- END NPPE SCRIPT ---
 
