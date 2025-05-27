@@ -127,7 +127,7 @@
     }
     .menu-trigger svg {
       width: 24px;
-      height: 18px; 
+      height: 24px; /* UPDATED from 18px */
       color: #FFFFFF;
       transition: color 0.2s ease-in-out;
     }
@@ -136,9 +136,9 @@
     }
     
     .menu-trigger .line {
-      transform-origin: 12px 12px;
+      transform-origin: 12px 12px; /* Ensures rotation is centered for 24x24 viewBox */
       transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19), 
-              opacity 0.15s 0.1s linear; 
+                  opacity 0.15s 0.1s linear; 
     }
 
     /* Initial hamburger state - spread the lines out */
@@ -343,10 +343,10 @@
 </head>
 <body>
   <button class="menu-trigger" aria-label="Open navigation menu" aria-expanded="false">
-    <svg class="menu-icon-lines" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="line line1" d="M1 2H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
-      <path class="line line2" d="M1 9H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
-      <path class="line line3" d="M1 16H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt"/>
+    <svg class="menu-icon-lines" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="line line1" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path class="line line2" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path class="line line3" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     </svg>
   </button>
 
@@ -356,15 +356,15 @@
       <ul class="fullscreen-menu-list">
         </ul>
     </nav>
-     <p class="command-palette-tip">Tip: Press Ctrl+K or Cmd+K for quick search</p>
+      <p class="command-palette-tip">Tip: Press Ctrl+K or Cmd+K for quick search</p>
   </div>
 
   <div class="command-palette-backdrop"></div>
   <div class="command-palette" role="dialog" aria-modal="true" aria-labelledby="commandPaletteLabelBypass">
-     <div class="command-palette-input-wrapper">
+      <div class="command-palette-input-wrapper">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg>
         <input type="search" class="command-palette-input" placeholder="Type a command or search..." id="commandPaletteLabelBypass" autocomplete="off">
-     </div>
+      </div>
     <ul class="command-palette-results">
       </ul>
     <div class="command-palette-no-results">No results found.</div>
@@ -419,9 +419,7 @@
     <h2>Conclusion</h2>
     <p>By combining IPv4 DNS overrides through <code>chrome://network</code>, a custom NextDNS configuration, and MAC address randomization, users can achieve a more open and censorship-resistant internet experience on locked-down ChromeOS devices. This solution does not require elevated privileges.</p>
     <p class="credits">Developed by the hapara.fail team.<br>This tool and guide are for educational purposes only. Please use responsibly.</p>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+  </div> <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
   <script>
     // TS PARTICLES SCRIPT (Consistent with index.html)
     document.addEventListener('DOMContentLoaded', () => {
@@ -474,12 +472,12 @@
           tsParticles.load("tsparticles", particleSettings)
             .then(container => {
               if (container && prefersReducedMotion) {
-                 if (container.particles && typeof container.particles.setCount === 'function') {
-                   container.particles.setCount(0);
-                }
-                if (container.stop) {
-                   container.stop();
-                }
+                  if (container.particles && typeof container.particles.setCount === 'function') {
+                    container.particles.setCount(0);
+                  }
+                  if (container.stop) {
+                    container.stop();
+                  }
               }
             })
             .catch(error => {

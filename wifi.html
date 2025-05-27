@@ -78,7 +78,7 @@
       padding-top: 2rem;
       margin-top: 3rem;
     }
-     .content-wrapper h2:first-of-type { /* No border/padding for the first H2 on the page */
+      .content-wrapper h2:first-of-type { /* No border/padding for the first H2 on the page */
         border-top: none;
         padding-top: 0;
         margin-top: 2.5rem; /* Default H2 margin */
@@ -293,23 +293,72 @@
     }
 
 
-    /* --- Navigation Systems CSS (Copied from index.html) --- */
-    .menu-trigger { position: fixed; top: 20px; right: 20px; z-index: 1005; background: none; border: none; padding: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 0; }
-    .menu-trigger svg { width: 24px; height: 18px; color: #FFFFFF; transition: color 0.2s ease-in-out; }
-    .menu-trigger:hover svg { color: #AAAAAA; }
-    .menu-trigger .line { transform-origin: center center; transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19), opacity 0.15s 0.1s linear; }
-    .menu-trigger.is-active .line1 { transform: translateY(7.5px) rotate(45deg); }
-    .menu-trigger.is-active .line2 { opacity: 0; transition: opacity 0.1s linear; }
-    .menu-trigger.is-active .line3 { transform: translateY(-7.5px) rotate(-45deg); }
-    .fullscreen-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0A0A0A; z-index: 1000; display: none; flex-direction: column; align-items: flex-start; justify-content: flex-end; opacity: 0; transition: opacity 0.3s ease-in-out; padding: 8vh 6vw; box-sizing: border-box; overflow-y: auto; }
+    /* --- UPDATED Navigation Systems CSS --- */
+    .menu-trigger {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1005; 
+      background: none;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
+    }
+    .menu-trigger svg {
+      width: 24px;
+      height: 24px; 
+      color: #FFFFFF;
+      transition: color 0.2s ease-in-out;
+    }
+    .menu-trigger:hover svg {
+      color: #AAAAAA;
+    }
+    
+    .menu-trigger .line {
+      transform-origin: 12px 12px;
+      transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19), 
+                  opacity 0.15s 0.1s linear; 
+    }
+
+    /* Initial hamburger state - spread the lines out */
+    .line1 {
+      transform: translateY(-6px);
+    }
+
+    .line3 {
+      transform: translateY(6px);
+    }
+
+    .menu-trigger.is-active .line1 {
+      transform: rotate(45deg);
+    }
+
+    .menu-trigger.is-active .line2 {
+      opacity: 0;
+      transition: opacity 0.1s linear; 
+    }
+
+    .menu-trigger.is-active .line3 {
+      transform: rotate(-45deg);
+    }
+
+    .fullscreen-menu { 
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0A0A0A; z-index: 1000; display: none; flex-direction: column; align-items: flex-start; justify-content: flex-end; opacity: 0; transition: opacity 0.3s ease-in-out; padding: 8vh 6vw; box-sizing: border-box; overflow-y: auto; 
+    }
     .fullscreen-menu.is-active { display: flex; opacity: 1; }
     .fullscreen-menu-list { list-style: none; padding: 0; margin: 0; text-align: left; }
     .fullscreen-menu-list li { margin: 12px 0; }
     .fullscreen-menu-list a { color: #ccc; text-decoration: none; font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 500; padding: 8px 0; transition: color 0.2s ease-in-out, letter-spacing 0.2s ease-in-out; display: block; }
     .fullscreen-menu-list a:hover, .fullscreen-menu-list a:focus { color: #fff; letter-spacing: 0.5px; outline: none; }
     .fullscreen-menu .command-palette-tip { font-size: 0.8rem; color: #555; margin-top: 30px; width: 100%; text-align: left; }
+    
     .command-palette-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(4px); z-index: 1008; display: none; opacity: 0; transition: opacity 0.2s ease-in-out; }
     .command-palette-backdrop.is-active { display: block; opacity: 1; }
+    
     .command-palette { position: fixed; top: 20%; left: 50%; transform: translateX(-50%); width: 90%; max-width: 560px; background-color: #1C1C1E; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08); z-index: 1010; display: none; flex-direction: column; overflow: hidden; opacity: 0; transform: translateX(-50%) scale(0.95); transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out; }
     .command-palette.is-active { display: flex; opacity: 1; transform: translateX(-50%) scale(1); }
     .command-palette-input-wrapper { display: flex; align-items: center; padding: 0 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
@@ -326,17 +375,21 @@
     .command-palette-no-results { padding: 20px; text-align: center; color: #888; font-size: 0.95rem; display: none; }
     .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
 
-    @media (prefers-reduced-motion: reduce) { #tsparticles { display: none !important; } .wifi-extractor-tool, .nppe-tool { backdrop-filter: none; } .fullscreen-menu, .command-palette, .command-palette-backdrop, .menu-trigger .line { transition: none !important; } }
+    @media (prefers-reduced-motion: reduce) { 
+        #tsparticles { display: none !important; } 
+        .extractor-tool-section { backdrop-filter: none; } /* Corrected class names for reduced motion */
+        .fullscreen-menu, .command-palette, .command-palette-backdrop, .menu-trigger .line { transition: none !important; } 
+    }
   </style>
 </head>
 
 <body>
 
   <button class="menu-trigger" aria-label="Open navigation menu" aria-expanded="false">
-    <svg class="menu-icon-lines" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="line line1" d="M1 2H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt" />
-      <path class="line line2" d="M1 9H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt" />
-      <path class="line line3" d="M1 16H23" stroke="currentColor" stroke-width="2" stroke-linecap="butt" />
+    <svg class="menu-icon-lines" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="line line1" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path class="line line2" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path class="line line3" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     </svg>
   </button>
 
@@ -436,7 +489,7 @@
                 </tr>
               </thead>
               <tbody>
-                </tbody>
+              </tbody>
             </table>
             <pre id="nppe_log_output" style="font-size: 0.8em; margin-top:10px; max-height: 150px;"></pre> </div>
     </div>
@@ -449,9 +502,7 @@
 
     <p class="credits">Sync Internals method original discovery by SimonTheCat#0651 in <a href="https://discord.gg/unblock" target="_blank" rel="noopener noreferrer">TitaniumNetwork</a>.<br>NPPE tool concept adapted from similar public research.<br>These tools and guides are for educational purposes only. Please use responsibly.</p>
 
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+  </div> <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // --- TS PARTICLES SCRIPT ---
@@ -526,7 +577,6 @@
       const nppeLogOutput = document.getElementById("nppe_log_output");
 
       function nppeLog(txt, isError = false) {
-          console.log(txt);
           if (nppeLogOutput) {
               const entry = document.createElement("div");
               entry.textContent = (isError ? "ERROR: " : "") + txt;
@@ -578,7 +628,6 @@
               let decodedPolicyNet = atob(bytesMatch[1]);
               
               // Attempt to find NetworkConfigurations JSON array
-              // This regex is complex and might need adjustment based on actual log structure
               const networkConfigsMatch = decodedPolicyNet.match(/"NetworkConfigurations"\s*:\s*(\[.*?\])/s);
               if (!networkConfigsMatch || !networkConfigsMatch[1]) {
                 nppeLog(`Line ${index+1}: Could not find "NetworkConfigurations" array in decoded data. Skipping.`, true);
