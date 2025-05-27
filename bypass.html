@@ -134,20 +134,33 @@
     .menu-trigger:hover svg {
       color: #AAAAAA;
     }
+    
     .menu-trigger .line {
-      transform-origin: center center; 
+      transform-origin: 12px 12px;
       transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19), 
-                  opacity 0.15s 0.1s linear; 
+              opacity 0.15s 0.1s linear; 
     }
+
+    /* Initial hamburger state - spread the lines out */
+    .line1 {
+      transform: translateY(-6px);
+    }
+
+    .line3 {
+      transform: translateY(6px);
+    }
+
     .menu-trigger.is-active .line1 {
-      transform: translateY(7.5px) rotate(45deg); 
+      transform: rotate(45deg);
     }
+
     .menu-trigger.is-active .line2 {
       opacity: 0;
       transition: opacity 0.1s linear; 
     }
+
     .menu-trigger.is-active .line3 {
-      transform: translateY(-7.5px) rotate(-45deg);
+      transform: rotate(-45deg);
     }
 
     .fullscreen-menu {
