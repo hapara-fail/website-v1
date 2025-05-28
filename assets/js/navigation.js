@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const commandPaletteNoResults = document.querySelector('.command-palette-no-results');
 
   if (!menuTrigger && !commandPaletteInput) {
-    // console.log("Core navigation trigger elements (menu or command palette input) not found. Skipping navigation script init.");
     return;
   }
   
@@ -23,43 +22,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Full-Screen Menu Logic ---
   function populateFullScreenMenu() {
-   if (!fullscreenMenuList || typeof siteNavItems === 'undefined') {
-       console.error("Fullscreen menu list or siteNavItems not found for populating.");
-       return;
-   }
-   fullscreenMenuList.innerHTML = ''; 
-  
-   // Determine the current page's filename (e.g., "index.html", "forms.html")
-   const currentWindowPath = window.location.pathname; // e.g., "/forms.html", or "/" if at root
-   let currentPageFilename = currentWindowPath.substring(currentWindowPath.lastIndexOf('/') + 1);
-
-   // If path is like "/" (root) or "/some/folder/", the substring above results in ""
-   // So, treat "" or paths ending with "/" as 'index.html' for comparison
-   if (currentPageFilename === "" || currentWindowPath.endsWith("/")) {
-      currentPageFilename = 'index.html';
+    if (!fullscreenMenuList || typeof siteNavItems === 'undefined') {
+        console.error("Fullscreen menu list or siteNavItems not found for populating.");
+        return;
     }
+    fullscreenMenuList.innerHTML = ''; 
+    
+    const currentWindowPath = window.location.pathname; // e.g., "/forms.html", "/bypass", or "/"
+    let currentPageIdentifier = currentWindowPath.substring(currentWindowPath.lastIndexOf('/') + 1);
+
+    // Normalize for root path or paths ending with a slash (treat as index.html)
+    if (currentPageIdentifier === "" || currentWindowPath.endsWith("/")) {
+        currentPageIdentifier = 'index.html'; 
+    }
+    // Now currentPageIdentifier is "forms.html", "bypass", "index.html", etc.
 
     siteNavItems.filter(item => item.type === 'page').forEach(item => { 
       const listItem = document.createElement('li');
       const link = document.createElement('a');
-      link.href = item.href; // nav-data.js hrefs are like "index.html", "forms.html"
+      link.href = item.href; // From nav-data.js, e.g., "index.html", "forms.html"
       link.textContent = item.name;
-    
-      // item.href from nav-data.js is assumed to be the direct filename for pages at the root
-      const itemFilename = item.href; 
+      
+      const navItemHref = item.href; // This is guaranteed to have .html by your nav-data.js structure for pages
 
-     // ---- DEBUGGING CONSOLE LOG ----
-      console.log(`[Highlight Check] Menu Item: '${item.name}', CurrentPageFile: '${currentPageFilename}', ItemFile: '${itemFilename}', Match: ${itemFilename === currentPageFilename}`);
+      // Create base names for comparison (stripping .html)
+      const navItemBase = navItemHref.replace(".html", ""); // e.g., "index", "forms", "bypass"
+      const currentPageBase = currentPageIdentifier.replace(".html", ""); // e.g., "index", "forms", "bypass"
 
-      if (itemFilename === currentPageFilename) {
-       link.classList.add('current-page');
-       link.setAttribute('aria-current', 'page'); // For accessibility
-       link.style.cursor = 'default'; 
-       link.addEventListener('click', (e) => e.preventDefault()); // Prevent re-navigation
+      // ---- DEBUGGING CONSOLE LOG ----
+      console.log(`[Highlight Check V2] Menu Item: '${item.name}', CurrentPathFull: '${currentWindowPath}', CurrentPageID: '${currentPageIdentifier}', CurrentPageBase: '${currentPageBase}', NavItemHref: '${navItemHref}', NavItemBase: '${navItemBase}', Match: ${navItemBase === currentPageBase || navItemHref === currentPageIdentifier}`);
+
+      // Match if:
+      // 1. The base names match (e.g., "bypass" from URL vs "bypass" from nav-data's "bypass.html")
+      // OR
+      // 2. The full href from nav-data (e.g., "forms.html") matches the identifier from the URL (if URL was "/forms.html")
+      if (navItemBase === currentPageBase || navItemHref === currentPageIdentifier) {
+        link.classList.add('current-page');
+        link.setAttribute('aria-current', 'page');
+        link.style.cursor = 'default'; 
+        link.addEventListener('click', (e) => e.preventDefault());
       }
-    
-     listItem.appendChild(link);
-     fullscreenMenuList.appendChild(listItem);
+      
+      listItem.appendChild(link);
+      fullscreenMenuList.appendChild(listItem);
     });
   }
 
@@ -158,16 +163,22 @@ document.addEventListener('DOMContentLoaded', () => {
         listItem.appendChild(itemTypeSpan);
         
         listItem.addEventListener('click', () => {
-          let normalizedCurrentPathOnClick = window.location.pathname;
-          if (normalizedCurrentPathOnClick === '/') {
-            normalizedCurrentPathOnClick = '/index.html';
+          // Logic to check if it's the current page (simplified for this click handler)
+          let isCurrentPage = false;
+          let currentClickPath = window.location.pathname;
+          if (currentClickPath === '/') currentClickPath = '/index.html';
+          let itemClickPath = item.href;
+          if (itemClickPath && !itemClickPath.startsWith('/') && !itemClickPath.startsWith('http')) {
+            itemClickPath = '/' + itemClickPath;
           }
-          let normalizedItemHrefOnClick = item.href;
-          if (normalizedItemHrefOnClick && !normalizedItemHrefOnClick.startsWith('/') && !normalizedItemHrefOnClick.startsWith('http')) {
-            normalizedItemHrefOnClick = '/' + normalizedItemHrefOnClick;
+          if (itemClickPath === currentClickPath) {
+            isCurrentPage = true;
+          } else { // Handle cases like /bypass vs /bypass.html
+            const currentClickBase = currentClickPath.substring(currentClickPath.lastIndexOf('/') + 1).replace(".html", "");
+            const itemClickBase = item.href.substring(item.href.lastIndexOf('/') + 1).replace(".html", "");
+            if (currentClickBase === itemClickBase) isCurrentPage = true;
           }
 
-          const isCurrentPage = normalizedItemHrefOnClick === normalizedCurrentPathOnClick;
 
           if (item.target === '_blank') {
             window.open(item.href, '_blank', 'noopener,noreferrer');
@@ -229,7 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (commandPalette && commandPalette.classList.contains('is-active')) {
       const resultsItems = commandPaletteResults.querySelectorAll('li');
       
-      // Allow typing in input field even if no results, but handle navigation keys only if results exist
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         if (resultsItems.length > 0) {
@@ -246,11 +256,9 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         if (currentFocusedResultIndex > -1 && resultsItems[currentFocusedResultIndex]) {
           resultsItems[currentFocusedResultIndex].click(); 
-        } else if (resultsItems.length > 0 && currentFocusedResultIndex === -1 && commandPaletteInput && commandPaletteInput.value.trim() !== "") { 
-          // If user typed and pressed Enter without arrowing, activate first result
+        } else if (resultsItems.length > 0 && commandPaletteInput && commandPaletteInput.value.trim() !== "") { 
           resultsItems[0].click(); 
         } else if (resultsItems.length > 0 && commandPaletteInput && commandPaletteInput.value.trim() === "") {
-          // If input is empty and user hits Enter, and default items are shown (all pages)
           resultsItems[0].click();
         }
       }
