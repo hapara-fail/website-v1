@@ -1,0 +1,90 @@
+/* assets/css/page-specific/forms.css */
+/* Styles specific to forms.html (Google Form Unlocker Guide) */
+
+.form-unlocker-demo {
+  background-color: rgba(20, 20, 22, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 20px 25px;
+  border-radius: 8px;
+  margin-top: 2.5rem;
+  margin-bottom: 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.form-unlocker-demo h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.form-unlocker-demo textarea {
+  width: 100%;
+  min-height: 120px;
+  max-height: 250px;
+  background-color: #18181a;
+  color: #e8e8e8;
+  border: 1px solid #383838;
+  border-radius: 6px;
+  padding: 12px;
+  font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.form-unlocker-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.form-unlocker-demo button {
+  background-color: #61dafb;
+  color: #000;
+  border: none;
+  padding: 10px 22px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  flex-shrink: 0;
+}
+
+.form-unlocker-demo button:hover {
+  background-color: #82e9ff;
+  transform: translateY(-1px);
+}
+
+.form-unlocker-demo button:active {
+  transform: translateY(0px);
+}
+
+.form-unlocker-status {
+  font-size: 0.85rem;
+  color: #ff6b6b; /* Default error color */
+  min-height: 1.2em;
+  word-break: break-word;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.form-unlocker-status.success {
+  color: #50fa7b; /* Success color */
+}
+
+/* Reduced motion adjustment for the form unlocker demo */
+@media (prefers-reduced-motion: reduce) {
+  .form-unlocker-demo {
+    backdrop-filter: none;
+  }
+  .form-unlocker-demo button {
+    transition: none;
+    transform: none;
+  }
+}

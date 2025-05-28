@@ -1,55 +1,53 @@
-// navigation.js
-// Contains all logic for the full-screen menu and command palette.
-// It assumes `siteNavItems` is globally available from nav-data.js.
+// assets/js/navigation.js
+// Logic for full-screen menu and command palette.
+// Assumes `siteNavItems` is globally available from nav-data.js.
 
 document.addEventListener('DOMContentLoaded', () => {
-  // --- DOM Elements ---
   const menuTrigger = document.querySelector('.menu-trigger');
   const fullscreenMenu = document.querySelector('.fullscreen-menu');
   const fullscreenMenuList = document.querySelector('.fullscreen-menu-list');
-
   const commandPaletteBackdrop = document.querySelector('.command-palette-backdrop');
   const commandPalette = document.querySelector('.command-palette');
   const commandPaletteInput = document.querySelector('.command-palette-input');
   const commandPaletteResults = document.querySelector('.command-palette-results');
   const commandPaletteNoResults = document.querySelector('.command-palette-no-results');
 
-  if (!menuTrigger && !commandPalette) {
-    // If no navigation elements are found, don't proceed.
-    // This allows including the script on pages without these nav features if needed.
-    // console.log("Navigation elements not found on this page. Skipping navigation script init.");
+  if (!menuTrigger && !commandPaletteInput) {
     return;
   }
   
   let currentFocusedResultIndex = -1;
 
-  // --- Full-Screen Menu Logic ---
   function populateFullScreenMenu() {
-    if (!fullscreenMenuList || typeof siteNavItems === 'undefined') return;
+    if (!fullscreenMenuList || typeof siteNavItems === 'undefined') {
+        return;
+    }
     fullscreenMenuList.innerHTML = ''; 
+    
+    const currentWindowPath = window.location.pathname;
+    let currentPathFilename = currentWindowPath.substring(currentWindowPath.lastIndexOf('/') + 1);
+    if (currentPathFilename === '' || currentWindowPath.endsWith('/')) {
+      currentPathFilename = 'index.html';
+    }
+
     siteNavItems.filter(item => item.type === 'page').forEach(item => { 
       const listItem = document.createElement('li');
       const link = document.createElement('a');
       link.href = item.href;
       link.textContent = item.name;
       
-      const currentPath = window.location.pathname;
-      let itemPath = item.href;
-      // Ensure itemPath starts with '/' if it's a relative root path like "index.html"
-      if (!itemPath.startsWith('/') && !itemPath.startsWith('http')) {
-        itemPath = '/' + itemPath;
+      let itemHrefFilename = item.href.substring(item.href.lastIndexOf('/') + 1);
+       if (itemHrefFilename === '' && item.href.endsWith('/')) { 
+          itemHrefFilename = 'index.html';
       }
 
-      const isCurrentPage = currentPath === itemPath || 
-                            (currentPath.endsWith('/') && item.href === 'index.html') || // Handles root index.html
-                            currentPath.endsWith(item.href); // Handles direct file match
-
-      if (isCurrentPage) {
-        link.style.color = '#fff'; 
-        link.style.cursor = 'default';
-        link.style.fontWeight = 'bold'; // Emphasize current page
-        link.onclick = (e) => e.preventDefault(); 
+      if (itemHrefFilename === currentPathFilename) {
+        link.classList.add('current-page');
+        link.setAttribute('aria-current', 'page');
+        link.style.cursor = 'default'; 
+        link.addEventListener('click', (e) => e.preventDefault());
       }
+      
       listItem.appendChild(link);
       fullscreenMenuList.appendChild(listItem);
     });
@@ -63,7 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
       menuTrigger.classList.remove('is-active'); 
       menuTrigger.setAttribute('aria-expanded', 'false');
       document.body.classList.remove('overlay-active');
-      menuTrigger.focus(); 
+      if (document.body.contains(menuTrigger) && menuTrigger.offsetParent !== null) {
+        menuTrigger.focus(); 
+      }
     } else {
       if (commandPalette && commandPalette.classList.contains('is-active')) {
         closeCommandPalette();
@@ -72,18 +72,23 @@ document.addEventListener('DOMContentLoaded', () => {
       menuTrigger.classList.add('is-active'); 
       menuTrigger.setAttribute('aria-expanded', 'true');
       document.body.classList.add('overlay-active');
-      const firstLink = fullscreenMenuList.querySelector('a:not([style*="cursor: default"])'); 
-      if (firstLink) firstLink.focus();
-      else if (menuTrigger) menuTrigger.focus(); 
+      
+      const firstFocusableLink = fullscreenMenuList.querySelector('a:not(.current-page)'); 
+      if (firstFocusableLink) {
+        firstFocusableLink.focus();
+      } else if (document.body.contains(menuTrigger) && menuTrigger.offsetParent !== null) {
+        menuTrigger.focus(); 
+      }
     }
   }
   
   if (menuTrigger && fullscreenMenu) {
     menuTrigger.addEventListener('click', toggleFullScreenMenu); 
-    populateFullScreenMenu(); // Populate on load
+    if (fullscreenMenuList) {
+        populateFullScreenMenu();
+    }
   }
 
-  // --- Command Palette Logic ---
   function openCommandPalette() {
     if (!commandPalette || !commandPaletteBackdrop || !commandPaletteInput) return;
     if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
@@ -114,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lowerCaseQuery = query.toLowerCase().trim();
     
     const filteredItems = lowerCaseQuery === '' ? 
-        siteNavItems.filter(item => item.type === 'page') : // Show only pages if query is empty
+        siteNavItems.filter(item => item.type === 'page') :
         siteNavItems.filter(item => 
           item.name.toLowerCase().includes(lowerCaseQuery)
         );
@@ -142,21 +147,23 @@ document.addEventListener('DOMContentLoaded', () => {
         listItem.appendChild(itemTypeSpan);
         
         listItem.addEventListener('click', () => {
-          const currentPath = window.location.pathname;
-          let itemPath = item.href;
-          if (!itemPath.startsWith('/') && !itemPath.startsWith('http')) {
-            itemPath = '/' + itemPath;
+          const currentWindowPath = window.location.pathname;
+          let currentPathFilename = currentWindowPath.substring(currentWindowPath.lastIndexOf('/') + 1);
+           if (currentPathFilename === '' || currentWindowPath.endsWith('/')) {
+            currentPathFilename = 'index.html';
           }
-          const isCurrentPage = currentPath === itemPath || 
-                                (currentPath.endsWith('/') && item.href === 'index.html') ||
-                                (currentPath === '/' && item.href === 'index.html') ||
-                                currentPath.endsWith(item.href);
+
+          let itemHrefFilename = item.href.substring(item.href.lastIndexOf('/') + 1);
+            if (itemHrefFilename === '' && item.href.endsWith('/')) {
+                itemHrefFilename = 'index.html';
+            }
+
+          const isCurrentPage = itemHrefFilename === currentPathFilename;
 
           if (item.target === '_blank') {
             window.open(item.href, '_blank', 'noopener,noreferrer');
           } else if (isCurrentPage && item.type === 'page') {
-            // If it's the current page, just close the palette
-            // Allow re-clicking external links
+            // Current page, do nothing on click
           }
           else {
             window.location.href = item.href;
@@ -192,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
       commandPaletteBackdrop.addEventListener('click', closeCommandPalette);
   }
 
-  // --- Global Event Listeners (Keyboard) ---
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
@@ -203,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { // Ensure 'k' check is case-insensitive
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault(); 
       if (commandPalette && commandPalette.classList.contains('is-active')) {
          if(commandPaletteInput) commandPaletteInput.focus(); 
@@ -214,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (commandPalette && commandPalette.classList.contains('is-active')) {
       const resultsItems = commandPaletteResults.querySelectorAll('li');
-      if (resultsItems.length === 0 && e.key !== 'Escape') return; 
+      if (resultsItems.length === 0 && !['Escape', 'ArrowUp', 'ArrowDown'].includes(e.key) ) return; 
 
       if (e.key === 'ArrowDown') {
         e.preventDefault();
@@ -232,8 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         if (currentFocusedResultIndex > -1 && resultsItems[currentFocusedResultIndex]) {
           resultsItems[currentFocusedResultIndex].click(); 
-        } else if (resultsItems.length > 0 && currentFocusedResultIndex === -1) { // If Enter is pressed without prior arrow key nav
-            resultsItems[0].click(); 
+        } else if (resultsItems.length > 0 && currentFocusedResultIndex === -1 && commandPaletteInput && commandPaletteInput.value.trim() !== "") { 
+          resultsItems[0].click(); 
         }
       }
     }

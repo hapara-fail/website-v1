@@ -1,0 +1,212 @@
+/* assets/css/main.css */
+/* Core shared styles for the entire hapara.fail site */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #000;
+  color: #e0e0e0;
+  font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace;
+  position: relative;
+  overflow-x: hidden; /* Prevent horizontal scrollbars globally */
+}
+
+body {
+  min-height: 100%; /* Ensures body fills viewport even with little content */
+  /* Specific body display properties (like flex for centering) go in page-specific CSS */
+}
+
+body.overlay-active {
+  overflow-y: hidden; /* Prevent body scroll when a full-screen overlay is active */
+}
+
+/* Visually Hidden Utility: For accessibility */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Common Content Styling for guide pages and similar content sections */
+.content-wrapper {
+  position: relative;
+  z-index: 1; /* Above #tsparticles */
+  padding: 20px;
+  padding-top: 80px; /* Space for fixed header/menu trigger */
+  padding-bottom: 40px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  line-height: 1.7;
+  color: #e0e0e0; /* Default text color for content */
+  min-height: calc(100vh - 120px); /* Base min-height, adjust if global header/footer heights change */
+}
+
+.content-wrapper h1,
+.content-wrapper h2,
+.content-wrapper h3,
+.content-wrapper h4 {
+  color: #fff;
+  margin-top: 2.5rem;
+  margin-bottom: 1.2rem;
+  font-weight: bold;
+}
+
+.content-wrapper h1 {
+  font-size: clamp(1.8rem, 3.8vw, 2.6rem);
+  margin-top: 0; /* Typically, the first H1 in content has no top margin */
+}
+
+.content-wrapper h2 {
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+}
+
+.content-wrapper h3 {
+  font-size: clamp(1.2rem, 2.8vw, 1.8rem);
+}
+
+.content-wrapper h4 { /* Used for sub-step headings in wifi.html */
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  color: #e0e0e0;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.content-wrapper p,
+.content-wrapper li {
+  margin-bottom: 1rem;
+  color: #ccc;
+}
+
+.content-wrapper ul,
+.content-wrapper ol {
+  margin-bottom: 1.5rem;
+  padding-left: 30px;
+}
+
+.content-wrapper code {
+  background-color: #2a2a2a;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #61dafb;
+  border: 1px solid #444;
+}
+
+.content-wrapper pre {
+  background-color: #1e1e1e;
+  padding: 15px;
+  border-radius: 6px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #d4d4d4;
+  border: 1px solid #333;
+  font-size: 0.9em;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.content-wrapper strong {
+  color: #fff;
+  font-weight: bold;
+}
+
+.content-wrapper a {
+  color: #61dafb;
+  text-decoration: underline;
+}
+
+.content-wrapper a:hover,
+.content-wrapper a:focus {
+  color: #82e9ff;
+  outline: none; /* Consider adding a custom focus style for accessibility */
+}
+
+/* Common utility/component styles within .content-wrapper */
+.content-wrapper .meta-info {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-bottom: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.content-wrapper .quick-guide { /* From wifi.html */
+    margin-bottom: 2rem; /* Space after the guide box */
+}
+.content-wrapper .quick-guide h3 {
+    margin-top: 0.5rem;
+    margin-bottom: 0.8rem;
+    font-size: clamp(1.2rem, 2.8vw, 1.8rem); /* Match content H3 */
+}
+.content-wrapper .quick-guide ul {
+    list-style-type: disc;
+    padding-left: 25px;
+    margin-bottom: 0; /* No extra margin if it's the last thing in quick-guide */
+}
+.content-wrapper .quick-guide li {
+    margin-bottom: 0.5rem;
+}
+
+.content-wrapper .note {
+  background-color: rgba(40, 40, 45, 0.7);
+  border-left: 4px solid #61dafb;
+  padding: 10px 15px;
+  margin: 1.5rem 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.95rem;
+}
+
+.content-wrapper .note strong {
+  color: #61dafb;
+}
+
+.content-wrapper .warning {
+  color: #ffcc00;
+}
+.content-wrapper p.warning strong, /* Ensure strong inside warning P also gets color */
+.content-wrapper .warning strong {
+    color: #ffcc00;
+    font-weight: bold; /* Explicitly make warnings bold */
+}
+
+
+.content-wrapper .critical-warning {
+  color: #ff6b6b;
+}
+.content-wrapper p.critical-warning strong, /* Ensure strong inside critical warning P also gets color */
+.content-wrapper .critical-warning strong {
+    color: #ff6b6b;
+    font-weight: bold; /* Explicitly make critical warnings bold */
+}
+
+
+.content-wrapper .credits {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+/* Base Reduced Motion Adjustments - more specific ones are in component CSS */
+@media (prefers-reduced-motion: reduce) {
+  /* Example: A general soft disable for all transitions.
+     More targeted approach in component-specific CSS is often better.
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  */
+}

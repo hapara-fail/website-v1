@@ -1,0 +1,270 @@
+/* assets/css/navigation.css */
+/* Styles for all navigation components: menu trigger, fullscreen menu, command palette */
+
+/* --- Menu Trigger (Hamburger Icon) --- */
+.menu-trigger {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1005;
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.menu-trigger svg {
+  width: 24px;
+  height: 24px;
+  color: #FFFFFF;
+  transition: color 0.2s ease-in-out;
+}
+
+.menu-trigger:hover svg,
+.menu-trigger:focus svg {
+  color: #AAAAAA;
+  outline: none; /* Or a custom focus style */
+}
+
+.menu-trigger .line {
+  transform-origin: 12px 12px; /* Center of a 24x24 SVG */
+  transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19),
+              opacity 0.15s 0.1s linear;
+}
+
+/* Initial hamburger state - spread the lines out */
+.menu-trigger .line1 {
+  transform: translateY(-6px);
+}
+
+.menu-trigger .line3 {
+  transform: translateY(6px);
+}
+
+/* Active (X) state for hamburger icon */
+.menu-trigger.is-active .line1 {
+  transform: rotate(45deg);
+}
+
+.menu-trigger.is-active .line2 {
+  opacity: 0;
+  transition: opacity 0.1s linear;
+}
+
+.menu-trigger.is-active .line3 {
+  transform: rotate(-45deg);
+}
+
+/* --- Fullscreen Menu --- */
+.fullscreen-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0A0A0A;
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  padding: 8vh 6vw;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.fullscreen-menu.is-active {
+  display: flex;
+  opacity: 1;
+}
+
+.fullscreen-menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.fullscreen-menu-list li {
+  margin: 12px 0;
+}
+
+.fullscreen-menu-list a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 500;
+  padding: 8px 0;
+  transition: color 0.2s ease-in-out, letter-spacing 0.2s ease-in-out;
+  display: block;
+}
+
+.fullscreen-menu-list a:hover,
+.fullscreen-menu-list a:focus {
+  color: #fff;
+  letter-spacing: 0.5px;
+  outline: none;
+}
+
+/* Style for the currently active page link in the fullscreen menu */
+.fullscreen-menu-list a.current-page,
+.fullscreen-menu-list a.current-page:hover,
+.fullscreen-menu-list a.current-page:focus {
+  color: #FFFFFF;
+  font-weight: bold;
+  letter-spacing: 0.5px; /* Consistent with hover/focus */
+  cursor: default; /* Indicate it's the current page */
+}
+
+.fullscreen-menu .command-palette-tip {
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: 30px;
+  width: 100%;
+  text-align: left;
+}
+
+/* --- Command Palette --- */
+.command-palette-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  z-index: 1008;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.command-palette-backdrop.is-active {
+  display: block;
+  opacity: 1;
+}
+
+.command-palette {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  width: 90%;
+  max-width: 560px;
+  background-color: #1C1C1E;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  z-index: 1010;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+
+.command-palette.is-active {
+  display: flex;
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+.command-palette-input-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.command-palette-input-wrapper svg {
+  width: 20px;
+  height: 20px;
+  fill: #888;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.command-palette-input {
+  width: 100%;
+  padding: 15px 0;
+  font-family: inherit;
+  font-size: 1.2rem;
+  color: #f0f0f0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.command-palette-input::placeholder {
+  color: #666;
+}
+
+.command-palette-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.command-palette-results li {
+  padding: 10px 20px;
+  cursor: pointer;
+  color: #ccc;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.1s ease-in-out;
+  display: flex;
+  align-items: center;
+  text-align: left; /* Ensures text within list items is left-aligned */
+}
+
+.command-palette-results li:last-child {
+  border-bottom: none;
+}
+
+.command-palette-results li:hover,
+.command-palette-results li.is-selected {
+  background-color: #007AFF;
+  color: #fff;
+}
+
+.command-palette-results li .item-name {
+  flex-grow: 1;
+}
+
+.command-palette-results li .item-type {
+  font-size: 0.8rem;
+  color: #888;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+.command-palette-results li:hover .item-type,
+.command-palette-results li.is-selected .item-type {
+  color: #eee;
+}
+
+.command-palette-no-results {
+  padding: 20px;
+  text-align: center;
+  color: #888;
+  font-size: 0.95rem;
+  display: none;
+}
+
+/* Reduced motion adjustments for navigation components */
+@media (prefers-reduced-motion: reduce) {
+  .fullscreen-menu,
+  .command-palette,
+  .command-palette-backdrop,
+  .menu-trigger .line {
+    transition: none !important;
+  }
+}

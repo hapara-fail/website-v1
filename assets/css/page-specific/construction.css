@@ -1,0 +1,69 @@
+/* assets/css/page-specific/construction.css */
+/* Styles specific to under-construction.html */
+
+body {
+  /* Specific body layout for centering the coming-soon container */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.coming-soon-container {
+  position: relative;
+  z-index: 1;
+  padding: 2.5rem 3rem;
+  background: rgba(10, 10, 12, 0.65);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 550px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+}
+
+.coming-soon-container h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+  font-weight: bold;
+}
+
+.coming-soon-container p {
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.home-link {
+  display: inline-block;
+  color: #fff;
+  background-color: transparent;
+  border: 1.5px solid #fff;
+  padding: 10px 25px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.home-link:hover,
+.home-link:focus {
+  background-color: #fff;
+  color: #000;
+  outline: none;
+}
+
+/* Reduced motion adjustments for the coming-soon container */
+@media (prefers-reduced-motion: reduce) {
+  .coming-soon-container {
+    backdrop-filter: none;
+  }
+  .home-link {
+    transition: none;
+  }
+}

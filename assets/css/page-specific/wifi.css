@@ -1,0 +1,169 @@
+/* assets/css/page-specific/wifi.css */
+/* Styles specific to wifi.html (ChromeOS WiFi Password Extractor) */
+
+/* Special H2 styling for the first tool heading on this page */
+.content-wrapper h2.first-tool-heading {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 2.5rem;
+}
+
+/* Styles for the generic container of each tool section */
+.extractor-tool-section {
+  background-color: rgba(20, 20, 22, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 20px 25px;
+  border-radius: 8px;
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.extractor-tool-section .tool-step-heading { /* For H3s within extractor sections */
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.extractor-tool-section label {
+  display: block;
+  margin-bottom: 8px;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.extractor-tool-section input[type="text"],
+.extractor-tool-section textarea,
+.extractor-tool-section input[type="file"] {
+  width: 100%;
+  background-color: #18181a;
+  color: #e8e8e8;
+  border: 1px solid #383838;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.extractor-tool-section input[type="file"] {
+  padding: 8px 10px;
+  color: #ccc;
+}
+
+.extractor-tool-section input[type="file"]::file-selector-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.2s ease-in-out;
+}
+.extractor-tool-section input[type="file"]::file-selector-button:hover {
+    background-color: #555;
+}
+
+.extractor-tool-section textarea {
+  min-height: 100px;
+  max-height: 200px;
+  resize: vertical;
+}
+
+.extractor-tool-section button {
+  background-color: #61dafb;
+  color: #000;
+  border: none;
+  padding: 10px 22px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.extractor-tool-section button:hover {
+  background-color: #82e9ff;
+  transform: translateY(-1px);
+}
+
+.extractor-tool-section button:active {
+  transform: translateY(0px);
+}
+
+/* Container for tool outputs */
+.tool-output-container {
+  margin-top: 15px;
+}
+
+.tool-output-container h4 { /* For headings like "Output (Sync Internals):" */
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 1.1rem; /* Matches h4 style from main.css if needed or can be specific */
+}
+
+.tool-output-container pre {
+  margin-top: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  background-color: #121212; /* Darker for output */
+  border: 1px solid #2a2a2a;
+}
+
+.tool-output-container .error {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.tool-output-container .success {
+  color: #50fa7b;
+  font-weight: bold;
+}
+
+/* NPPE Output Table Styles */
+#nppe_output_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 0.85rem;
+}
+
+#nppe_output_table th,
+#nppe_output_table td {
+  border: 1px solid #333;
+  padding: 8px 10px;
+  text-align: left;
+  color: #ccc;
+  word-break: break-word;
+}
+
+#nppe_output_table th {
+  background-color: #2a2a2a;
+  color: #fff;
+  font-weight: bold;
+}
+
+#nppe_output_table tr:nth-child(even) {
+  background-color: #131313;
+}
+
+/* Reduced motion adjustments for WiFi page specific elements */
+@media (prefers-reduced-motion: reduce) {
+  .extractor-tool-section {
+    backdrop-filter: none;
+  }
+  .extractor-tool-section button,
+  .extractor-tool-section input[type="file"]::file-selector-button {
+    transition: none;
+    transform: none;
+  }
+}
