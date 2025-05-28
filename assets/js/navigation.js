@@ -23,42 +23,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Full-Screen Menu Logic ---
   function populateFullScreenMenu() {
-    if (!fullscreenMenuList || typeof siteNavItems === 'undefined') {
-        // console.error("Fullscreen menu list or siteNavItems not found for populating.");
-        return;
-    }
-    fullscreenMenuList.innerHTML = ''; 
-    
-    let normalizedCurrentPath = window.location.pathname;
-    // If current path is the root, treat it as /index.html for comparison
-    if (normalizedCurrentPath === '/') {
-        normalizedCurrentPath = '/index.html';
+   if (!fullscreenMenuList || typeof siteNavItems === 'undefined') {
+       console.error("Fullscreen menu list or siteNavItems not found for populating.");
+       return;
+   }
+   fullscreenMenuList.innerHTML = ''; 
+  
+   // Determine the current page's filename (e.g., "index.html", "forms.html")
+   const currentWindowPath = window.location.pathname; // e.g., "/forms.html", or "/" if at root
+   let currentPageFilename = currentWindowPath.substring(currentWindowPath.lastIndexOf('/') + 1);
+
+   // If path is like "/" (root) or "/some/folder/", the substring above results in ""
+   // So, treat "" or paths ending with "/" as 'index.html' for comparison
+   if (currentPageFilename === "" || currentWindowPath.endsWith("/")) {
+      currentPageFilename = 'index.html';
     }
 
     siteNavItems.filter(item => item.type === 'page').forEach(item => { 
       const listItem = document.createElement('li');
       const link = document.createElement('a');
-      link.href = item.href;
+      link.href = item.href; // nav-data.js hrefs are like "index.html", "forms.html"
       link.textContent = item.name;
-      
-      // Normalize item.href to an absolute-like path for comparison
-      let normalizedItemHref = item.href;
-      if (normalizedItemHref && !normalizedItemHref.startsWith('/') && !normalizedItemHref.startsWith('http')) {
-          normalizedItemHref = '/' + normalizedItemHref; // e.g., "/forms.html", "/index.html"
-      }
+    
+      // item.href from nav-data.js is assumed to be the direct filename for pages at the root
+      const itemFilename = item.href; 
 
-      // Debugging line - you can remove this after testing
-      // console.log(`Comparing: Current='${normalizedCurrentPath}', Item='${normalizedItemHref}' for '${item.name}'`);
+     // ---- DEBUGGING CONSOLE LOG ----
+      console.log(`[Highlight Check] Menu Item: '${item.name}', CurrentPageFile: '${currentPageFilename}', ItemFile: '${itemFilename}', Match: ${itemFilename === currentPageFilename}`);
 
-      if (normalizedItemHref === normalizedCurrentPath) {
-        link.classList.add('current-page');
-        link.setAttribute('aria-current', 'page'); // For accessibility
-        link.style.cursor = 'default'; 
-        link.addEventListener('click', (e) => e.preventDefault()); // Prevent re-navigation
+      if (itemFilename === currentPageFilename) {
+       link.classList.add('current-page');
+       link.setAttribute('aria-current', 'page'); // For accessibility
+       link.style.cursor = 'default'; 
+       link.addEventListener('click', (e) => e.preventDefault()); // Prevent re-navigation
       }
-      
-      listItem.appendChild(link);
-      fullscreenMenuList.appendChild(listItem);
+    
+     listItem.appendChild(link);
+     fullscreenMenuList.appendChild(listItem);
     });
   }
 
