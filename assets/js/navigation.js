@@ -3,9 +3,11 @@
 // Assumes `siteNavItems` is globally available from nav-data.js.
 
 document.addEventListener('DOMContentLoaded', () => {
+  // --- DOM Elements ---
   const menuTrigger = document.querySelector('.menu-trigger');
   const fullscreenMenu = document.querySelector('.fullscreen-menu');
   const fullscreenMenuList = document.querySelector('.fullscreen-menu-list');
+
   const commandPaletteBackdrop = document.querySelector('.command-palette-backdrop');
   const commandPalette = document.querySelector('.command-palette');
   const commandPaletteInput = document.querySelector('.command-palette-input');
@@ -13,21 +15,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const commandPaletteNoResults = document.querySelector('.command-palette-no-results');
 
   if (!menuTrigger && !commandPaletteInput) {
+    // console.log("Core navigation trigger elements (menu or command palette input) not found. Skipping navigation script init.");
     return;
   }
   
   let currentFocusedResultIndex = -1;
 
+  // --- Full-Screen Menu Logic ---
   function populateFullScreenMenu() {
     if (!fullscreenMenuList || typeof siteNavItems === 'undefined') {
+        // console.error("Fullscreen menu list or siteNavItems not found for populating.");
         return;
     }
     fullscreenMenuList.innerHTML = ''; 
     
-    const currentWindowPath = window.location.pathname;
-    let currentPathFilename = currentWindowPath.substring(currentWindowPath.lastIndexOf('/') + 1);
-    if (currentPathFilename === '' || currentWindowPath.endsWith('/')) {
-      currentPathFilename = 'index.html';
+    let normalizedCurrentPath = window.location.pathname;
+    // If current path is the root, treat it as /index.html for comparison
+    if (normalizedCurrentPath === '/') {
+        normalizedCurrentPath = '/index.html';
     }
 
     siteNavItems.filter(item => item.type === 'page').forEach(item => { 
@@ -36,16 +41,20 @@ document.addEventListener('DOMContentLoaded', () => {
       link.href = item.href;
       link.textContent = item.name;
       
-      let itemHrefFilename = item.href.substring(item.href.lastIndexOf('/') + 1);
-       if (itemHrefFilename === '' && item.href.endsWith('/')) { 
-          itemHrefFilename = 'index.html';
+      // Normalize item.href to an absolute-like path for comparison
+      let normalizedItemHref = item.href;
+      if (normalizedItemHref && !normalizedItemHref.startsWith('/') && !normalizedItemHref.startsWith('http')) {
+          normalizedItemHref = '/' + normalizedItemHref; // e.g., "/forms.html", "/index.html"
       }
 
-      if (itemHrefFilename === currentPathFilename) {
+      // Debugging line - you can remove this after testing
+      // console.log(`Comparing: Current='${normalizedCurrentPath}', Item='${normalizedItemHref}' for '${item.name}'`);
+
+      if (normalizedItemHref === normalizedCurrentPath) {
         link.classList.add('current-page');
-        link.setAttribute('aria-current', 'page');
+        link.setAttribute('aria-current', 'page'); // For accessibility
         link.style.cursor = 'default'; 
-        link.addEventListener('click', (e) => e.preventDefault());
+        link.addEventListener('click', (e) => e.preventDefault()); // Prevent re-navigation
       }
       
       listItem.appendChild(link);
@@ -89,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // --- Command Palette Logic ---
   function openCommandPalette() {
     if (!commandPalette || !commandPaletteBackdrop || !commandPaletteInput) return;
     if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
@@ -147,25 +157,22 @@ document.addEventListener('DOMContentLoaded', () => {
         listItem.appendChild(itemTypeSpan);
         
         listItem.addEventListener('click', () => {
-          const currentWindowPath = window.location.pathname;
-          let currentPathFilename = currentWindowPath.substring(currentWindowPath.lastIndexOf('/') + 1);
-           if (currentPathFilename === '' || currentWindowPath.endsWith('/')) {
-            currentPathFilename = 'index.html';
+          let normalizedCurrentPathOnClick = window.location.pathname;
+          if (normalizedCurrentPathOnClick === '/') {
+            normalizedCurrentPathOnClick = '/index.html';
+          }
+          let normalizedItemHrefOnClick = item.href;
+          if (normalizedItemHrefOnClick && !normalizedItemHrefOnClick.startsWith('/') && !normalizedItemHrefOnClick.startsWith('http')) {
+            normalizedItemHrefOnClick = '/' + normalizedItemHrefOnClick;
           }
 
-          let itemHrefFilename = item.href.substring(item.href.lastIndexOf('/') + 1);
-            if (itemHrefFilename === '' && item.href.endsWith('/')) {
-                itemHrefFilename = 'index.html';
-            }
-
-          const isCurrentPage = itemHrefFilename === currentPathFilename;
+          const isCurrentPage = normalizedItemHrefOnClick === normalizedCurrentPathOnClick;
 
           if (item.target === '_blank') {
             window.open(item.href, '_blank', 'noopener,noreferrer');
           } else if (isCurrentPage && item.type === 'page') {
             // Current page, do nothing on click
-          }
-          else {
+          } else {
             window.location.href = item.href;
           }
           closeCommandPalette();
@@ -220,8 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (commandPalette && commandPalette.classList.contains('is-active')) {
       const resultsItems = commandPaletteResults.querySelectorAll('li');
-      if (resultsItems.length === 0 && !['Escape', 'ArrowUp', 'ArrowDown'].includes(e.key) ) return; 
-
+      
+      // Allow typing in input field even if no results, but handle navigation keys only if results exist
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         if (resultsItems.length > 0) {
@@ -239,7 +246,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentFocusedResultIndex > -1 && resultsItems[currentFocusedResultIndex]) {
           resultsItems[currentFocusedResultIndex].click(); 
         } else if (resultsItems.length > 0 && currentFocusedResultIndex === -1 && commandPaletteInput && commandPaletteInput.value.trim() !== "") { 
+          // If user typed and pressed Enter without arrowing, activate first result
           resultsItems[0].click(); 
+        } else if (resultsItems.length > 0 && commandPaletteInput && commandPaletteInput.value.trim() === "") {
+          // If input is empty and user hits Enter, and default items are shown (all pages)
+          resultsItems[0].click();
         }
       }
     }

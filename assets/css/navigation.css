@@ -116,10 +116,10 @@
 .fullscreen-menu-list a.current-page,
 .fullscreen-menu-list a.current-page:hover,
 .fullscreen-menu-list a.current-page:focus {
-  color: #FFFFFF;
-  font-weight: bold;
-  letter-spacing: 0.5px; /* Consistent with hover/focus */
-  cursor: default; /* Indicate it's the current page */
+    color: #FFFFFF;
+    font-weight: bold; 
+    letter-spacing: 0.5px; 
+    cursor: default; 
 }
 
 .fullscreen-menu .command-palette-tip {
