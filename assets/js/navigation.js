@@ -28,40 +28,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     fullscreenMenuList.innerHTML = ''; 
     
-    const currentWindowPath = window.location.pathname; // e.g., "/forms.html", "/bypass", or "/"
+    const currentWindowPath = window.location.pathname;
     let currentPageIdentifier = currentWindowPath.substring(currentWindowPath.lastIndexOf('/') + 1);
 
-    // Normalize for root path or paths ending with a slash (treat as index.html)
     if (currentPageIdentifier === "" || currentWindowPath.endsWith("/")) {
         currentPageIdentifier = 'index.html'; 
     }
-    // Now currentPageIdentifier is "forms.html", "bypass", "index.html", etc.
 
     siteNavItems.filter(item => item.type === 'page').forEach(item => { 
       const listItem = document.createElement('li');
       const link = document.createElement('a');
-      link.href = item.href; // From nav-data.js, e.g., "index.html", "forms.html"
+      link.href = item.href; 
       link.textContent = item.name;
       
-      const navItemHref = item.href; // This is guaranteed to have .html by your nav-data.js structure for pages
+      const navItemHref = item.href;
+      const navItemBase = navItemHref.replace(".html", "");
+      const currentPageBase = currentPageIdentifier.replace(".html", "");
 
-      // Create base names for comparison (stripping .html)
-      const navItemBase = navItemHref.replace(".html", ""); // e.g., "index", "forms", "bypass"
-      const currentPageBase = currentPageIdentifier.replace(".html", ""); // e.g., "index", "forms", "bypass"
+      // console.log(`[Highlight Check V2.1] Menu Item: '${item.name}', CurrentPageID: '${currentPageIdentifier}', CurrentPageBase: '${currentPageBase}', NavItemHref: '${navItemHref}', NavItemBase: '${navItemBase}', Match: ${navItemBase === currentPageBase || navItemHref === currentPageIdentifier}`);
 
-      // ---- DEBUGGING CONSOLE LOG ----
-      console.log(`[Highlight Check V2] Menu Item: '${item.name}', CurrentPathFull: '${currentWindowPath}', CurrentPageID: '${currentPageIdentifier}', CurrentPageBase: '${currentPageBase}', NavItemHref: '${navItemHref}', NavItemBase: '${navItemBase}', Match: ${navItemBase === currentPageBase || navItemHref === currentPageIdentifier}`);
-
-      // Match if:
-      // 1. The base names match (e.g., "bypass" from URL vs "bypass" from nav-data's "bypass.html")
-      // OR
-      // 2. The full href from nav-data (e.g., "forms.html") matches the identifier from the URL (if URL was "/forms.html")
       if (navItemBase === currentPageBase || navItemHref === currentPageIdentifier) {
         link.classList.add('current-page');
         link.setAttribute('aria-current', 'page');
-        link.style.cursor = 'default'; 
-        link.addEventListener('click', (e) => e.preventDefault());
+        // Note: link.style.cursor = 'default' will be handled by CSS for .current-page
       }
+
+      // Add click listener to all page links in the menu
+      link.addEventListener('click', function(event) {
+        if (this.classList.contains('current-page')) {
+          event.preventDefault(); // Prevent re-navigating to the same page
+        }
+        // For all page link clicks (current or not), close the menu
+        if (fullscreenMenu.classList.contains('is-active')) {
+          toggleFullScreenMenu();
+        }
+        // If not current-page, default link navigation will proceed
+      });
       
       listItem.appendChild(link);
       fullscreenMenuList.appendChild(listItem);
@@ -88,11 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
       menuTrigger.setAttribute('aria-expanded', 'true');
       document.body.classList.add('overlay-active');
       
-      const firstFocusableLink = fullscreenMenuList.querySelector('a:not(.current-page)'); 
-      if (firstFocusableLink) {
-        firstFocusableLink.focus();
-      } else if (document.body.contains(menuTrigger) && menuTrigger.offsetParent !== null) {
-        menuTrigger.focus(); 
+      // Focus the menu container itself for better accessibility and to avoid initial focus on "Home"
+      if (fullscreenMenuList) {
+          fullscreenMenuList.setAttribute('tabindex', '-1'); // Make it programmatically focusable
+          fullscreenMenuList.focus();
       }
     }
   }
@@ -104,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Command Palette Logic ---
+  // --- Command Palette Logic (remains the same as your last working version) ---
   function openCommandPalette() {
     if (!commandPalette || !commandPaletteBackdrop || !commandPaletteInput) return;
     if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
@@ -163,27 +164,27 @@ document.addEventListener('DOMContentLoaded', () => {
         listItem.appendChild(itemTypeSpan);
         
         listItem.addEventListener('click', () => {
-          // Logic to check if it's the current page (simplified for this click handler)
           let isCurrentPage = false;
           let currentClickPath = window.location.pathname;
           if (currentClickPath === '/') currentClickPath = '/index.html';
+          
           let itemClickPath = item.href;
           if (itemClickPath && !itemClickPath.startsWith('/') && !itemClickPath.startsWith('http')) {
             itemClickPath = '/' + itemClickPath;
           }
+
           if (itemClickPath === currentClickPath) {
             isCurrentPage = true;
-          } else { // Handle cases like /bypass vs /bypass.html
+          } else { 
             const currentClickBase = currentClickPath.substring(currentClickPath.lastIndexOf('/') + 1).replace(".html", "");
             const itemClickBase = item.href.substring(item.href.lastIndexOf('/') + 1).replace(".html", "");
-            if (currentClickBase === itemClickBase) isCurrentPage = true;
+            if (currentClickBase === itemClickBase && currentClickBase !== "") isCurrentPage = true;
           }
-
 
           if (item.target === '_blank') {
             window.open(item.href, '_blank', 'noopener,noreferrer');
           } else if (isCurrentPage && item.type === 'page') {
-            // Current page, do nothing on click
+            // Current page, do nothing special, menu will close via closeCommandPalette()
           } else {
             window.location.href = item.href;
           }
