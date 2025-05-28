@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const commandPaletteResults = document.querySelector('.command-palette-results');
   const commandPaletteNoResults = document.querySelector('.command-palette-no-results');
 
+  // If core navigation elements aren't found, exit script for this page.
   if (!menuTrigger && !commandPaletteInput) {
     return;
   }
@@ -23,14 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Full-Screen Menu Logic ---
   function populateFullScreenMenu() {
     if (!fullscreenMenuList || typeof siteNavItems === 'undefined') {
-        console.error("Fullscreen menu list or siteNavItems not found for populating.");
-        return;
+      console.error("Fullscreen menu list or siteNavItems not found for populating.");
+      return;
     }
-    fullscreenMenuList.innerHTML = ''; 
+    fullscreenMenuList.innerHTML = ''; // Clear previous items
     
     const currentWindowPath = window.location.pathname;
     let currentPageIdentifier = currentWindowPath.substring(currentWindowPath.lastIndexOf('/') + 1);
 
+    // Normalize for root path or paths ending with a slash (treat as index.html)
     if (currentPageIdentifier === "" || currentWindowPath.endsWith("/")) {
         currentPageIdentifier = 'index.html'; 
     }
@@ -41,16 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
       link.href = item.href; 
       link.textContent = item.name;
       
-      const navItemHref = item.href;
+      const navItemHref = item.href; // e.g., "index.html", "forms.html"
       const navItemBase = navItemHref.replace(".html", "");
       const currentPageBase = currentPageIdentifier.replace(".html", "");
-
-      // console.log(`[Highlight Check V2.1] Menu Item: '${item.name}', CurrentPageID: '${currentPageIdentifier}', CurrentPageBase: '${currentPageBase}', NavItemHref: '${navItemHref}', NavItemBase: '${navItemBase}', Match: ${navItemBase === currentPageBase || navItemHref === currentPageIdentifier}`);
 
       if (navItemBase === currentPageBase || navItemHref === currentPageIdentifier) {
         link.classList.add('current-page');
         link.setAttribute('aria-current', 'page');
-        // Note: link.style.cursor = 'default' will be handled by CSS for .current-page
+        // CSS handles cursor styling for .current-page
       }
 
       // Add click listener to all page links in the menu
@@ -59,7 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
           event.preventDefault(); // Prevent re-navigating to the same page
         }
         // For all page link clicks (current or not), close the menu
-        if (fullscreenMenu.classList.contains('is-active')) {
+        // Check if menu is active before toggling to prevent issues if clicked rapidly or already closing
+        if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
           toggleFullScreenMenu();
         }
         // If not current-page, default link navigation will proceed
@@ -78,10 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
       menuTrigger.classList.remove('is-active'); 
       menuTrigger.setAttribute('aria-expanded', 'false');
       document.body.classList.remove('overlay-active');
+      // Return focus to the menu trigger if it's still part of the document and visible
       if (document.body.contains(menuTrigger) && menuTrigger.offsetParent !== null) {
         menuTrigger.focus(); 
       }
     } else {
+      // If command palette is open, close it first
       if (commandPalette && commandPalette.classList.contains('is-active')) {
         closeCommandPalette();
       }
@@ -90,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
       menuTrigger.setAttribute('aria-expanded', 'true');
       document.body.classList.add('overlay-active');
       
-      // Focus the menu container itself for better accessibility and to avoid initial focus on "Home"
+      // Focus the menu container itself for better accessibility
       if (fullscreenMenuList) {
           fullscreenMenuList.setAttribute('tabindex', '-1'); // Make it programmatically focusable
           fullscreenMenuList.focus();
@@ -98,16 +101,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   
-  if (menuTrigger && fullscreenMenu) {
+  // Initialize menu if elements exist
+  if (menuTrigger && fullscreenMenu && fullscreenMenuList) {
     menuTrigger.addEventListener('click', toggleFullScreenMenu); 
-    if (fullscreenMenuList) {
-        populateFullScreenMenu();
-    }
+    populateFullScreenMenu(); // Populate menu on initial load
   }
 
-  // --- Command Palette Logic (remains the same as your last working version) ---
+  // --- Command Palette Logic ---
   function openCommandPalette() {
     if (!commandPalette || !commandPaletteBackdrop || !commandPaletteInput) return;
+    // If fullscreen menu is open, close it
     if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
         toggleFullScreenMenu(); 
     }
@@ -136,9 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const lowerCaseQuery = query.toLowerCase().trim();
     
     const filteredItems = lowerCaseQuery === '' ? 
-        siteNavItems.filter(item => item.type === 'page') :
+        siteNavItems.filter(item => item.type === 'page') : // Show only pages if query is empty
         siteNavItems.filter(item => 
-          item.name.toLowerCase().includes(lowerCaseQuery)
+          item.name.toLowerCase().includes(lowerCaseQuery) || // Also search href for more matches
+          (item.href && item.href.toLowerCase().includes(lowerCaseQuery)) 
         );
 
     if (filteredItems.length === 0 && query.length > 0) {
@@ -164,27 +168,33 @@ document.addEventListener('DOMContentLoaded', () => {
         listItem.appendChild(itemTypeSpan);
         
         listItem.addEventListener('click', () => {
+          // Determine if the clicked item is the current page
           let isCurrentPage = false;
-          let currentClickPath = window.location.pathname;
-          if (currentClickPath === '/') currentClickPath = '/index.html';
-          
-          let itemClickPath = item.href;
-          if (itemClickPath && !itemClickPath.startsWith('/') && !itemClickPath.startsWith('http')) {
-            itemClickPath = '/' + itemClickPath;
-          }
+          if (item.type === 'page') {
+            let currentClickPath = window.location.pathname;
+            if (currentClickPath === '/') currentClickPath = '/index.html';
+            
+            let itemClickPath = item.href;
+            if (itemClickPath && !itemClickPath.startsWith('/') && !itemClickPath.startsWith('http')) {
+              itemClickPath = '/' + itemClickPath;
+            }
 
-          if (itemClickPath === currentClickPath) {
-            isCurrentPage = true;
-          } else { 
-            const currentClickBase = currentClickPath.substring(currentClickPath.lastIndexOf('/') + 1).replace(".html", "");
-            const itemClickBase = item.href.substring(item.href.lastIndexOf('/') + 1).replace(".html", "");
-            if (currentClickBase === itemClickBase && currentClickBase !== "") isCurrentPage = true;
+            if (itemClickPath === currentClickPath) {
+              isCurrentPage = true;
+            } else { 
+              // Handle cases like /bypass vs /bypass.html for comparison
+              const currentClickBase = currentClickPath.substring(currentClickPath.lastIndexOf('/') + 1).replace(".html", "");
+              const itemClickBase = item.href.substring(item.href.lastIndexOf('/') + 1).replace(".html", "");
+              if (currentClickBase === itemClickBase && currentClickBase !== "") { // Ensure base isn't empty
+                  isCurrentPage = true;
+              }
+            }
           }
 
           if (item.target === '_blank') {
             window.open(item.href, '_blank', 'noopener,noreferrer');
           } else if (isCurrentPage && item.type === 'page') {
-            // Current page, do nothing special, menu will close via closeCommandPalette()
+            // Current page, do nothing extra, palette will close
           } else {
             window.location.href = item.href;
           }
@@ -210,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Attach event listeners if elements exist
   if (commandPaletteInput && commandPaletteResults) {
     commandPaletteInput.addEventListener('input', (e) => {
       renderCommandPaletteResults(e.target.value);
@@ -219,7 +230,9 @@ document.addEventListener('DOMContentLoaded', () => {
       commandPaletteBackdrop.addEventListener('click', closeCommandPalette);
   }
 
+  // --- Global Event Listeners (Keyboard) ---
   window.addEventListener('keydown', (e) => {
+    // Escape key for closing overlays
     if (e.key === 'Escape') {
       if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
         toggleFullScreenMenu(); 
@@ -229,15 +242,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // Ctrl+K or Cmd+K for command palette
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault(); 
       if (commandPalette && commandPalette.classList.contains('is-active')) {
-         if(commandPaletteInput) commandPaletteInput.focus(); 
+         if(commandPaletteInput) commandPaletteInput.focus(); // Refocus if already open
       } else {
         openCommandPalette(); 
       }
     }
 
+    // Keyboard navigation for command palette
     if (commandPalette && commandPalette.classList.contains('is-active')) {
       const resultsItems = commandPaletteResults.querySelectorAll('li');
       
@@ -257,10 +272,9 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         if (currentFocusedResultIndex > -1 && resultsItems[currentFocusedResultIndex]) {
           resultsItems[currentFocusedResultIndex].click(); 
-        } else if (resultsItems.length > 0 && commandPaletteInput && commandPaletteInput.value.trim() !== "") { 
+        } else if (resultsItems.length > 0) { 
+          // If no specific item is focused via arrows, but results exist (e.g., user typed and hit enter)
           resultsItems[0].click(); 
-        } else if (resultsItems.length > 0 && commandPaletteInput && commandPaletteInput.value.trim() === "") {
-          resultsItems[0].click();
         }
       }
     }

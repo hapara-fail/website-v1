@@ -6,7 +6,7 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 1005; /* Above fullscreen menu when it's not active, below command palette */
+  z-index: 1005;
   background: none;
   border: none;
   padding: 10px;
@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 0; /* Prevents extra space from line height */
+  line-height: 0;
 }
 
 .menu-trigger svg {
@@ -52,7 +52,7 @@
 
 .menu-trigger.is-active .line2 {
   opacity: 0;
-  transition: opacity 0.1s linear; /* Faster fade for the middle line */
+  transition: opacity 0.1s linear;
 }
 
 .menu-trigger.is-active .line3 {
@@ -66,17 +66,17 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #0A0A0A; /* Slightly off-black */
-  z-index: 1000; /* Below the menu trigger button, covers the page content */
-  display: none; /* Hidden by default, shown by JS */
+  background-color: #0A0A0A;
+  z-index: 1000;
+  display: none;
   flex-direction: column;
-  align-items: flex-start; /* Align link text to the left */
-  justify-content: flex-end; /* Aligns menu items towards bottom-left of padding box */
+  align-items: flex-start;
+  justify-content: flex-end;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
-  padding: 8vh 6vw; /* Responsive padding */
+  padding: 8vh 6vw;
   box-sizing: border-box;
-  overflow-y: auto; /* Enable scroll for long menus */
+  overflow-y: auto;
 }
 
 .fullscreen-menu.is-active {
@@ -88,47 +88,55 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  text-align: left; /* Ensures list items themselves are aligned left */
+  text-align: left;
 }
 
 .fullscreen-menu-list li {
-  margin: 12px 0; /* Vertical spacing between menu items */
+  margin: 12px 0;
 }
 
+/* Base style for all fullscreen menu links */
 .fullscreen-menu-list a {
-  color: #ccc; /* Default color for non-active, non-hovered links */
+  color: #ccc; /* Default color for non-active links */
   text-decoration: none;
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem); /* Responsive font size */
-  font-weight: 500; /* Standard font weight */
-  padding: 8px 0; /* Vertical padding for easier clicking */
-  transition: color 0.2s ease-in-out, letter-spacing 0.2s ease-in-out;
-  display: block; /* Makes the entire area of the link clickable */
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 500; /* Base font weight */
+  padding: 8px 0;
+  letter-spacing: normal; /* Default letter spacing */
+  transition: color 0.2s ease-in-out, letter-spacing 0.2s ease-in-out; /* Ensure letter-spacing is transitioned */
+  display: block;
 }
 
-.fullscreen-menu-list a:hover,
-.fullscreen-menu-list a:focus {
-  color: #fff; /* Color change on hover/focus */
-  letter-spacing: 0.5px; /* Subtle letter spacing change */
-  outline: none; /* Remove default browser outline; consider custom visible focus style for accessibility */
+/* Hover/Focus for NON-CURRENT links */
+.fullscreen-menu-list a:not(.current-page):hover,
+.fullscreen-menu-list a:not(.current-page):focus {
+  color: #fff;
+  letter-spacing: 0.5px; /* Expanding animation */
+  outline: none; /* Consider custom focus style */
 }
 
-/* UPDATED Style for the currently active page link */
-.fullscreen-menu-list a.current-page,
-.fullscreen-menu-list a.current-page:hover, /* Ensure style persists on hover/focus */
+/* Style for the CURRENT page link - DEFAULT state */
+.fullscreen-menu-list a.current-page {
+  color: #FFFFFF;        /* Persistently white */
+  font-weight: 600;       /* Slightly bolder */
+  letter-spacing: normal; /* Default letter spacing, will expand on hover/focus */
+  cursor: pointer;        /* Make it look clickable */
+  /* Inherits transition from base 'a' for hover/focus effects */
+}
+
+/* Hover/Focus for CURRENT page link - to apply expanding animation */
+.fullscreen-menu-list a.current-page:hover,
 .fullscreen-menu-list a.current-page:focus {
-  color: #FFFFFF;          /* Keep it white like a hovered/focused item */
-  letter-spacing: 0.5px;  /* Match hover/focus style */
-  font-weight: 500;       /* Keep normal font weight for consistency */
-  cursor: default;        /* Indicate it's the current page and not re-navigable */
-  /* Optional: Add another visual distinction if desired, e.g.: */
-  /* border-left: 3px solid #61dafb; */
-  /* padding-left: calc(0.5em - 3px); /* Adjust if using border */
+  color: #FFFFFF;          /* Stays white */
+  letter-spacing: 0.5px;  /* Apply expanding animation */
+  /* font-weight: 600; /* Stays slightly bold - already set in .current-page */
+  outline: none; /* Or custom focus style */
 }
 
 .fullscreen-menu .command-palette-tip {
   font-size: 0.8rem;
-  color: #555; /* Darker grey for a subtle tip */
-  margin-top: 30px; /* Space above the tip */
+  color: #555;
+  margin-top: 30px;
   width: 100%;
   text-align: left;
 }
@@ -140,9 +148,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent dark overlay */
-  backdrop-filter: blur(4px); /* Frosted glass effect on content behind */
-  z-index: 1008; /* Above fullscreen menu, below command palette modal */
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  z-index: 1008;
   display: none;
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
@@ -155,18 +163,18 @@
 
 .command-palette {
   position: fixed;
-  top: 20%; /* Position from the top of the viewport */
+  top: 20%;
   left: 50%;
-  transform: translateX(-50%) scale(0.95); /* Centered, slightly scaled down for entry animation */
+  transform: translateX(-50%) scale(0.95);
   width: 90%;
   max-width: 560px;
-  background-color: #1C1C1E; /* Dark background for the palette itself */
+  background-color: #1C1C1E;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08); /* Depth and subtle border */
-  z-index: 1010; /* Highest among navigation elements */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  z-index: 1010;
   display: none;
   flex-direction: column;
-  overflow: hidden; /* To contain rounded corners when results scroll */
+  overflow: hidden;
   opacity: 0;
   transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
 }
@@ -174,84 +182,84 @@
 .command-palette.is-active {
   display: flex;
   opacity: 1;
-  transform: translateX(-50%) scale(1); /* Final state for entry animation */
+  transform: translateX(-50%) scale(1);
 }
 
 .command-palette-input-wrapper {
   display: flex;
   align-items: center;
-  padding: 0 15px; /* Padding around input field and search icon */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Separator line */
+  padding: 0 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .command-palette-input-wrapper svg {
   width: 20px;
   height: 20px;
-  fill: #888; /* Search icon color */
+  fill: #888;
   margin-right: 10px;
-  flex-shrink: 0; /* Prevent icon from shrinking */
+  flex-shrink: 0;
 }
 
 .command-palette-input {
   width: 100%;
-  padding: 15px 0; /* Vertical padding for the input field */
-  font-family: inherit; /* Use the site's monospaced font */
-  font-size: 1.2rem; /* Slightly larger font for input */
-  color: #f0f0f0; /* Input text color */
+  padding: 15px 0;
+  font-family: inherit;
+  font-size: 1.2rem;
+  color: #f0f0f0;
   background-color: transparent;
   border: none;
   outline: none;
 }
 
 .command-palette-input::placeholder {
-  color: #666; /* Placeholder text color */
+  color: #666;
 }
 
 .command-palette-results {
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 300px; /* Limit height to enable scrolling for many results */
+  max-height: 300px;
   overflow-y: auto;
-  padding: 8px 0; /* Padding above and below the list of results */
+  padding: 8px 0;
 }
 
 .command-palette-results li {
-  padding: 10px 20px; /* Padding for each result item */
+  padding: 10px 20px;
   cursor: pointer;
-  color: #ccc; /* Default text color for results */
+  color: #ccc;
   font-size: 0.95rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Subtle separator between items */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: background-color 0.1s ease-in-out;
   display: flex;
   align-items: center;
-  text-align: left; /* Ensures text within list items is left-aligned */
+  text-align: left;
 }
 
 .command-palette-results li:last-child {
-  border-bottom: none; /* Remove border from the last item in the list */
+  border-bottom: none;
 }
 
 .command-palette-results li:hover,
-.command-palette-results li.is-selected { /* '.is-selected' for keyboard navigation highlight */
-  background-color: #007AFF; /* Highlight color for selected/hovered item */
+.command-palette-results li.is-selected {
+  background-color: #007AFF;
   color: #fff;
 }
 
 .command-palette-results li .item-name {
-  flex-grow: 1; /* Allows the item name to take up available horizontal space */
+  flex-grow: 1;
 }
 
 .command-palette-results li .item-type {
   font-size: 0.8rem;
-  color: #888; /* Default color for the item type (e.g., "Page", "External Link") */
+  color: #888;
   margin-left: 10px;
-  flex-shrink: 0; /* Prevent type from shrinking */
+  flex-shrink: 0;
 }
 
 .command-palette-results li:hover .item-type,
 .command-palette-results li.is-selected .item-type {
-  color: #eee; /* Lighter color for item type on hover/selection */
+  color: #eee;
 }
 
 .command-palette-no-results {
@@ -259,7 +267,7 @@
   text-align: center;
   color: #888;
   font-size: 0.95rem;
-  display: none; /* Shown by JavaScript when no results are found */
+  display: none;
 }
 
 /* Reduced motion adjustments for navigation components */
@@ -268,6 +276,6 @@
   .command-palette,
   .command-palette-backdrop,
   .menu-trigger .line {
-    transition: none !important; /* Disable all transitions for these elements */
+    transition: none !important;
   }
 }
