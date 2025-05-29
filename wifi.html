@@ -82,10 +82,10 @@
     <h4>Step A: Prepare Your Search Term in Sync Internals (Optional but Recommended)</h4>
     <div class="extractor-tool-section">
         <label for="wifi_name_input">Enter SSID (WiFi Name) to get its Hex-Encoded version for searching:</label>
-        <input type="text" id="wifi_name_input" placeholder="e.g., MyHomeWiFi (or leave blank for general instructions)">
-        <button id="get_instructions_button">Get Search Instructions & Helper ID</button>
+        <input type="text" id="wifi_name_input" placeholder="e.g., MyHomeWiFi (or leave blank)">
+        <button id="get_instructions_button">Get Helper ID for Step B</button>
         <div class="tool-output-container" style="margin-top:10px;">
-            <pre id="sync_search_term_output" style="font-size:0.85em; min-height: 40px; white-space: pre-wrap; line-height: 1.5;">Enter an SSID above (or leave blank) and click the button to see instructions for Step B.</pre>
+            <pre id="sync_search_term_output" style="font-size:0.85em; min-height: 22px; white-space: pre-wrap;">Output for Step A will appear here.</pre>
         </div>
     </div>
 
@@ -98,7 +98,7 @@
         Now, examine the list of entries on the left:
         <ul>
             <li>If you used "Step A" of this tool and it generated a helper identifier string (e.g., <code>4D79486F6D6557694669&lt;||&gt;psk</code>), visually scan the list for this exact string. This string from Step A is for <strong>visual identification only</strong> to help you select the correct entry; you cannot directly search for this full string in this step.</li>
-            <li>If you did not use Step A, or cannot find a specific generated string, visually scan the list for an entry that appears to match your target WiFi network. Look for the SSID name if it's not fully hex-encoded, or make your best guess based on any recognizable parts.</li>
+            <li>If you did not use Step A, cannot find a specific generated string from Step A in the list, or are unsure which entry is correct, you may need to try multiple entries. Click on a potential candidate entry on the left, copy its JSON data from the right panel, and use "Step C" of this tool to check if it's the correct network. Repeat this process for other entries if the first one isn't right.</li>
         </ul>
       </li>
       <li>Once you've identified the correct entry in the left-hand list, click on it.</li>
@@ -175,7 +175,7 @@
     <ul>
       <li><strong>No Data Found:</strong> If a tool doesn't find anything, it means the WiFi information isn't stored or accessible via that specific method on your device configuration or ChromeOS version. The network might be configured in a way that isn't captured by these techniques (e.g., manual setup without sync, or policies not logged as expected).</li>
       <li><strong>Errors During Extraction:</strong> Ensure you copied the entire, correct JSON data for Tool 1, or uploaded the correct, unaltered log file for Tool 2. The structure of ChromeOS internal data or logs can change with updates, which might occasionally break these tools until they are adapted.</li>
-      <li><strong>Tool 1 Specific - SSID Hex Encoding:</strong> If you manually search in `chrome://sync-internals` and your SSID has special characters, direct searching might be tricky. Using the "Get Search Instructions & Helper ID" feature in Step A is recommended.</li>
+      <li><strong>Tool 1 Specific - SSID Hex Encoding:</strong> If you manually search in `chrome://sync-internals` and your SSID has special characters, direct searching might be tricky. Using the "Get Helper ID for Step B" feature in Step A is recommended.</li>
       <li><strong>Tool 2 Specific - Log File Size:</strong> <code>chrome-net-export-log.json</code> files can be very large. The tool processes it in your browser, which might be slow on less powerful devices. Ensure you stop logging reasonably quickly after reloading policies to keep the file size manageable.</li>
     </ul>
 
