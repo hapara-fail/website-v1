@@ -83,9 +83,9 @@
     <div class="extractor-tool-section">
         <label for="wifi_name_input">Enter SSID (WiFi Name) to get its Hex-Encoded version for searching:</label>
         <input type="text" id="wifi_name_input" placeholder="e.g., MyHomeWiFi (or leave blank)">
-        <button id="get_instructions_button">Get Helper ID for Step B</button>
+        <button id="get_instructions_button">Get Helper ID</button>
         <div class="tool-output-container" style="margin-top:10px;">
-            <pre id="sync_search_term_output" style="font-size:0.85em; min-height: 22px; white-space: pre-wrap;">Output for Step A will appear here.</pre>
+            <pre id="sync_search_term_output" style="font-size:0.85em; min-height: 22px; white-space: pre-wrap;">Enter an SSID above then press "Get Helper ID" for step B.</pre>
         </div>
     </div>
 
@@ -175,7 +175,7 @@
     <ul>
       <li><strong>No Data Found:</strong> If a tool doesn't find anything, it means the WiFi information isn't stored or accessible via that specific method on your device configuration or ChromeOS version. The network might be configured in a way that isn't captured by these techniques (e.g., manual setup without sync, or policies not logged as expected).</li>
       <li><strong>Errors During Extraction:</strong> Ensure you copied the entire, correct JSON data for Tool 1, or uploaded the correct, unaltered log file for Tool 2. The structure of ChromeOS internal data or logs can change with updates, which might occasionally break these tools until they are adapted.</li>
-      <li><strong>Tool 1 Specific - SSID Hex Encoding:</strong> If you manually search in `chrome://sync-internals` and your SSID has special characters, direct searching might be tricky. Using the "Get Helper ID for Step B" feature in Step A is recommended.</li>
+      <li><strong>Tool 1 Specific - SSID Hex Encoding:</strong> If you manually search in `chrome://sync-internals` and your SSID has special characters, direct searching might be tricky. Using the "Get Helper ID" feature in Step A is recommended.</li>
       <li><strong>Tool 2 Specific - Log File Size:</strong> <code>chrome-net-export-log.json</code> files can be very large. The tool processes it in your browser, which might be slow on less powerful devices. Ensure you stop logging reasonably quickly after reloading policies to keep the file size manageable.</li>
     </ul>
 
