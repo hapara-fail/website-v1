@@ -5,7 +5,7 @@ const siteNavItems = [
   // Pages to be shown in the Full-Screen Menu & Command Palette
   { name: 'Home', href: 'index.html', type: 'page' },
   { name: 'ChromeOS DNS Bypass', href: 'bypass.html', type: 'page' },
-  { name: 'Google Form Unlocker Guide', href: 'forms.html', type: 'page' },
+  { name: 'Google Form Unlocker', href: 'forms.html', type: 'page' },
   { name: 'ChromeOS WiFi Password Extractor', href: 'wifi.html', type: 'page' },
   // { name: 'Coming Soon Page', href: 'under-construction.html', type: 'page' }, // Example
 
