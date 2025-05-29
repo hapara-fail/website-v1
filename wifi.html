@@ -48,7 +48,7 @@
 
   <div class="content-wrapper">
     <h1>ChromeOS WiFi Password Extractor</h1>
-    <p class="meta-info"><strong>Last updated:</strong> May 27, 2025</p>
+    <p class="meta-info"><strong>Last updated:</strong> May 29, 2025</p>
 
     <p>This page provides two tools to help find saved WiFi passwords or configuration details on ChromeOS. Each tool approaches the problem differently and is suited for different scenarios.</p>
 
@@ -70,22 +70,22 @@
 
     <h4>Technical Explanation: How This Tool Works</h4>
     <p>When you connect to a WiFi network on ChromeOS and are signed into your Google account with sync enabled, certain network configurations can be saved as part of your synced preferences. This often includes details for networks that use a simple passphrase for authentication.</p>
-    <p>The <code>chrome://sync-internals</code> page provides a low-level view into this synchronized data. For WiFi networks, the Service Set Identifier (SSID, or WiFi name) is often stored in a hexadecimal (hex) encoded format, and the corresponding passphrase is typically stored in a base64 encoded format within a specific JSON (JavaScript Object Notation) data structure, usually under a key like <code>wifi_configuration</code>.</p>
+    <p>The <code>chrome://sync-internals</code> page provides a low-level view into this synchronized data. For WiFi networks, the Service Set Identifier (SSID, or WiFi name) is often stored in a hexadecimal (hex) encoded format (or sometimes plain text) as part of a larger key, and the corresponding passphrase is typically stored in a base64 encoded format within a specific JSON (JavaScript Object Notation) data structure.</p>
     <p>This tool automates the process by:</p>
     <ol>
-        <li>Guiding you to find the correct JSON data block within <code>chrome://sync-internals</code> (optionally by helping you convert your target SSID to its hex form for easier searching).</li>
-        <li>Allowing you to paste this JSON data.</li>
+        <li>Guiding you with precise instructions on how to search within <code>chrome://sync-internals</code> (optionally by helping you generate a helper identifier string based on your target SSID for easier visual lookup).</li>
+        <li>Allowing you to paste the located JSON data.</li>
         <li>Parsing the JSON to locate the SSID and the base64 encoded passphrase.</li>
-        <li>Decoding the passphrase back into a human-readable format.</li>
+        <li>Decoding the passphrase back into a human-readable format and displaying it alongside the decoded SSID.</li>
     </ol>
     
     <h4>Step A: Prepare Your Search Term in Sync Internals (Optional but Recommended)</h4>
     <div class="extractor-tool-section">
         <label for="wifi_name_input">Enter SSID (WiFi Name) to get its Hex-Encoded version for searching:</label>
-        <input type="text" id="wifi_name_input" placeholder="e.g., MyHomeWiFi (or leave blank to browse)">
-        <button id="get_instructions_button">Get Hex-Encoded Search Term</button>
+        <input type="text" id="wifi_name_input" placeholder="e.g., MyHomeWiFi (or leave blank for general instructions)">
+        <button id="get_instructions_button">Get Search Instructions & Helper ID</button>
         <div class="tool-output-container" style="margin-top:10px;">
-            <pre id="sync_search_term_output" style="font-size:0.85em; min-height: 40px;">Enter an SSID above to see the recommended search key for Step B.</pre>
+            <pre id="sync_search_term_output" style="font-size:0.85em; min-height: 40px; white-space: pre-wrap; line-height: 1.5;">Enter an SSID above (or leave blank) and click the button to see instructions for Step B.</pre>
         </div>
     </div>
 
@@ -93,14 +93,17 @@
     <ol>
       <li>Open a new tab in your Chrome browser and navigate to <code>chrome://sync-internals</code>.</li>
       <li>Click on the "<strong>Search</strong>" tab located at the top of the page.</li>
-      <li>In the search box on that page:
-          <ul>
-              <li>If you generated a hex-encoded search term in Step A, paste it here (e.g., <code>4D79486F6D6557694669&lt;||&gt;psk</code>) and press Enter.</li>
-              <li>Otherwise, type <code>wifi_</code> and press Enter. You will then need to browse the results on the left for entries containing "<code>psk</code>" in their name that might correspond to your network.</li>
-          </ul>
+      <li>In the search box there, you <strong>must</strong> type <code>wifi_</code> and press Enter. This will populate a list of entries on the left-hand side. These entries are typically in the format <code>[HEXADECIMAL_SSID]&lt;||&gt;psk</code> or sometimes <code>[PLAINTEXT_SSID]&lt;||&gt;psk</code>.</li>
+      <li>
+        Now, examine the list of entries on the left:
+        <ul>
+            <li>If you used "Step A" of this tool and it generated a helper identifier string (e.g., <code>4D79486F6D6557694669&lt;||&gt;psk</code>), visually scan the list for this exact string. This string from Step A is for <strong>visual identification only</strong> to help you select the correct entry; you cannot directly search for this full string in this step.</li>
+            <li>If you did not use Step A, or cannot find a specific generated string, visually scan the list for an entry that appears to match your target WiFi network. Look for the SSID name if it's not fully hex-encoded, or make your best guess based on any recognizable parts.</li>
+        </ul>
       </li>
-      <li>Click the relevant entry from the list on the left side. This will display its detailed JSON data in the panel on the right.</li>
-      <li>Carefully select and copy <strong>ALL</strong> of the JSON data shown on the right (it should start with <code>{</code> and end with <code>}</code>).</li>
+      <li>Once you've identified the correct entry in the left-hand list, click on it.</li>
+      <li>The full JSON data for that specific entry will appear in the main panel on the right.</li>
+      <li>Carefully select and copy <strong>ALL</strong> of the JSON data shown in the right panel (it should start with <code>{</code> and end with <code>}</code>). This is the data you will paste into "Step C" below.</li>
     </ol>
 
     <h4>Step C: Extract Password with the Tool</h4>
@@ -172,7 +175,7 @@
     <ul>
       <li><strong>No Data Found:</strong> If a tool doesn't find anything, it means the WiFi information isn't stored or accessible via that specific method on your device configuration or ChromeOS version. The network might be configured in a way that isn't captured by these techniques (e.g., manual setup without sync, or policies not logged as expected).</li>
       <li><strong>Errors During Extraction:</strong> Ensure you copied the entire, correct JSON data for Tool 1, or uploaded the correct, unaltered log file for Tool 2. The structure of ChromeOS internal data or logs can change with updates, which might occasionally break these tools until they are adapted.</li>
-      <li><strong>Tool 1 Specific - SSID Hex Encoding:</strong> If you manually search in `chrome://sync-internals` and your SSID has special characters, direct searching might be tricky. Using the "Get Hex-Encoded Search Term" feature is recommended.</li>
+      <li><strong>Tool 1 Specific - SSID Hex Encoding:</strong> If you manually search in `chrome://sync-internals` and your SSID has special characters, direct searching might be tricky. Using the "Get Search Instructions & Helper ID" feature in Step A is recommended.</li>
       <li><strong>Tool 2 Specific - Log File Size:</strong> <code>chrome-net-export-log.json</code> files can be very large. The tool processes it in your browser, which might be slow on less powerful devices. Ensure you stop logging reasonably quickly after reloading policies to keep the file size manageable.</li>
     </ul>
 

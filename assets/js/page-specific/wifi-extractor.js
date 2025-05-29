@@ -1,4 +1,3 @@
-// assets/js/page-specific/wifi-extractor.js
 // Contains client-side logic for both WiFi password extraction tools on wifi.html
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -33,49 +32,108 @@ document.addEventListener('DOMContentLoaded', () => {
   function showSyncSearchTerm() {
     if (!wifiNameInput_sync || !syncSearchTermOutputPre) return;
     let ssid = wifiNameInput_sync.value.trim();
+    
+    let outputHTML = "<strong>Follow these steps carefully in <code>chrome://sync-internals</code>:</strong><br><br>";
+    outputHTML += "1. Open a new tab and navigate to: <code>chrome://sync-internals</code><br>";
+    outputHTML += "2. Click on the \"<strong>Search</strong>\" tab (usually located at the top of the page).<br>";
+    outputHTML += "3. In the search box on that page, type exactly: <code>wifi_</code> (with the underscore) and press Enter.<br>";
+    outputHTML += "4. A list of data entries will appear on the left-hand side.<br><br>";
+    outputHTML += "5. <strong>Now, you need to find your specific WiFi network in that list on the left:</strong><br>";
+  
     if (ssid) {
       const hexSsid = hexEncode_sync(ssid);
-      syncSearchTermOutputPre.innerHTML = `For SSID "<strong>${ssid}</strong>", try searching for this key in <code>chrome://sync-internals</code> (Search tab):<br><code style="font-size:0.9em; color:#61dafb;">${hexSsid}&lt;||&gt;psk</code>`;
+      const searchKey = `${hexSsid}&lt;||&gt;psk`; // Use &lt; and &gt; for HTML display
+      outputHTML += `   &nbsp;&nbsp;- You entered SSID: "<strong>${ssid}</strong>".<br>`;
+      outputHTML += `   &nbsp;&nbsp;- The tool has generated this helper identifier for it: <code style="font-size:0.9em; color:#61dafb; display:inline-block; background-color: #282c34; padding: 2px 5px; border-radius:3px; margin: 3px 0;">${searchKey}</code><br>`;
+      outputHTML += `   &nbsp;&nbsp;- Carefully look through the list on the left for an entry that <strong>exactly matches</strong> this helper identifier.<br>`;
+      outputHTML += "   &nbsp;&nbsp;- <strong>IMPORTANT:</strong> You <u>CANNOT</u> directly search for this full helper identifier. You <u>MUST</u> search for <code>wifi_</code> first, and then visually locate this identifier in the results list on the left.<br><br>";
+      outputHTML += `6. Once found, click on the matching <code>${searchKey}</code> entry (or the entry corresponding to your target network) in the list on the left.<br>`;
     } else {
-      syncSearchTermOutputPre.innerHTML = `If you leave the SSID field blank, you will need to manually browse <code>wifi_</code> entries containing "<code>psk</code>" in <code>chrome://sync-internals</code> (Search tab) to find your network.`;
+      outputHTML += "   &nbsp;&nbsp;- Since you left the SSID input blank, you'll need to manually look through the list on the left after searching for <code>wifi_</code>.<br>";
+      outputHTML += "   &nbsp;&nbsp;- Entries often look like <code>[HEXADECIMAL_SSID]&lt;||&gt;psk</code> or sometimes <code>[PLAINTEXT_SSID]&lt;||&gt;psk</code>.<br>";
+      outputHTML += "   &nbsp;&nbsp;- Find the one that corresponds to your target WiFi network by visually scanning the list.<br><br>";
+      outputHTML += "6. Once found, click on your network's correct entry in the list on the left.<br>";
     }
+  
+    outputHTML += "7. After clicking the correct entry, its full JSON data will appear in the main panel on the <strong>RIGHT side</strong> of the <code>chrome://sync-internals</code> page.<br>";
+    outputHTML += "8. Select and <strong>COPY ALL</strong> of that JSON data (it should start with <code>{</code> and end with <code>}</code>).<br>";
+    outputHTML += "9. Paste this copied JSON data into \"Step C\" on this page (the text area below these instructions) and click \"Extract from Sync Data\".<br>";
+  
+    syncSearchTermOutputPre.innerHTML = outputHTML;
   }
 
   function extractPasswordFromSyncData_sync() {
     if (!syncDataInput_sync || !syncToolOutputPre) return;
     let jsonData = syncDataInput_sync.value.trim();
-    syncToolOutputPre.className = '';
+    syncToolOutputPre.className = ''; // Reset any previous error/success class styling if needed
 
     if (!jsonData) {
       syncToolOutputPre.innerHTML = `<span class="error">Error: Please paste the JSON data from chrome://sync-internals.</span>`;
       return;
     }
+    // Basic check for JSON structure
     if (!jsonData.startsWith("{") || !jsonData.endsWith("}")) {
-      syncToolOutputPre.innerHTML = `<span class="error">Error: Pasted data does not appear to be a valid JSON object. Please ensure you copied the entire object.</span>`;
+      syncToolOutputPre.innerHTML = `<span class="error">Error: Pasted data does not appear to be a valid JSON object. Please ensure you copied the entire object starting with '{' and ending with '}'.</span>`;
       return;
     }
 
     try {
       const json = JSON.parse(jsonData);
-      if (json.SPECIFICS && json.SPECIFICS.wifi_configuration && json.SPECIFICS.wifi_configuration.hex_ssid && json.SPECIFICS.wifi_configuration.passphrase) {
-        let hexSsidFromData = json.SPECIFICS.wifi_configuration.hex_ssid;
-        let decodedSsid = hexDecode_sync(hexSsidFromData);
-        const passphrase = atob(json.SPECIFICS.wifi_configuration.passphrase);
-        syncToolOutputPre.innerHTML = `<span class="success">Data successfully extracted:</span>\n\n<strong>SSID (from Hex):</strong> ${decodedSsid}\n<strong>Password:</strong> ${passphrase}`;
-      } else if (json.NON_UNIQUE_NAME && json.SPECIFICS && json.SPECIFICS.wifi_configuration && json.SPECIFICS.wifi_configuration.passphrase) {
-        let ssidPart = json.NON_UNIQUE_NAME.split("<")[0];
-        let decodedSsid = ssidPart;
-        if (/^[0-9A-F]+$/i.test(ssidPart) && ssidPart.length % 2 === 0) {
-          try { decodedSsid = hexDecode_sync(ssidPart); } catch(e) { /* keep original */ }
+      let decodedSsid = "SSID Not Found"; 
+      let passphrase = "Password Not Found";
+      let successfullyExtracted = false;
+
+      // Check for the essential structure containing passphrase
+      if (json.SPECIFICS && json.SPECIFICS.wifi_configuration && json.SPECIFICS.wifi_configuration.passphrase) {
+        try {
+            passphrase = atob(json.SPECIFICS.wifi_configuration.passphrase);
+        } catch (atobError) {
+            console.error("Error decoding passphrase with atob:", atobError);
+            passphrase = "Error decoding passphrase (invalid base64)";
+            // Continue to attempt SSID extraction but flag that passphrase failed.
         }
-        const passphrase = atob(json.SPECIFICS.wifi_configuration.passphrase);
-        syncToolOutputPre.innerHTML = `<span class="success">Data successfully extracted (using NON_UNIQUE_NAME):</span>\n\n<strong>SSID (from NON_UNIQUE_NAME):</strong> ${decodedSsid}\n<strong>Password:</strong> ${passphrase}`;
+        
+        // Determine SSID:
+        // Priority 1: From NON_UNIQUE_NAME, as this was the robustly working method for user.
+        if (json.NON_UNIQUE_NAME) {
+          let ssidPart = json.NON_UNIQUE_NAME.split("<")[0];
+          // hexDecode_sync handles if ssidPart is already decoded or not valid hex, returning original if not hex.
+          decodedSsid = hexDecode_sync(ssidPart); 
+        } 
+        // Priority 2: From SPECIFICS.wifi_configuration.hex_ssid, if NON_UNIQUE_NAME isn't there.
+        else if (json.SPECIFICS.wifi_configuration.hex_ssid) {
+          decodedSsid = hexDecode_sync(json.SPECIFICS.wifi_configuration.hex_ssid);
+        }
+        // If we have a passphrase (even if decoding failed, we note it) and some form of SSID, mark as extracted.
+        successfullyExtracted = true;
+      }
+
+      if (successfullyExtracted) {
+        // Sanitize display values to prevent potential XSS if strings somehow contain HTML.
+        const tempElement = document.createElement('div');
+        
+        tempElement.textContent = decodedSsid;
+        const safeSsid = tempElement.innerHTML;
+        
+        tempElement.textContent = passphrase;
+        const safePassphrase = tempElement.innerHTML;
+
+        syncToolOutputPre.innerHTML = `<span class="success">Data successfully extracted:</span>\n\n<strong>SSID:</strong> ${safeSsid}\n<strong>Password:</strong> ${safePassphrase}`;
       } else {
-        throw new Error("The pasted JSON does not contain the expected WiFi configuration fields (e.g., SPECIFICS.wifi_configuration.hex_ssid and .passphrase).");
+        // Provide a more detailed error if essential parts are missing
+        let errorDetail = "Required data fields (like SPECIFICS.wifi_configuration.passphrase and either NON_UNIQUE_NAME or SPECIFICS.wifi_configuration.hex_ssid) were not found in the provided JSON.";
+        if (!json.SPECIFICS || !json.SPECIFICS.wifi_configuration) {
+            errorDetail = "The JSON structure is missing 'SPECIFICS.wifi_configuration'.";
+        } else if (!json.SPECIFICS.wifi_configuration.passphrase) {
+            errorDetail = "The JSON is missing 'SPECIFICS.wifi_configuration.passphrase'.";
+        } else if (!json.NON_UNIQUE_NAME && !json.SPECIFICS.wifi_configuration.hex_ssid) {
+            errorDetail = "The JSON is missing a source for SSID (neither NON_UNIQUE_NAME nor SPECIFICS.wifi_configuration.hex_ssid found).";
+        }
+        throw new Error(`The pasted JSON does not seem to contain the complete WiFi configuration. ${errorDetail}`);
       }
     } catch (e) {
       console.error("Sync Internals Extractor Error:", e);
-      syncToolOutputPre.innerHTML = `<span class="error">Error processing JSON:</span> ${e.message || e.toString().toLowerCase()}. Check console for details.`;
+      syncToolOutputPre.innerHTML = `<span class="error">Error processing JSON:</span> ${e.message || e.toString()}. Please ensure you copied the correct and complete JSON object. Check the browser console for more details.`;
     }
   }
 
@@ -83,14 +141,29 @@ document.addEventListener('DOMContentLoaded', () => {
     return text.split("").map((char) => char.charCodeAt(0).toString(16).padStart(2, "0")).join("").toUpperCase();
   }
 
+  // This hexDecode_sync function is based on the one confirmed by the user to work correctly for SSID display.
+  // It returns the original string if it's not purely hex or has an odd length, otherwise decodes.
   function hexDecode_sync(hexString) {
-    if (!hexString || typeof hexString !== 'string' || !/^[0-9A-Fa-f]+$/i.test(hexString.replace(/[^0-9A-Fa-f]/g, '')) || hexString.length % 2 !== 0) {
+    if (!hexString || typeof hexString !== 'string' ) { // handles null, undefined, non-string types
+        return hexString; // or an empty string, or a specific "invalid input" string, depending on desired behavior
+    }
+    // Test if the string consists ONLY of hexadecimal characters and has an even length.
+    // The regex ^[0-9A-Fa-f]*$ allows an empty string, which is fine; length check handles it.
+    if (!(/^[0-9A-Fa-f]*$/i.test(hexString)) || hexString.length % 2 !== 0) {
+      // If not purely hex or odd length (and not empty for odd length), return original.
+      // This means if it's "MyWiFi", it's returned as "MyWiFi".
+      // If it's "4D7957694669A" (odd length hex), it's returned as is.
       return hexString;
     }
+    if (hexString === "") { // Explicitly handle empty string if it passed regex (it would)
+        return "";
+    }
     try {
+      // If it's a valid-looking hex string, attempt to decode.
       return hexString.match(/.{1,2}/g).map((byte) => String.fromCharCode(parseInt(byte, 16))).join("");
     } catch (e) {
-      return hexString;
+      // If decoding fails for some unexpected reason (e.g., parseInt fails on a valid-looking pair)
+      return hexString; // Fallback to original hex.
     }
   }
   // --- END SYNC INTERNALS WIFI EXTRACTOR SCRIPT ---
@@ -167,25 +240,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const networkConfigsMatch = decodedBytes.match(/"NetworkConfigurations"\s*:\s*(\[.*?\](?:\s*,\s*"[^"]+"\s*:\s*[^,}]+)*)/s);
+            // Improved REGEX to capture the NetworkConfigurations array more reliably
+            const networkConfigsMatch = decodedBytes.match(/"NetworkConfigurations"\s*:\s*(\[(?:[^[\]]|(?:\[[^[\]]*\]))*\])/);
+
 
             if (networkConfigsMatch && networkConfigsMatch[1]) {
               let networkConfigurationsArray;
               try {
-                let jsonStrToParse = networkConfigsMatch[1];
-                if (!jsonStrToParse.trim().startsWith('[')) {
-                    const arrayStart = jsonStrToParse.indexOf('[');
-                    const arrayEnd = jsonStrToParse.lastIndexOf(']');
-                    if (arrayStart !== -1 && arrayEnd !== -1) {
-                        jsonStrToParse = jsonStrToParse.substring(arrayStart, arrayEnd + 1);
-                    } else {
-                         throw new Error("Could not reliably isolate NetworkConfigurations array.");
-                    }
-                }
-                networkConfigurationsArray = JSON.parse(jsonStrToParse);
+                // The captured group should be a valid JSON array string
+                networkConfigurationsArray = JSON.parse(networkConfigsMatch[1]);
 
               } catch (jsonErr) {
-                nppeLog(`Line ${lineIndex + 1}: Error parsing NetworkConfigurations JSON: ${jsonErr.message}. Content: ${networkConfigsMatch[1].substring(0,100)}... Skipping.`, true);
+                nppeLog(`Line ${lineIndex + 1}: Error parsing NetworkConfigurations JSON: ${jsonErr.message}. Content snippet: ${networkConfigsMatch[1].substring(0,150)}... Skipping.`, true);
                 return;
               }
 
@@ -204,12 +270,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 ssidTd.textContent = wifiConfig.WiFi.SSID;
                 
                 let credsTd = document.createElement("td");
+                credsTd.style.whiteSpace = "pre-wrap"; // Allow newlines in EAP details
                 if (wifiConfig.WiFi.Passphrase) {
                   credsTd.textContent = wifiConfig.WiFi.Passphrase;
                 } else if (wifiConfig.WiFi.EAP) {
                   let eapDetails = `Type: ${wifiConfig.WiFi.EAP.Outer || 'N/A'}`;
                   if(wifiConfig.WiFi.EAP.Identity) eapDetails += `\nIdentity: ${wifiConfig.WiFi.EAP.Identity}`;
-                  credsTd.innerText = eapDetails;
+                  // Add more EAP fields if necessary, e.g., AnonymousIdentity, Inner, ServerCACertRefs etc.
+                  credsTd.textContent = eapDetails;
                 } else {
                   credsTd.textContent = "NOT FOUND / N.A.";
                 }
@@ -229,14 +297,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
         } catch (err) {
-          // Silently skip lines that are not valid JSON or don't match expected structure
+          // Silently skip lines that are not valid JSON or don't match expected structure for the outer line parse
         }
       });
       
       if (networksFound === 0) {
-         nppeLog("Processing complete. No extractable WiFi configurations found. Ensure log was generated correctly.", true);
+         nppeLog("Processing complete. No extractable WiFi configurations found. Ensure log was generated correctly with 'Include raw bytes' and policies were reloaded.", true);
       } else {
-         nppeLog(`Extraction complete. Displayed ${networksFound} network configuration(s).`, false, true);
+         nppeLog(`Extraction complete. Displayed ${networksFound} network configuration(s). Review the table above.`, false, true);
       }
     };
     reader.onerror = () => {
