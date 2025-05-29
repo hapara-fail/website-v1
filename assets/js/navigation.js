@@ -55,15 +55,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Add click listener to all page links in the menu
       link.addEventListener('click', function(event) {
-        if (this.classList.contains('current-page')) {
+        const isCurrent = this.classList.contains('current-page');
+        
+        if (isCurrent) {
           event.preventDefault(); // Prevent re-navigating to the same page
+          // Only close the menu if it's active
+          if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
+            toggleFullScreenMenu();
+          }
+        } else {
+          // Navigating to a DIFFERENT page
+          event.preventDefault(); // Prevent default navigation momentarily to show loader
+
+          const loadingOverlay = fullscreenMenu.querySelector('.menu-loading-overlay');
+          const menuList = fullscreenMenu.querySelector('.fullscreen-menu-list');
+          const menuTip = fullscreenMenu.querySelector('.command-palette-tip');
+
+          if (loadingOverlay) {
+            // Optionally hide other menu content for a cleaner look
+            if (menuList) menuList.style.opacity = '0'; // Fade out list
+            if (menuTip) menuTip.style.opacity = '0';   // Fade out tip
+            
+            loadingOverlay.classList.add('is-active'); // Show loader with fade-in
+          }
+
+          // Navigate after a short delay to allow loader to render and fade in
+          setTimeout(() => {
+            window.location.href = this.href;
+          }, 200); // Adjust delay as needed (e.g., 150-250ms)
         }
-        // For all page link clicks (current or not), close the menu
-        // Check if menu is active before toggling to prevent issues if clicked rapidly or already closing
-        if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
-          toggleFullScreenMenu();
-        }
-        // If not current-page, default link navigation will proceed
       });
       
       listItem.appendChild(link);
