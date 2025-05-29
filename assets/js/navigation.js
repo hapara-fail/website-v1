@@ -1,6 +1,6 @@
-// navigation.js
-// Contains all logic for the full-screen menu and command palette.
-// It assumes `siteNavItems` is globally available from nav-data.js.
+// assets/js/navigation.js
+// Logic for full-screen menu and command palette.
+// Assumes `siteNavItems` is globally available from nav-data.js.
 
 document.addEventListener('DOMContentLoaded', () => {
   // --- DOM Elements ---
@@ -14,10 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const commandPaletteResults = document.querySelector('.command-palette-results');
   const commandPaletteNoResults = document.querySelector('.command-palette-no-results');
 
-  if (!menuTrigger && !commandPalette) {
-    // If no navigation elements are found, don't proceed.
-    // This allows including the script on pages without these nav features if needed.
-    // console.log("Navigation elements not found on this page. Skipping navigation script init.");
+  if (!menuTrigger && !commandPaletteInput) {
     return;
   }
   
@@ -25,31 +22,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Full-Screen Menu Logic ---
   function populateFullScreenMenu() {
-    if (!fullscreenMenuList || typeof siteNavItems === 'undefined') return;
+    if (!fullscreenMenuList || typeof siteNavItems === 'undefined') {
+      console.error("Fullscreen menu list or siteNavItems not found for populating.");
+      return;
+    }
     fullscreenMenuList.innerHTML = ''; 
+    
+    const currentWindowPath = window.location.pathname;
+    let currentPageIdentifier = currentWindowPath.substring(currentWindowPath.lastIndexOf('/') + 1);
+
+    if (currentPageIdentifier === "" || currentWindowPath.endsWith("/")) {
+        currentPageIdentifier = 'index.html'; 
+    }
+
     siteNavItems.filter(item => item.type === 'page').forEach(item => { 
       const listItem = document.createElement('li');
       const link = document.createElement('a');
-      link.href = item.href;
+      link.href = item.href; 
       link.textContent = item.name;
       
-      const currentPath = window.location.pathname;
-      let itemPath = item.href;
-      // Ensure itemPath starts with '/' if it's a relative root path like "index.html"
-      if (!itemPath.startsWith('/') && !itemPath.startsWith('http')) {
-        itemPath = '/' + itemPath;
+      const navItemHref = item.href;
+      const navItemBase = navItemHref.replace(".html", "");
+      const currentPageBase = currentPageIdentifier.replace(".html", "");
+
+      if (navItemBase === currentPageBase || navItemHref === currentPageIdentifier) {
+        link.classList.add('current-page');
+        link.setAttribute('aria-current', 'page');
       }
 
-      const isCurrentPage = currentPath === itemPath || 
-                            (currentPath.endsWith('/') && item.href === 'index.html') || // Handles root index.html
-                            currentPath.endsWith(item.href); // Handles direct file match
+      // Add click listener to all page links in the menu
+      link.addEventListener('click', function(event) {
+        const isCurrent = this.classList.contains('current-page');
+        
+        if (isCurrent) {
+          event.preventDefault(); 
+          if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
+            toggleFullScreenMenu(); // Just close the menu
+          }
+        } else {
+          // Navigating to a DIFFERENT page
+          event.preventDefault(); // Prevent default navigation momentarily
 
-      if (isCurrentPage) {
-        link.style.color = '#fff'; 
-        link.style.cursor = 'default';
-        link.style.fontWeight = 'bold'; // Emphasize current page
-        link.onclick = (e) => e.preventDefault(); 
-      }
+          // Menu remains visually open. Browser navigation will tear it down.
+          // A tiny delay can sometimes help browser register click feedback before "freezing"
+          // For faster perceived navigation, this timeout can be very short or even 0.
+          setTimeout(() => {
+            window.location.href = this.href;
+          }, 50); // Minimal delay (e.g., 50ms), adjust or remove if direct navigation feels better
+        }
+      });
+      
       listItem.appendChild(link);
       fullscreenMenuList.appendChild(listItem);
     });
@@ -63,7 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
       menuTrigger.classList.remove('is-active'); 
       menuTrigger.setAttribute('aria-expanded', 'false');
       document.body.classList.remove('overlay-active');
-      menuTrigger.focus(); 
+      if (document.body.contains(menuTrigger) && menuTrigger.offsetParent !== null) {
+        menuTrigger.focus(); 
+      }
     } else {
       if (commandPalette && commandPalette.classList.contains('is-active')) {
         closeCommandPalette();
@@ -72,18 +96,20 @@ document.addEventListener('DOMContentLoaded', () => {
       menuTrigger.classList.add('is-active'); 
       menuTrigger.setAttribute('aria-expanded', 'true');
       document.body.classList.add('overlay-active');
-      const firstLink = fullscreenMenuList.querySelector('a:not([style*="cursor: default"])'); 
-      if (firstLink) firstLink.focus();
-      else if (menuTrigger) menuTrigger.focus(); 
+      
+      if (fullscreenMenuList) {
+          fullscreenMenuList.setAttribute('tabindex', '-1'); 
+          fullscreenMenuList.focus();
+      }
     }
   }
   
-  if (menuTrigger && fullscreenMenu) {
+  if (menuTrigger && fullscreenMenu && fullscreenMenuList) {
     menuTrigger.addEventListener('click', toggleFullScreenMenu); 
-    populateFullScreenMenu(); // Populate on load
+    populateFullScreenMenu();
   }
 
-  // --- Command Palette Logic ---
+  // --- Command Palette Logic (remains unchanged from the last version) ---
   function openCommandPalette() {
     if (!commandPalette || !commandPaletteBackdrop || !commandPaletteInput) return;
     if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
@@ -114,9 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const lowerCaseQuery = query.toLowerCase().trim();
     
     const filteredItems = lowerCaseQuery === '' ? 
-        siteNavItems.filter(item => item.type === 'page') : // Show only pages if query is empty
+        siteNavItems.filter(item => item.type === 'page') :
         siteNavItems.filter(item => 
-          item.name.toLowerCase().includes(lowerCaseQuery)
+          item.name.toLowerCase().includes(lowerCaseQuery) ||
+          (item.href && item.href.toLowerCase().includes(lowerCaseQuery)) 
         );
 
     if (filteredItems.length === 0 && query.length > 0) {
@@ -142,23 +169,32 @@ document.addEventListener('DOMContentLoaded', () => {
         listItem.appendChild(itemTypeSpan);
         
         listItem.addEventListener('click', () => {
-          const currentPath = window.location.pathname;
-          let itemPath = item.href;
-          if (!itemPath.startsWith('/') && !itemPath.startsWith('http')) {
-            itemPath = '/' + itemPath;
+          let isCurrentPage = false;
+          if (item.type === 'page') {
+            let currentClickPath = window.location.pathname;
+            if (currentClickPath === '/') currentClickPath = '/index.html';
+            
+            let itemClickPath = item.href;
+            if (itemClickPath && !itemClickPath.startsWith('/') && !itemClickPath.startsWith('http')) {
+              itemClickPath = '/' + itemClickPath;
+            }
+
+            if (itemClickPath === currentClickPath) {
+              isCurrentPage = true;
+            } else { 
+              const currentClickBase = currentClickPath.substring(currentClickPath.lastIndexOf('/') + 1).replace(".html", "");
+              const itemClickBase = item.href.substring(item.href.lastIndexOf('/') + 1).replace(".html", "");
+              if (currentClickBase === itemClickBase && currentClickBase !== "") {
+                  isCurrentPage = true;
+              }
+            }
           }
-          const isCurrentPage = currentPath === itemPath || 
-                                (currentPath.endsWith('/') && item.href === 'index.html') ||
-                                (currentPath === '/' && item.href === 'index.html') ||
-                                currentPath.endsWith(item.href);
 
           if (item.target === '_blank') {
             window.open(item.href, '_blank', 'noopener,noreferrer');
           } else if (isCurrentPage && item.type === 'page') {
-            // If it's the current page, just close the palette
-            // Allow re-clicking external links
-          }
-          else {
+            // Current page, do nothing extra
+          } else {
             window.location.href = item.href;
           }
           closeCommandPalette();
@@ -192,7 +228,6 @@ document.addEventListener('DOMContentLoaded', () => {
       commandPaletteBackdrop.addEventListener('click', closeCommandPalette);
   }
 
-  // --- Global Event Listeners (Keyboard) ---
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       if (fullscreenMenu && fullscreenMenu.classList.contains('is-active')) {
@@ -203,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { // Ensure 'k' check is case-insensitive
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault(); 
       if (commandPalette && commandPalette.classList.contains('is-active')) {
          if(commandPaletteInput) commandPaletteInput.focus(); 
@@ -214,8 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (commandPalette && commandPalette.classList.contains('is-active')) {
       const resultsItems = commandPaletteResults.querySelectorAll('li');
-      if (resultsItems.length === 0 && e.key !== 'Escape') return; 
-
+      
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         if (resultsItems.length > 0) {
@@ -232,8 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         if (currentFocusedResultIndex > -1 && resultsItems[currentFocusedResultIndex]) {
           resultsItems[currentFocusedResultIndex].click(); 
-        } else if (resultsItems.length > 0 && currentFocusedResultIndex === -1) { // If Enter is pressed without prior arrow key nav
-            resultsItems[0].click(); 
+        } else if (resultsItems.length > 0) { 
+          resultsItems[0].click(); 
         }
       }
     }

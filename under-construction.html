@@ -4,189 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Coming Soon | hapara.fail</title>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <style>
-    /* Base Styles */
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: #000; 
-      color: #e0e0e0;
-      font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace;
-      position: relative; 
-      overflow-x: hidden; /* Prevent horizontal scroll on html/body */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center; /* This centers the .coming-soon-container */
-    }
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
 
-    /* Prevent body scroll when fullscreen menu is active */
-    body.overlay-active {
-        overflow-y: hidden;
-    }
-
-    /* TSparticles Container */
-    #tsparticles {
-      position: fixed; 
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 0; 
-    }
-
-    /* Coming Soon Container Styling */
-    .coming-soon-container {
-      position: relative; 
-      z-index: 1;
-      padding: 2.5rem 3rem; 
-      background: rgba(10, 10, 12, 0.65); 
-      backdrop-filter: blur(10px); 
-      border-radius: 8px; 
-      border: 1px solid rgba(255, 255, 255, 0.1); 
-      max-width: 550px; 
-      width: 90%; 
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); 
-    }
-
-    .coming-soon-container h1 {
-      font-size: clamp(1.8rem, 4vw, 2.5rem); 
-      color: #fff;
-      margin-bottom: 1.2rem;
-      font-weight: bold;
-    }
-
-    .coming-soon-container p {
-      font-size: clamp(1rem, 2.5vw, 1.15rem);
-      color: #ccc;
-      line-height: 1.6;
-      margin-bottom: 2rem; 
-    }
-
-    .home-link {
-      display: inline-block;
-      color: #fff;
-      background-color: transparent;
-      border: 1.5px solid #fff;
-      padding: 10px 25px;
-      border-radius: 50px; 
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-    }
-
-    .home-link:hover,
-    .home-link:focus {
-      background-color: #fff;
-      color: #000;
-      outline: none;
-    }
-    
-    /* --- Navigation Systems CSS (Copied from other pages) --- */
-    .menu-trigger {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1005; 
-      background: none;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 0;
-    }
-    .menu-trigger svg {
-      width: 24px;
-      height: 24px; 
-      color: #FFFFFF;
-      transition: color 0.2s ease-in-out;
-    }
-    .menu-trigger:hover svg {
-      color: #AAAAAA;
-    }
-    .menu-trigger .line {
-      transform-origin: 12px 12px;
-      transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19), 
-                  opacity 0.15s 0.1s linear; 
-    }
-    .line1 { transform: translateY(-6px); }
-    .line3 { transform: translateY(6px); }
-    .menu-trigger.is-active .line1 { transform: rotate(45deg); }
-    .menu-trigger.is-active .line2 { opacity: 0; transition: opacity 0.1s linear; }
-    .menu-trigger.is-active .line3 { transform: rotate(-45deg); }
-
-    .fullscreen-menu { 
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0A0A0A; z-index: 1000; 
-        display: none; flex-direction: column; align-items: flex-start; justify-content: flex-end; 
-        opacity: 0; transition: opacity 0.3s ease-in-out; padding: 8vh 6vw; box-sizing: border-box; overflow-y: auto; 
-    }
-    .fullscreen-menu.is-active { display: flex; opacity: 1; }
-    .fullscreen-menu-list { list-style: none; padding: 0; margin: 0; text-align: left; }
-    .fullscreen-menu-list li { margin: 12px 0; }
-    .fullscreen-menu-list a { 
-        color: #ccc; text-decoration: none; font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 500; 
-        padding: 8px 0; transition: color 0.2s ease-in-out, letter-spacing 0.2s ease-in-out; display: block; 
-    }
-    .fullscreen-menu-list a:hover, .fullscreen-menu-list a:focus { color: #fff; letter-spacing: 0.5px; outline: none; }
-    .fullscreen-menu .command-palette-tip { font-size: 0.8rem; color: #555; margin-top: 30px; width: 100%; text-align: left; }
-    
-    .command-palette-backdrop { 
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3); 
-        backdrop-filter: blur(4px); z-index: 1008; display: none; opacity: 0; transition: opacity 0.2s ease-in-out; 
-    }
-    .command-palette-backdrop.is-active { display: block; opacity: 1; }
-    
-    .command-palette { 
-        position: fixed; top: 20%; left: 50%; width: 90%; max-width: 560px; 
-        background-color: #1C1C1E; border-radius: 12px; 
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08); 
-        z-index: 1010; display: none; flex-direction: column; overflow: hidden; opacity: 0; 
-        transform: translateX(-50%) scale(0.95); transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out; 
-    }
-    .command-palette.is-active { display: flex; opacity: 1; transform: translateX(-50%) scale(1); }
-    .command-palette-input-wrapper { display: flex; align-items: center; padding: 0 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-    .command-palette-input-wrapper svg { width: 20px; height: 20px; fill: #888; margin-right: 10px; flex-shrink: 0; }
-    .command-palette-input { 
-        width: 100%; padding: 15px 0; font-family: inherit; font-size: 1.2rem; color: #f0f0f0; 
-        background-color: transparent; border: none; outline: none; 
-    }
-    .command-palette-input::placeholder { color: #666; }
-    .command-palette-results { list-style: none; padding: 0; margin: 0; max-height: 300px; overflow-y: auto; padding: 8px 0; }
-    .command-palette-results li { 
-        padding: 10px 20px; cursor: pointer; color: #ccc; font-size: 0.95rem; 
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: background-color 0.1s ease-in-out; 
-        display: flex; align-items: center; 
-        text-align: left; /* Ensures text within list items is left-aligned */
-    }
-    .command-palette-results li:last-child { border-bottom: none; }
-    .command-palette-results li:hover, .command-palette-results li.is-selected { background-color: #007AFF; color: #fff; }
-    .command-palette-results li .item-name { flex-grow: 1; }
-    .command-palette-results li .item-type { font-size: 0.8rem; color: #888; margin-left: 10px; flex-shrink: 0; }
-    .command-palette-results li:hover .item-type, .command-palette-results li.is-selected .item-type { color: #eee; }
-    .command-palette-no-results { padding: 20px; text-align: center; color: #888; font-size: 0.95rem; display: none; }
-    .visually-hidden { 
-        position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; 
-        overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; 
-    }
-
-    /* Reduced motion adjustments */
-    @media (prefers-reduced-motion: reduce) {
-      #tsparticles {
-        display: none !important;
-      }
-       .coming-soon-container {
-        backdrop-filter: none; 
-      }
-      .fullscreen-menu, .command-palette, .command-palette-backdrop, .menu-trigger .line { 
-        transition: none !important; 
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/particles.css">
+  <link rel="stylesheet" href="assets/css/navigation.css">
+  <link rel="stylesheet" href="assets/css/page-specific/construction.css">
 </head>
 <body>
   <div id="tsparticles" aria-hidden="true"></div>
@@ -202,7 +25,8 @@
   <div class="fullscreen-menu" role="dialog" aria-modal="true" aria-labelledby="menuTitleComingSoon">
     <h2 id="menuTitleComingSoon" class="visually-hidden">Site Navigation</h2>
     <nav>
-      <ul class="fullscreen-menu-list"></ul>
+      <ul class="fullscreen-menu-list">
+        </ul>
     </nav>
     <p class="command-palette-tip">Tip: Press Ctrl+K or Cmd+K for quick search</p>
   </div>
@@ -213,7 +37,8 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z" /></svg>
       <input type="search" class="command-palette-input" placeholder="Type a command or search..." id="commandPaletteLabelComingSoon" autocomplete="off">
     </div>
-    <ul class="command-palette-results"></ul>
+    <ul class="command-palette-results">
+      </ul>
     <div class="command-palette-no-results">No results found.</div>
   </div>
   <span class="visually-hidden" id="commandPaletteHintComingSoon">Command Palette: Type to search site pages and links. Use arrow keys to navigate, Enter to select, Escape to close.</span>
@@ -225,81 +50,9 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const isMobile = window.matchMedia("(max-width: 768px)").matches;
-      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      const particleSettings = {
-        fpsLimit: 60,
-        particles: {
-          number: {
-            value: prefersReducedMotion ? 0 : (isMobile ? 30 : 60),
-            density: { enable: true, area: 800 }
-          },
-          color: { value: "#666666" },
-          shape: { type: "circle" },
-          opacity: { value: 0.35 },
-          size: { value: 2.2, random: { enable: true, minimumValue: 0.8 } },
-          links: {
-            enable: true,
-            distance: 140,
-            color: "#777777",
-            opacity: 0.25,
-            width: 1
-          },
-          move: {
-            enable: !prefersReducedMotion,
-            speed: 0.9,
-            direction: "none",
-            random: true,
-            straight: false,
-            outModes: { default: "out" }
-          }
-        },
-        interactivity: {
-          events: {
-            onHover: { enable: !prefersReducedMotion, mode: "repulse" },
-            onClick: { enable: !prefersReducedMotion, mode: "push" },
-            resize: true
-          },
-          modes: {
-            repulse: { distance: 70, duration: 0.4 },
-            push: { quantity: 2 }
-          }
-        },
-        detectRetina: true
-      };
-
-      function loadParticles() {
-        if (typeof tsParticles !== "undefined") {
-          tsParticles.load("tsparticles", particleSettings)
-            .then(container => {
-              if (container && prefersReducedMotion) {
-                  if (container.particles && typeof container.particles.setCount === 'function') {
-                    container.particles.setCount(0);
-                  }
-                  if (container.stop) {
-                    container.stop();
-                  }
-              }
-            })
-            .catch(error => {
-              console.error("Error loading TSPSarticles v2.12.0 on construction page:", error);
-            });
-        } else {
-          console.error("tsParticles library not found on construction page.");
-        }
-      }
-
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadParticles);
-      } else {
-        setTimeout(loadParticles, 100);
-      }
-    });
-  </script>
-  <script src="nav-data.js"></script>
-  <script src="navigation.js"></script>
-</body>
+  <script src="assets/js/particles-init.js"></script>
+  <script src="assets/js/nav-data.js"></script>
+  <script src="assets/js/navigation.js"></script>
+  <script src="assets/js/main.js"></script>
+  </body>
 </html>

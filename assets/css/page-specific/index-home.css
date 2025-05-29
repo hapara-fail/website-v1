@@ -1,0 +1,84 @@
+/* assets/css/page-specific/index-home.css */
+/* Styles specific to index.html (homepage) */
+
+body {
+  /* index.html specific body layout to make .main-container fill space and footer stick to bottom */
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+  padding-bottom: calc(70px + env(safe-area-inset-bottom)); /* Adjust 70px if bottom-nav height changes */
+  box-sizing: border-box;
+}
+
+.hero-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+/* Bottom Navigation / Footer specific to index.html */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+  padding: 15px 10px calc(15px + env(safe-area-inset-bottom));
+  background-color: transparent;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.bottom-nav a {
+  color: #aaa;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+.bottom-nav a:hover,
+.bottom-nav a:focus {
+  color: #fff;
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.bottom-nav svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  transition: fill 0.2s ease-in-out;
+}
+
+/* Reduced motion for bottom navigation links */
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav a {
+    transition: none !important;
+  }
+  .bottom-nav a:hover,
+  .bottom-nav a:focus {
+    transform: none;
+  }
+}

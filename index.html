@@ -4,367 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>hapara.fail - Unlock Your Chromebook</title>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <style>
-    /* Base Styles */
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: #000;
-      color: #e0e0e0;
-      font-family: 'Monaco', 'Consolas', 'Lucida Console', monospace;
-      position: relative;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    body.overlay-active {
-        overflow-y: hidden;
-    }
-
-    /* TSparticles Container */
-    #tsparticles {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-
-    /* Main Content Wrapper */
-    .main-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      flex-grow: 1;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-      padding: 20px;
-      padding-bottom: calc(70px + env(safe-area-inset-bottom));
-      box-sizing: border-box;
-    }
-
-    .hero-title {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      color: #fff;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-    }
-
-    /* Bottom Navigation / Footer - UPDATED */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      z-index: 2;
-      padding: 15px 10px calc(15px + env(safe-area-inset-bottom));
-      background-color: transparent;
-      box-sizing: border-box;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .bottom-nav a {
-      color: #aaa;
-      text-decoration: none;
-      transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px;
-      border-radius: 4px;
-    }
-
-    .bottom-nav a:hover,
-    .bottom-nav a:focus {
-      color: #fff;
-      transform: translateY(-2px);
-      outline: none;
-    }
-
-    .bottom-nav svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-      transition: fill 0.2s ease-in-out;
-    }
-
-    /* Screen reader only text */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    /* --- New Navigation Systems --- */
-    .menu-trigger {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1005; 
-      background: none;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 0;
-    }
-
-    .menu-trigger svg {
-      width: 24px;
-      height: 24px;
-      color: #FFFFFF;
-      transition: color 0.2s ease-in-out;
-    }
-
-    .menu-trigger:hover svg {
-      color: #AAAAAA;
-    }
-
-    .menu-trigger .line {
-      transform-origin: 12px 12px;
-      transition: transform 0.25s cubic-bezier(0.55, 0.055, 0.675, 0.19), 
-              opacity 0.15s 0.1s linear; 
-    }
-
-    /* Initial hamburger state - spread the lines out */
-    .line1 {
-      transform: translateY(-6px);
-    }
-
-    .line3 {
-      transform: translateY(6px);
-    }
-
-    .menu-trigger.is-active .line1 {
-      transform: rotate(45deg);
-    }
-
-    .menu-trigger.is-active .line2 {
-      opacity: 0;
-      transition: opacity 0.1s linear; 
-    }
-
-    .menu-trigger.is-active .line3 {
-      transform: rotate(-45deg);
-    }
-
-    .fullscreen-menu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #0A0A0A; 
-      z-index: 1000; 
-      display: none; 
-      flex-direction: column; 
-      align-items: flex-start;  
-      justify-content: flex-end; 
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-      padding: 8vh 6vw; 
-      box-sizing: border-box;
-      overflow-y: auto;
-    }
-    .fullscreen-menu.is-active {
-      display: flex;
-      opacity: 1;
-    }
-    .fullscreen-menu-list {
-      list-style: none;
-      padding: 0;
-      margin: 0; 
-      text-align: left; 
-    }
-    .fullscreen-menu-list li {
-      margin: 12px 0; 
-    }
-    .fullscreen-menu-list a {
-      color: #ccc;
-      text-decoration: none;
-      font-size: clamp(1.1rem, 2.5vw, 1.5rem); 
-      font-weight: 500;
-      padding: 8px 0; 
-      transition: color 0.2s ease-in-out, letter-spacing 0.2s ease-in-out;
-      display: block; 
-    }
-    .fullscreen-menu-list a:hover,
-    .fullscreen-menu-list a:focus {
-      color: #fff;
-      letter-spacing: 0.5px; 
-      outline: none;
-    }
-    .fullscreen-menu .command-palette-tip { 
-        font-size: 0.8rem;
-        color: #555;
-        margin-top: 30px; 
-        width: 100%; 
-        text-align: left;
-    }
-
-    .command-palette-backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.3); 
-        backdrop-filter: blur(4px); 
-        z-index: 1008; 
-        display: none; 
-        opacity: 0;
-        transition: opacity 0.2s ease-in-out;
-    }
-    .command-palette-backdrop.is-active {
-        display: block;
-        opacity: 1;
-    }
-
-    .command-palette {
-      position: fixed;
-      top: 20%; 
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 560px; 
-      background-color: #1C1C1E; 
-      border-radius: 12px; 
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08); 
-      z-index: 1010; 
-      display: none; 
-      flex-direction: column;
-      overflow: hidden; 
-      opacity: 0;
-      transform: translateX(-50%) scale(0.95); 
-      transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
-    }
-    .command-palette.is-active {
-      display: flex;
-      opacity: 1;
-      transform: translateX(-50%) scale(1);
-    }
-    .command-palette-input-wrapper {
-        display: flex;
-        align-items: center;
-        padding: 0 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-    }
-    .command-palette-input-wrapper svg { 
-        width: 20px;
-        height: 20px;
-        fill: #888;
-        margin-right: 10px;
-        flex-shrink: 0; 
-    }
-    .command-palette-input {
-      width: 100%;
-      padding: 15px 0; 
-      font-family: inherit;
-      font-size: 1.2rem; 
-      color: #f0f0f0;
-      background-color: transparent;
-      border: none;
-      outline: none;
-    }
-    .command-palette-input::placeholder {
-        color: #666;
-    }
-    .command-palette-results {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      max-height: 300px; 
-      overflow-y: auto;
-      padding: 8px 0; 
-    }
-    .command-palette-results li {
-      padding: 10px 20px;
-      cursor: pointer;
-      color: #ccc;
-      font-size: 0.95rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
-      transition: background-color 0.1s ease-in-out;
-      display: flex; 
-      align-items: center;
-    }
-    .command-palette-results li:last-child {
-        border-bottom: none;
-    }
-    .command-palette-results li:hover,
-    .command-palette-results li.is-selected { 
-      background-color: #007AFF; 
-      color: #fff;
-    }
-    .command-palette-results li .item-name {
-        flex-grow: 1;
-    }
-    .command-palette-results li .item-type {
-        font-size: 0.8rem;
-        color: #888;
-        margin-left: 10px;
-        flex-shrink: 0;
-    }
-    .command-palette-results li:hover .item-type,
-    .command-palette-results li.is-selected .item-type {
-        color: #eee;
-    }
-    .command-palette-no-results {
-        padding: 20px;
-        text-align: center;
-        color: #888;
-        font-size: 0.95rem;
-        display: none; 
-    }
-    .visually-hidden { 
-      position: absolute; 
-      width: 1px; height: 1px; 
-      margin: -1px; padding: 0; 
-      overflow: hidden; 
-      clip: rect(0, 0, 0, 0); 
-      border: 0; 
-    }
-
-    /* Reduced motion adjustments */
-    @media (prefers-reduced-motion: reduce) {
-      #tsparticles {
-        display: none !important;
-      }
-      .fullscreen-menu, .command-palette, .command-palette-backdrop, .menu-trigger .line { 
-        transition: none !important;
-      }
-      .bottom-nav a {
-        transition: none !important;
-      }
-    }
-  </style>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png"> <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/particles.css">
+  <link rel="stylesheet" href="assets/css/navigation.css">
+  <link rel="stylesheet" href="assets/css/page-specific/index-home.css">
 </head>
 <body>
   <div id="tsparticles" aria-hidden="true"></div>
 
   <button class="menu-trigger" aria-label="Open navigation menu" aria-expanded="false">
     <svg class="menu-icon-lines" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-     <path class="line line1" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-     <path class="line line2" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-     <path class="line line3" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path class="line line1" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path class="line line2" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path class="line line3" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     </svg>
   </button>
 
@@ -374,136 +26,45 @@
       <ul class="fullscreen-menu-list">
         </ul>
     </nav>
-     <p class="command-palette-tip">Tip: Press Ctrl+K or Cmd+K for quick search</p>
+    <p class="command-palette-tip">Tip: Press Ctrl+K or Cmd+K for quick search</p>
   </div>
 
   <div class="command-palette-backdrop"></div>
   <div class="command-palette" role="dialog" aria-modal="true" aria-labelledby="commandPaletteLabel">
-     <div class="command-palette-input-wrapper">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg>
-        <input type="search" class="command-palette-input" placeholder="Type a command or search..." id="commandPaletteLabel" autocomplete="off">
-     </div>
+    <div class="command-palette-input-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg>
+      <input type="search" class="command-palette-input" placeholder="Type a command or search..." id="commandPaletteLabel" autocomplete="off">
+    </div>
     <ul class="command-palette-results">
       </ul>
     <div class="command-palette-no-results">No results found.</div>
-    </div>
+  </div>
 
   <div class="main-container">
     <h1 class="hero-title">Make Your Chromebook Usable Again</h1>
   </div>
 
-  <!-- UPDATED FOOTER WITH ICONS -->
   <nav class="bottom-nav" aria-label="Footer navigation">
     <a href="https://discord.gg/KA66dHUF4P" target="_blank" rel="noopener noreferrer">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/>
-      </svg>
-      <span class="sr-only">Discord</span>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg>
+      <span class="visually-hidden">Discord</span>
     </a>
     <a href="https://github.com/hapara-fail" target="_blank" rel="noopener noreferrer">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-      </svg>
-      <span class="sr-only">GitHub</span>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      <span class="visually-hidden">GitHub</span>
     </a>
     <a href="mailto:support@hapara.fail">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-      </svg>
-      <span class="sr-only">Contact via Email</span>
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      <span class="visually-hidden">Contact via Email</span>
     </a>
   </nav>
   
   <span class="visually-hidden" id="commandPaletteHint">Command Palette: Type to search site pages and links. Use arrow keys to navigate, Enter to select, Escape to close.</span>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
-  <script>
-    // TS PARTICLES SCRIPT
-    document.addEventListener('DOMContentLoaded', () => {
-      const isMobile = window.matchMedia("(max-width: 768px)").matches;
-      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-      const particleSettings = {
-        fpsLimit: 60,
-        particles: {
-          number: {
-            value: prefersReducedMotion ? 0 : (isMobile ? 30 : 60),
-            density: { enable: true, area: 800 }
-          },
-          color: { value: "#666666" },
-          shape: { type: "circle" },
-          opacity: { value: 0.35 },
-          size: { value: 2.2, random: { enable: true, minimumValue: 0.8 } },
-          links: {
-            enable: true,
-            distance: 140,
-            color: "#777777",
-            opacity: 0.25,
-            width: 1
-          },
-          move: {
-            enable: !prefersReducedMotion,
-            speed: 0.9,
-            direction: "none",
-            random: true,
-            straight: false,
-            outModes: { default: "out" }
-          }
-        },
-        interactivity: {
-          events: {
-            onHover: { enable: !prefersReducedMotion, mode: "repulse" },
-            onClick: { enable: !prefersReducedMotion, mode: "push" },
-            resize: true
-          },
-          modes: {
-            repulse: { distance: 70, duration: 0.4 },
-            push: { quantity: 2 }
-          }
-        },
-        detectRetina: true
-      };
-
-      function loadParticles() {
-        if (typeof tsParticles !== "undefined") {
-          tsParticles.load("tsparticles", particleSettings)
-            .then(container => {
-              if (container && prefersReducedMotion) {
-                 if (container.particles && typeof container.particles.setCount === 'function') {
-                   container.particles.setCount(0);
-                }
-                if (container.stop) {
-                   container.stop();
-                }
-              }
-            })
-            .catch(error => {
-              console.error("Error loading TSPSarticles v2.12.0 on homepage:", error);
-            });
-        } else {
-          console.error("tsParticles library not found on homepage.");
-        }
-      }
-
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadParticles);
-      } else {
-        setTimeout(loadParticles, 100);
-      }
-
-      let resizeTimeout;
-      window.addEventListener("resize", () => {
-        if (prefersReducedMotion) return;
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {}, 250);
-      });
-
-      // Inline Navigation JavaScript REMOVED
-    });
-  </script>
-
-  <script src="nav-data.js"></script>
-  <script src="navigation.js"></script>
-
+  <script src="assets/js/particles-init.js"></script>
+  <script src="assets/js/nav-data.js"></script>
+  <script src="assets/js/navigation.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>

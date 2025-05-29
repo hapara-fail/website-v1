@@ -1,0 +1,19 @@
+/* assets/css/particles.css */
+/* Styling for the tsParticles background canvas */
+
+#tsparticles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0; /* Ensure it's behind other content */
+  pointer-events: none; /* Allow clicks and interactions to pass through */
+}
+
+/* Reduced motion adjustment for particles */
+@media (prefers-reduced-motion: reduce) {
+  #tsparticles {
+    display: none !important; /* Hide particles completely */
+  }
+}
