@@ -12,5 +12,6 @@ const siteNavItems = [
   // External links primarily for the Command Palette
   { name: 'Discord', href: 'https://discord.gg/KA66dHUF4P', type: 'external', target: '_blank' },
   { name: 'GitHub', href: 'https://github.com/hapara-fail', type: 'external', target: '_blank' },
+  { name: 'Status', href: 'https://status.hapara.fail', type: 'external', target: '_blank' },
   { name: 'Contact', href: 'mailto:support@hapara.fail', type: 'external' }
 ];
