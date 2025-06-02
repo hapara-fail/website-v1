@@ -2,143 +2,197 @@
 /* Styles specific to the Donate page */
 
 .content-wrapper h1 {
-  margin-bottom: 0.5rem; /* Less space after main title */
+  margin-bottom: 0.5rem;
+  font-size: clamp(2rem, 5vw, 2.8rem); /* Slightly larger H1 for emphasis */
 }
 
-.content-wrapper .meta-info { /* Style for subtitle */
+.content-wrapper .page-subtitle { /* Class for the subtitle under H1 */
   margin-bottom: 2.5rem;
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 2.5vw, 1.15rem); /* Consistent with other p tags */
   color: #bbb;
+  text-align: center;
 }
 
 .donation-intro p {
-  font-size: 1.05rem;
-  line-height: 1.7;
+  font-size: 1.05rem; /* Slightly larger intro text */
+  line-height: 1.75;
   margin-bottom: 1em;
+  color: #d0d0d0; /* Lighter than default #ccc for prominence */
 }
 
-hr.section-divider { /* You can use this class or style hr directly in main.css */
+hr.section-divider {
   border: 0;
   height: 1px;
-  background-color: #2a2a2a; /* Darker, subtle divider */
-  margin: 2.5rem 0;
+  background-color: #282828; /* Darker, more subtle divider */
+  margin: 3rem 0; /* More generous spacing */
 }
 
 .donation-methods h2,
 .discord-role h2 {
-  color: #fff; /* White headings for sections */
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #333;
-  padding-bottom: 0.5rem;
+  color: #fff;
+  margin-bottom: 1.8rem; /* Increased space after section titles */
+  border-bottom: 1px solid #383838; /* Slightly lighter border */
+  padding-bottom: 0.8rem;
+  font-size: clamp(1.4rem, 3vw, 1.9rem); /* Consistent H2 size */
 }
 
 .donation-option {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background-color: rgba(25, 25, 28, 0.5); /* Slightly different background for option boxes */
-  border-radius: 6px;
-  border: 1px solid #282828;
+  margin-bottom: 2.5rem; /* More space between donation option boxes */
+  padding: 1.8rem 2rem; /* More padding inside boxes */
+  background-color: rgba(28, 28, 31, 0.6); /* Darker, slightly more opaque for contrast */
+  border-radius: 8px; /* Consistent rounding */
+  border: 1px solid #303030; /* More defined border */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* Subtle shadow for depth */
 }
 
 .donation-option h3 {
   margin-top: 0;
-  margin-bottom: 0.8rem;
-  color: #61dafb; /* Accent color for method titles */
-  font-size: 1.3rem;
+  margin-bottom: 1rem; /* More space under H3 */
+  color: #61dafb; /* Site's accent color */
+  font-size: clamp(1.2rem, 2.8vw, 1.6rem); /* Consistent H3 size */
+}
+
+.donation-option p {
+    color: #c5c5c5; /* Slightly lighter paragraph text within option boxes */
+    margin-bottom: 0.8rem;
 }
 
 .paypal-link-container {
-  margin-top: 0.5rem;
+  margin-top: 1rem; /* Space above PayPal button */
 }
 
 .button-style-link.paypal-button {
   display: inline-block;
   background-color: #0070ba; /* Official PayPal blue */
-  color: white !important; /* Ensure text is white */
-  padding: 12px 24px;
+  color: white !important;
+  padding: 12px 28px; /* Slightly larger padding */
   text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: background-color 0.2s ease-in-out;
+  border-radius: 6px; /* Slightly less rounded, more modern */
+  font-weight: 500; /* Consistent with other button-like links */
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-out;
   border: none;
   font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
 
-.button-style-link.paypal-button:hover {
-  background-color: #005ea6; /* Darker PayPal blue on hover */
-  color: white !important;
+.button-style-link.paypal-button:hover,
+.button-style-link.paypal-button:focus {
+  background-color: #005ea6;
+  transform: translateY(-1px); /* Subtle lift */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .crypto-address-list {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
 .crypto-address-item {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap; /* Allow wrapping for responsiveness */
-  gap: 10px; /* Gap between elements */
+  margin-bottom: 1.2rem; /* Increased spacing */
+  flex-wrap: nowrap; /* Try to keep label, code, button on one line if possible */
+  gap: 12px;
 }
 
 .crypto-address-item .crypto-label {
-  min-width: 45px; /* Align labels like BTC:, ETH: */
-  font-weight: bold;
-  color: #fff;
+  min-width: 50px; 
+  font-weight: 500; /* Normal bold for labels */
+  color: #e0e0e0; /* Slightly brighter label */
+  flex-shrink: 0;
 }
 
 .crypto-address-item code {
-  background-color: #282828; /* Darker code background */
-  padding: 8px 10px;
+  background-color: #18181a; /* Very dark for code block */
+  padding: 10px 12px; /* More padding */
   border-radius: 4px;
-  color: #e0e0e0;
-  word-break: break-all; /* Ensure long addresses break and are visible */
-  flex-grow: 1; /* Allow code block to take available space */
-  font-size: 0.9rem;
-  border: 1px solid #383838;
+  color: #b0b0b0; /* Lighter text for address */
+  word-break: break-all;
+  flex-grow: 1;
+  font-size: 0.85rem; /* Smaller for dense addresses */
+  border: 1px solid #2f2f2f; /* Subtle border */
+  text-align: left; /* Ensure addresses are left-aligned */
 }
 
 .copy-btn {
-  background-color: #333;
-  color: #fff;
+  display: inline-flex; /* For aligning icon and text */
+  align-items: center;
+  gap: 6px; /* Space between icon and "Copied!" text if shown */
+  background-color: #383838; /* Darker grey button */
+  color: #d0d0d0; /* Lighter icon/text color */
   border: 1px solid #555;
-  padding: 8px 15px;
-  border-radius: 4px;
+  padding: 8px 10px; /* Adjust for icon size */
+  border-radius: 5px;
   cursor: pointer;
   font-size: 0.85rem;
   font-weight: 500;
-  transition: background-color 0.2s, color 0.2s;
-  white-space: nowrap; /* Prevent button text from wrapping */
+  transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+  line-height: 1; /* Ensure icon and text align well */
+}
+.copy-btn svg {
+    width: 1em; /* Relative to font-size of button */
+    height: 1em;
+    display: block; /* Or inline-block with vertical-align: middle */
 }
 
-.copy-btn:hover {
+.copy-btn:hover, .copy-btn:focus {
   background-color: #4e4e4e;
+  color: #fff;
+  outline: none; /* Or custom focus style */
 }
 
-.copy-btn.copied {
-  background-color: #50fa7b; /* Green for success */
-  color: #000; /* Dark text on green button */
-  border-color: #50fa7b;
+.copy-btn .success-icon,
+.copy-btn .copy-feedback-text.copied-text-visible {
+  color: #50fa7b; /* Green for success icon/text */
 }
+.copy-btn.copied .default-icon { /* Hide default icon when copied */
+    display: none;
+}
+.copy-btn:not(.copied) .success-icon { /* Hide success icon by default */
+    display: none;
+}
+.copy-btn .copy-feedback-text {
+    font-size: 0.8em; /* Slightly smaller feedback text */
+}
+
 
 .contact-list {
   list-style: none;
   padding-left: 0;
+  margin-top: 0.5rem;
 }
 .contact-list li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
+  color: #c5c5c5;
+}
+.contact-list li a {
+    color: #61dafb; /* Standard link color */
 }
 
 .warning-text {
-  color: #ffcc00; /* Using warning color for emphasis */
-  /* font-weight: bold; /* Already bolded with <strong> */
-  margin-top: 0.5em;
+  color: #ffcc00; /* Brighter warning for security note */
+  font-weight: 500;
+  margin-top: 1em;
+  background-color: rgba(255, 204, 0, 0.05); /* Very subtle yellow background */
+  padding: 0.8em;
+  border-left: 3px solid #ffcc00;
+  border-radius: 4px;
+}
+.warning-text strong {
+    color: #ffeda0; /* Lighter yellow for strong text within warning */
 }
 
+
+.discord-role {
+    margin-top: 1rem; /* Adjusted from hr */
+}
 .discord-role p {
   margin-bottom: 0.75rem;
+  color: #c5c5c5;
 }
 .discord-role code { /* For the @Donator role text */
-    font-size: 1em; /* Match surrounding text or slightly larger */
-    padding: 2px 5px;
+    font-size: 1em; 
+    padding: 3px 6px;
+    background-color: #2a2a2a; /* Match other code blocks */
+    border: 1px solid #444;
 }
