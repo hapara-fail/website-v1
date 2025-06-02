@@ -3,62 +3,60 @@
 
 .content-wrapper h1 {
   margin-bottom: 0.5rem;
-  font-size: clamp(2rem, 5vw, 2.8rem); /* Prominent H1 */
-  text-align: center; /* Center main title */
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  text-align: left; /* Changed to left */
 }
 
 .content-wrapper .page-subtitle {
-  margin-bottom: 3rem; /* More space after subtitle */
+  margin-bottom: 3rem;
   font-size: clamp(1rem, 2.5vw, 1.2rem);
   color: #bbb;
-  text-align: center;
-  max-width: 650px; /* Constrain subtitle width for readability */
-  margin-left: auto;
-  margin-right: auto;
+  text-align: left; /* Changed to left */
+  max-width: 100%; /* Allow full width within content-wrapper */
 }
 
 .donation-intro p {
   font-size: 1.05rem;
   line-height: 1.75;
-  margin-bottom: 1.2em; /* Slightly more space between intro paragraphs */
+  margin-bottom: 1.2em;
   color: #d0d0d0;
-  text-align: justify; /* Justify intro text for a cleaner look */
+  text-align: left; /* Changed to left */
 }
 
 hr.section-divider {
   border: 0;
   height: 1px;
-  background-color: #333; /* Slightly more visible divider */
-  margin: 3rem auto; /* Centered divider */
-  width: 80%; /* Not full width for a softer break */
+  background-color: #333; /* Slightly more visible */
+  margin: 3rem 0; /* Full width within content wrapper */
+  width: 100%;
 }
 
 .donation-methods h2,
 .discord-role h2 {
   color: #fff;
-  margin-bottom: 2rem; /* Increased space after section titles */
+  margin-bottom: 1.8rem;
   padding-bottom: 0.8rem;
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem); /* Larger H2 */
-  text-align: center; /* Center section titles */
-  border-bottom: 1px solid #444; /* More prominent underline */
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  text-align: left; /* Changed to left */
+  border-bottom: 1px solid #444;
 }
 
 .donation-option {
   margin-bottom: 2.5rem;
-  padding: 2rem 2.5rem; /* Increased padding inside boxes */
-  background-color: rgba(30, 30, 33, 0.6); /* Slightly different bg */
-  border-radius: 10px; /* Softer radius */
-  border: 1px solid #3a3a3a; /* Slightly more visible border */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.25); /* Enhanced shadow */
+  padding: 2rem; /* Uniform padding */
+  background-color: rgba(28, 28, 31, 0.7); /* Slightly more transparency */
+  border-radius: 8px; /* Consistent with other elements */
+  border: 1px solid #383838;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .donation-option h3 {
   margin-top: 0;
-  margin-bottom: 1.2rem; /* More space under H3 */
-  color: #61dafb; /* Site's accent color */
-  font-size: clamp(1.3rem, 3vw, 1.7rem); /* Slightly larger H3 */
-  border-bottom: 1px dashed #444; /* Dashed underline for H3 */
-  padding-bottom: 0.6rem;
+  margin-bottom: 1rem;
+  color: #61dafb;
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  border-bottom: none; /* Remove dashed underline for cleaner look */
+  padding-bottom: 0;
 }
 
 .donation-option p {
@@ -69,35 +67,35 @@ hr.section-divider {
 
 .paypal-link-container {
   margin-top: 1rem;
-  text-align: center; /* Center PayPal button */
+  text-align: left; /* Align button to left with text */
 }
 
 .button-style-link.paypal-button {
-  display: inline-flex; /* To align icon and text */
+  display: inline-flex;
   align-items: center;
-  gap: 10px; /* Space between icon and text */
+  gap: 10px;
   background-color: #0070ba;
   color: white !important;
-  padding: 12px 24px;
+  padding: 10px 20px; /* Adjusted padding */
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 5px; /* Match copy button radius */
   font-weight: 500;
   transition: background-color 0.2s ease-in-out, transform 0.1s ease-out;
   border: none;
-  font-size: 1.05rem; /* Slightly larger */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
-.button-style-link.paypal-button .paypal-logo-wrapper svg {
-    width: 20px; /* Fixed size for logo */
+.paypal-logo-img { /* Style for the img tag */
+    width: 20px;
     height: 20px;
-    vertical-align: middle; /* Align icon with text */
+    /* No fill needed as it's an img src */
 }
 
 .button-style-link.paypal-button:hover,
 .button-style-link.paypal-button:focus {
   background-color: #005ea6;
-  transform: translateY(-2px); /* More noticeable lift */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
 .crypto-address-list {
@@ -107,87 +105,84 @@ hr.section-divider {
 .crypto-address-item {
   display: flex;
   align-items: center;
-  margin-bottom: 1.2rem;
-  flex-wrap: nowrap;
+  margin-bottom: 1rem;
+  flex-wrap: nowrap; 
   gap: 10px;
-  padding: 8px 0; /* Add some vertical padding for each item row */
-  border-bottom: 1px solid #2a2a2a; /* Subtle separator for crypto items */
+  padding: 6px 0; 
+  border-bottom: 1px solid #2f2f2f; 
 }
 .crypto-address-item:last-child {
     border-bottom: none;
 }
 
 .crypto-address-item .crypto-label {
-  min-width: 50px; 
+  min-width: 45px; 
   font-weight: 500;
   color: #e0e0e0;
   flex-shrink: 0;
 }
 
 .crypto-address-item code {
-  background-color: #1c1c1e; /* Darker, distinct code background */
-  padding: 10px 14px;
-  border-radius: 5px;
-  color: #b0b0b0;
+  background-color: #1a1a1c; /* Slightly different from tool inputs for variety */
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: #c0c0c0; /* Lighter address text */
   word-break: break-all;
   flex-grow: 1;
-  font-size: 0.8rem; /* Smaller for long addresses */
+  font-size: 0.85rem;
   border: 1px solid #333;
   text-align: left;
-  line-height: 1.4; /* Adjust for readability */
+  line-height: 1.4;
 }
 
 .copy-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center; /* Center icon inside */
-  background-color: #3a3a3a;
-  color: #b0b0b0; /* Icon color */
-  border: 1px solid #505050;
-  width: 38px;  /* Fixed width for a more square/rectangular button */
-  height: 38px; /* Fixed height */
-  padding: 0; /* Remove padding if fixed size is used */
+  justify-content: center;
+  background-color: #333; /* Slightly lighter base */
+  color: #ccc; /* Icon default color */
+  border: 1px solid #4d4d4d; /* Lighter border */
+  width: 36px;  /* Consistent size */
+  height: 36px;
+  padding: 0; 
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-  flex-shrink: 0; /* Prevent shrinking */
+  transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
+  flex-shrink: 0;
+  opacity: 0.85; /* Slightly transparent by default */
 }
 .copy-btn .icon-wrapper svg {
-    width: 16px; /* SVG size */
+    width: 16px;
     height: 16px;
-}
-.copy-btn .copy-feedback-text {
-    display: none; /* Hide text by default, JS will show "Copied!" */
-    margin-left: 6px;
-    font-size: 0.8em;
-    white-space: nowrap;
+    fill: currentColor; /* Make SVG color inherit from button's color property */
 }
 
 .copy-btn:hover, .copy-btn:focus {
-  background-color: #4e4e4e;
-  color: #fff; /* Icon color on hover */
+  background-color: #454545; /* Darken on hover */
+  color: #fff;
   border-color: #666;
-  outline: none;
+  outline: 2px solid #61dafb; /* Focus outline */
+  outline-offset: 1px;
+  opacity: 1;
 }
 
-.copy-btn.copied { /* State when text is copied */
-    background-color: #2a5736; /* Subtle green background for copied state */
-    border-color: #50fa7b;
+/* Visual feedback for copied state */
+.copy-btn.copied {
+    background-color: #2a5736; /* Greenish tint */
+    border-color: #3c7d4e;
+    opacity: 1;
 }
 .copy-btn.copied .default-icon {
     display: none;
 }
 .copy-btn.copied .success-icon {
-    display: inline-block; /* Show checkmark */
-    color: #50fa7b; /* Green checkmark */
+    display: inline-block;
+    color: #50fa7b; /* Bright green checkmark */
 }
-.copy-btn.copied .copy-feedback-text {
-    display: inline-block; /* Show "Copied!" text */
-    color: #50fa7b;
-}
-.copy-btn:not(.copied) .success-icon { /* Keep success icon hidden by default */
+.copy-btn:not(.copied) .success-icon {
     display: none;
 }
+/* Removed .copy-feedback-text styling as the span was removed from HTML for icon-only button */
 
 
 .contact-list {
@@ -205,44 +200,42 @@ hr.section-divider {
     font-weight: 500;
 }
 .contact-list li a:hover {
-    text-decoration: underline;
+    text-decoration: underline; /* Explicitly add underline on hover */
 }
-
 
 .warning-text {
-  color: #ffdd70; /* Brighter yellow for better readability on dark */
+  color: #ffdd70; 
   font-weight: 500;
-  margin-top: 1em;
-  background-color: rgba(85, 70, 25, 0.3); /* Darker, richer yellow background */
+  margin-top: 1.2em;
+  background-color: rgba(85, 70, 25, 0.35);
   padding: 1em 1.2em;
-  border-left: 4px solid #ffcc00; /* Accent border */
+  border-left: 4px solid #ffcc00;
   border-radius: 6px;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 .warning-text strong {
-    color: #ffe8a8; /* Even lighter yellow for strong text within warning */
+    color: #ffe8a8; 
 }
-
 
 .discord-role {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 }
 .discord-role p {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.8rem;
   color: #c5c5c5;
-  line-height: 1.6;
+  line-height: 1.65;
 }
-.discord-role code {
+.discord-role code { 
     font-size: 1em; 
     padding: 3px 6px;
     background-color: #2a2a2a;
     border: 1px solid #444;
-    color: #61dafb; /* Accent for role name */
+    color: #61dafb;
 }
 
 .thank-you-message {
     text-align: center;
-    margin-top: 2.5rem;
+    margin-top: 3rem; /* More space before final thank you */
     font-size: 1.1em;
     color: #d0d0d0;
 }
