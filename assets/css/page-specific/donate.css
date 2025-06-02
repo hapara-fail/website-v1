@@ -1,0 +1,144 @@
+/* assets/css/page-specific/donate.css */
+/* Styles specific to the Donate page */
+
+.content-wrapper h1 {
+  margin-bottom: 0.5rem; /* Less space after main title */
+}
+
+.content-wrapper .meta-info { /* Style for subtitle */
+  margin-bottom: 2.5rem;
+  font-size: 1.1rem;
+  color: #bbb;
+}
+
+.donation-intro p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 1em;
+}
+
+hr.section-divider { /* You can use this class or style hr directly in main.css */
+  border: 0;
+  height: 1px;
+  background-color: #2a2a2a; /* Darker, subtle divider */
+  margin: 2.5rem 0;
+}
+
+.donation-methods h2,
+.discord-role h2 {
+  color: #fff; /* White headings for sections */
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+.donation-option {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: rgba(25, 25, 28, 0.5); /* Slightly different background for option boxes */
+  border-radius: 6px;
+  border: 1px solid #282828;
+}
+
+.donation-option h3 {
+  margin-top: 0;
+  margin-bottom: 0.8rem;
+  color: #61dafb; /* Accent color for method titles */
+  font-size: 1.3rem;
+}
+
+.paypal-link-container {
+  margin-top: 0.5rem;
+}
+
+.button-style-link.paypal-button {
+  display: inline-block;
+  background-color: #0070ba; /* Official PayPal blue */
+  color: white !important; /* Ensure text is white */
+  padding: 12px 24px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+  border: none;
+  font-size: 1rem;
+}
+
+.button-style-link.paypal-button:hover {
+  background-color: #005ea6; /* Darker PayPal blue on hover */
+  color: white !important;
+}
+
+.crypto-address-list {
+  margin-top: 0.5rem;
+}
+
+.crypto-address-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap; /* Allow wrapping for responsiveness */
+  gap: 10px; /* Gap between elements */
+}
+
+.crypto-address-item .crypto-label {
+  min-width: 45px; /* Align labels like BTC:, ETH: */
+  font-weight: bold;
+  color: #fff;
+}
+
+.crypto-address-item code {
+  background-color: #282828; /* Darker code background */
+  padding: 8px 10px;
+  border-radius: 4px;
+  color: #e0e0e0;
+  word-break: break-all; /* Ensure long addresses break and are visible */
+  flex-grow: 1; /* Allow code block to take available space */
+  font-size: 0.9rem;
+  border: 1px solid #383838;
+}
+
+.copy-btn {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap; /* Prevent button text from wrapping */
+}
+
+.copy-btn:hover {
+  background-color: #4e4e4e;
+}
+
+.copy-btn.copied {
+  background-color: #50fa7b; /* Green for success */
+  color: #000; /* Dark text on green button */
+  border-color: #50fa7b;
+}
+
+.contact-list {
+  list-style: none;
+  padding-left: 0;
+}
+.contact-list li {
+  margin-bottom: 0.5rem;
+}
+
+.warning-text {
+  color: #ffcc00; /* Using warning color for emphasis */
+  /* font-weight: bold; /* Already bolded with <strong> */
+  margin-top: 0.5em;
+}
+
+.discord-role p {
+  margin-bottom: 0.75rem;
+}
+.discord-role code { /* For the @Donator role text */
+    font-size: 1em; /* Match surrounding text or slightly larger */
+    padding: 2px 5px;
+}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Support Us | hapara.fail</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/particles.css">
+  <link rel="stylesheet" href="assets/css/navigation.css">
+  <link rel="stylesheet" href="assets/css/page-specific/donate.css"> </head>
+
+<body>
+
+  <button class="menu-trigger" aria-label="Open navigation menu" aria-expanded="false">
+    <svg class="menu-icon-lines" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="line line1" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path class="line line2" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path class="line line3" d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <div class="fullscreen-menu" role="dialog" aria-modal="true" aria-labelledby="menuTitleDonate">
+    <h2 id="menuTitleDonate" class="visually-hidden">Site Navigation</h2>
+    <nav>
+      <ul class="fullscreen-menu-list">
+        </ul>
+    </nav>
+    <p class="command-palette-tip">Tip: Press Ctrl+K or Cmd+K for quick search</p>
+  </div>
+
+  <div class="command-palette-backdrop"></div>
+  <div class="command-palette" role="dialog" aria-modal="true" aria-labelledby="commandPaletteLabelDonate">
+    <div class="command-palette-input-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z" /></svg>
+      <input type="search" class="command-palette-input" placeholder="Type a command or search..." id="commandPaletteLabelDonate" autocomplete="off">
+    </div>
+    <ul class="command-palette-results">
+      </ul>
+    <div class="command-palette-no-results">No results found.</div>
+  </div>
+  <span class="visually-hidden" id="commandPaletteHintDonate">Command Palette: Type to search site pages and links. Use arrow keys to navigate, Enter to select, Escape to close.</span>
+
+  <div id="tsparticles" aria-hidden="true"></div>
+
+  <div class="content-wrapper">
+    <h1>Support <code>hapara.fail</code></h1>
+    <p class="meta-info">Help us keep the lights on and continue developing resources!</p>
+
+    <section class="donation-intro">
+      <p><code>hapara.fail</code> is a passion project dedicated to providing free, open-source tools and guides that empower users to understand and navigate their digital environments, especially within educational settings like ChromeOS. We believe in digital literacy, user agency, and the importance of privacy.</p>
+      <p>Maintaining and expanding this site—developing new tools, writing in-depth guides, and covering hosting costs—requires time and resources. If you find our work valuable, please consider making a contribution. Every bit helps us continue our mission!</p>
+    </section>
+
+    <hr class="section-divider">
+
+    <section class="donation-methods">
+      <h2>How You Can Support Us</h2>
+
+      <div class="donation-option">
+        <h3>PayPal</h3>
+        <p>A quick and easy way to contribute via PayPal:</p>
+        <p class="paypal-link-container">
+          <a href="https://paypal.me/BobRandy227" target="_blank" rel="noopener noreferrer" class="button-style-link paypal-button">
+            Donate with PayPal
+          </a>
+        </p>
+      </div>
+
+      <div class="donation-option">
+        <h3>Cryptocurrency</h3>
+        <p>We accept donations in the following cryptocurrencies. Click "Copy" to easily copy the address.</p>
+        <div class="crypto-address-list">
+          <div class="crypto-address-item">
+            <strong class="crypto-label">BTC:</strong>
+            <code id="btc-address">bc1q2w3sl5vtem5vl85949vjx6wpxrg92c4c0u37wz</code>
+            <button class="copy-btn" data-clipboard-target="#btc-address" aria-label="Copy BTC address">Copy</button>
+          </div>
+          <div class="crypto-address-item">
+            <strong class="crypto-label">LTC:</strong>
+            <code id="ltc-address">LcC4Up1BCEHTqMZRYb7GmFD1fRMjJ8yair</code>
+            <button class="copy-btn" data-clipboard-target="#ltc-address" aria-label="Copy LTC address">Copy</button>
+          </div>
+          <div class="crypto-address-item">
+            <strong class="crypto-label">ETH:</strong>
+            <code id="eth-address">0x154B937B3217E8cF7a26384c4AACc7F419c66b27</code>
+            <button class="copy-btn" data-clipboard-target="#eth-address" aria-label="Copy ETH address">Copy</button>
+          </div>
+          <div class="crypto-address-item">
+            <strong class="crypto-label">SOL:</strong>
+            <code id="sol-address">Gb25osyrTgsgVRCafPPTbfcRJWtjFFKzUjtHuLmdqrFp</code>
+            <button class="copy-btn" data-clipboard-target="#sol-address" aria-label="Copy SOL address">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="donation-option">
+        <h3>Cash or Other Methods</h3>
+        <p>For donations via cash or other methods, please contact us directly. To ensure your inquiry reaches the right person, please use the following contacts:</p>
+        <ul class="contact-list">
+          <li>DM or email: <a href="mailto:a9x@hapara.fail">a9x@hapara.fail</a></li>
+          <li>CC (for visibility): <a href="mailto:newark@hapara.fail">newark@hapara.fail</a></li>
+        </ul>
+        <p class="warning-text"><strong>Important:</strong> Do not DM or email anyone else for donation inquiries, including general support channels. Only use the contacts listed above for these specific methods.</p>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <section class="discord-role">
+      <h2>Get Your @Donator Role on Discord!</h2>
+      <p>As a thank you for your support, contributions of <strong>$5 USD or more</strong> (or equivalent value in cryptocurrency) are eligible for the <code>@Donator</code> role on our Discord server.</p>
+      <p>To claim your role after donating, please email <a href="mailto:support@hapara.fail">support@hapara.fail</a> or DM <code>@a9x</code> on Discord with proof of your transaction (e.g., a transaction ID or screenshot).</p>
+    </section>
+
+    <hr class="section-divider">
+    
+    <p style="text-align: center; margin-top: 2rem;">Your support is greatly appreciated and helps us continue to build and share these resources. Thank you!</p>
+
+  </div> <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+  <script src="assets/js/particles-init.js"></script>
+  <script src="assets/js/nav-data.js"></script>
+  <script src="assets/js/navigation.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/page-specific/donate.js"></script> </body>
+</html>
