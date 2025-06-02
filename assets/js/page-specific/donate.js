@@ -16,21 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const defaultIcon = button.querySelector('.default-icon');
         const successIcon = button.querySelector('.success-icon');
         const feedbackTextSpan = button.querySelector('.copy-feedback-text');
-        const initialButtonWidth = button.offsetWidth; // Store initial width
         
-        // Set initial accessible text for the button if not using aria-label already for the icon itself
-        if (feedbackTextSpan) {
-            // The button's aria-label already describes the action, so text can be minimal or for visual state
-            // For this setup, we'll make the text span show "Copy" initially if no icon text is used
-            // However, since icons are present, the aria-label on the button is primary.
-            // We will use the feedbackTextSpan for "Copied!" message.
-        }
+        // Set initial state for feedback text if needed, though CSS handles initial hide
+        if (feedbackTextSpan) feedbackTextSpan.style.display = 'none';
 
 
         button.addEventListener('click', () => {
-            // Prevent button from permanently changing size if text appears
-            button.style.minWidth = `${initialButtonWidth}px`;
-
             const targetId = button.dataset.clipboardTarget;
             const targetElement = document.querySelector(targetId);
 
@@ -39,40 +30,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 navigator.clipboard.writeText(addressToCopy)
                     .then(() => {
                         if (defaultIcon) defaultIcon.style.display = 'none';
-                        if (successIcon) successIcon.style.display = 'inline-block'; // Or 'block'
+                        if (successIcon) successIcon.style.display = 'inline-block';
                         if (feedbackTextSpan) {
                             feedbackTextSpan.textContent = 'Copied!';
                             feedbackTextSpan.style.display = 'inline';
                         }
-                        button.classList.add('copied'); // For CSS styling feedback (e.g. background)
+                        button.classList.add('copied');
+                        button.setAttribute('disabled', 'true'); // Briefly disable button
 
                         setTimeout(() => {
-                            if (defaultIcon) defaultIcon.style.display = 'inline-block'; // Or 'block'
+                            if (defaultIcon) defaultIcon.style.display = 'inline-block';
                             if (successIcon) successIcon.style.display = 'none';
                             if (feedbackTextSpan) {
-                                feedbackTextSpan.textContent = ''; // Or back to "Copy" if you had it
+                                feedbackTextSpan.textContent = ''; 
                                 feedbackTextSpan.style.display = 'none';
                             }
                             button.classList.remove('copied');
-                            button.style.minWidth = ''; // Reset min-width
-                        }, 2000);
+                            button.removeAttribute('disabled');
+                        }, 2000); // Revert after 2 seconds
                     })
                     .catch(err => {
                         console.error('Failed to copy address: ', err);
                         if (feedbackTextSpan) {
-                            feedbackTextSpan.textContent = 'Error';
+                            feedbackTextSpan.textContent = 'Error!';
                             feedbackTextSpan.style.display = 'inline';
                              setTimeout(() => {
                                 feedbackTextSpan.textContent = '';
                                 feedbackTextSpan.style.display = 'none';
                             }, 2000);
                         } else {
+                            // Fallback for users if feedbackTextSpan somehow isn't there
                             alert('Failed to copy address. Please copy it manually.');
                         }
                     });
             } else {
                 console.error('Target element for copy not found:', targetId);
-                if (feedbackTextSpan) feedbackTextSpan.textContent = 'Error';
+                if (feedbackTextSpan) {
+                    feedbackTextSpan.textContent = 'Error!';
+                    feedbackTextSpan.style.display = 'inline';
+                    setTimeout(() => {
+                        feedbackTextSpan.textContent = '';
+                        feedbackTextSpan.style.display = 'none';
+                    }, 2000);
+                }
             }
         });
     });
