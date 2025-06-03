@@ -3,15 +3,15 @@
 
 .content-wrapper h1 {
   margin-bottom: 0.5rem;
-  font-size: clamp(2rem, 5vw, 2.8rem); /* Prominent H1 */
-  text-align: left; /* Consistent left alignment */
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  text-align: left; 
 }
 
 .content-wrapper .page-subtitle {
   margin-bottom: 3rem;
   font-size: clamp(1rem, 2.5vw, 1.2rem);
   color: #bbb;
-  text-align: left; /* Consistent left alignment */
+  text-align: left; 
   max-width: 100%; 
 }
 
@@ -20,15 +20,15 @@
   line-height: 1.75;
   margin-bottom: 1.2em;
   color: #d0d0d0;
-  text-align: left; /* Consistent left alignment */
+  text-align: left; 
 }
 
 hr.section-divider {
   border: 0;
   height: 1px;
-  background-color: #333; /* Adjusted for visibility */
+  background-color: #333; 
   margin: 3rem 0; 
-  width: 100%; /* Full width within content wrapper */
+  width: 100%; 
 }
 
 .donation-methods h2,
@@ -37,15 +37,15 @@ hr.section-divider {
   margin-bottom: 1.8rem;
   padding-bottom: 0.8rem;
   font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-  text-align: left; /* Consistent left alignment */
+  text-align: left; 
   border-bottom: 1px solid #444;
 }
 
 .donation-option {
   margin-bottom: 2.5rem;
-  padding: 2rem 2.5rem;
-  background-color: rgba(28, 28, 31, 0.7);
-  border-radius: 8px;
+  padding: 2rem 2.5rem; 
+  background-color: rgba(28, 28, 31, 0.7); 
+  border-radius: 8px; 
   border: 1px solid #383838;
   box-shadow: 0 5px 15px rgba(0,0,0,0.25);
 }
@@ -53,9 +53,8 @@ hr.section-divider {
 .donation-option h3 {
   margin-top: 0;
   margin-bottom: 1.2rem;
-  color: #61dafb; /* Accent color */
+  color: #61dafb; 
   font-size: clamp(1.3rem, 3vw, 1.7rem);
-  /* Removed dashed border for cleaner look, main section H2 has border */
 }
 
 .donation-option p {
@@ -66,14 +65,14 @@ hr.section-divider {
 
 .paypal-link-container {
   margin-top: 1rem;
-  text-align: left; /* Align button with text */
+  text-align: left;
 }
 
 .button-style-link.paypal-button {
   display: inline-flex; 
   align-items: center;
   gap: 10px;
-  background-color: #0070ba; /* PayPal blue */
+  background-color: #0070ba;
   color: white !important;
   padding: 10px 20px;
   text-decoration: none;
@@ -84,10 +83,9 @@ hr.section-divider {
   font-size: 1rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
-.paypal-logo-img { /* Style for the <img> tag for PayPal logo */
+.paypal-logo-img { 
     width: 20px;
     height: 20px;
-    vertical-align: middle; /* Helps with alignment if needed */
 }
 
 .button-style-link.paypal-button:hover,
@@ -95,7 +93,7 @@ hr.section-divider {
   background-color: #005ea6;
   transform: translateY(-1px);
   box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  outline: none; /* Or a custom focus style */
+  outline: none;
 }
 
 .crypto-address-list {
@@ -107,9 +105,9 @@ hr.section-divider {
   align-items: center;
   margin-bottom: 1rem;
   flex-wrap: nowrap; 
-  gap: 12px; /* Consistent gap */
-  padding: 8px 0; 
-  border-bottom: 1px solid #2f2f2f;
+  gap: 12px; 
+  padding: 6px 0; 
+  border-bottom: 1px solid #2f2f2f; 
 }
 .crypto-address-item:last-child {
     border-bottom: none;
@@ -124,7 +122,7 @@ hr.section-divider {
 
 .crypto-address-item code {
   background-color: #1a1a1c;
-  padding: 8px 12px; /* Adjusted padding for better balance */
+  padding: 8px 12px; 
   border-radius: 4px;
   color: #c0c0c0;
   word-break: break-all;
@@ -135,62 +133,67 @@ hr.section-divider {
   line-height: 1.4;
 }
 
-/* --- Copy Button Styling - Updated --- */
+/* --- Copy Button Styling - Refined for Icon Centering & Visibility --- */
 .copy-btn {
-  display: inline-flex;   /* Use flex to center content (the icon wrapper) */
-  align-items: center;    /* Vertical centering */
-  justify-content: center;  /* Horizontal centering */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: #333;
-  color: #ccc;             /* Default icon color */
+  color: #ccc;
   border: 1px solid #4d4d4d;
-  width: 36px;            /* Fixed size for a compact button */
+  width: 36px; 
   height: 36px;
-  padding: 0;             /* Remove padding as size is fixed */
+  padding: 0;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
-  flex-shrink: 0;         /* Prevent shrinking in flex layouts */
+  flex-shrink: 0;
   opacity: 0.85;
-  position: relative; /* For absolute positioning of feedback text if used */
+  position: relative; 
 }
 
-.copy-btn .icon-wrapper { /* This span wraps each SVG */
-  display: inline-flex;   /* Make the wrapper a flex container */
-  align-items: center;    /* Vertically center the SVG within this wrapper */
-  justify-content: center;  /* Horizontally center the SVG */
-  width: 100%;            /* Make wrapper fill the button */
+.copy-btn .icon-wrapper {
+  display: inline-flex; /* This is key for when it's the visible icon */
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   height: 100%;
 }
 
 .copy-btn .icon-wrapper svg {
-    width: 16px;            /* Explicit size for the SVG icon */
+    width: 16px;
     height: 16px;
-    fill: currentColor;     /* SVG color inherits from button's color property */
+    fill: currentColor;
 }
 
 .copy-btn:hover, .copy-btn:focus {
   background-color: #454545;
-  color: #fff;             /* Icon color on hover */
+  color: #fff;
   border-color: #666;
-  outline: 2px solid #61dafb; /* Focus outline for accessibility */
+  outline: 2px solid #61dafb;
   outline-offset: 1px;
   opacity: 1;
 }
 
+/* Control icon visibility using the .copied class on the button */
+.copy-btn .default-icon {
+    display: inline-flex; /* Show by default */
+}
+.copy-btn .success-icon {
+    display: none;        /* Hide by default */
+}
+
 .copy-btn.copied {
-    background-color: #2a5736; /* Greenish tint for success */
+    background-color: #2a5736;
     border-color: #3c7d4e;
     opacity: 1;
 }
-.copy-btn.copied .default-icon { /* Hide default (copy) icon when copied */
-    display: none;
+.copy-btn.copied .default-icon {
+    display: none !important; /* Force hide */
 }
-.copy-btn.copied .success-icon { /* Show success (check) icon when copied */
-    display: inline-flex; /* Use inline-flex if icon-wrapper itself is inline-flex */
-    color: #50fa7b;       /* Bright green checkmark */
-}
-.copy-btn:not(.copied) .success-icon { /* Keep success icon hidden by default */
-    display: none;
+.copy-btn.copied .success-icon {
+    display: inline-flex !important; /* Force show and ensure flex properties apply */
+    color: #50fa7b;
 }
 /* --- End Copy Button Styling --- */
 
@@ -223,7 +226,7 @@ hr.section-divider {
   border-radius: 6px;
   line-height: 1.65;
 }
-.warning-text strong { /* Strong text within warning */
+.warning-text strong { 
     color: #ffe8a8; 
 }
 
@@ -240,7 +243,7 @@ hr.section-divider {
     padding: 3px 6px;
     background-color: #2a2a2a;
     border: 1px solid #444;
-    color: #61dafb; /* Accent color for role name */
+    color: #61dafb;
 }
 
 .thank-you-message {

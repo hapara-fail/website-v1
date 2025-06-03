@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     copyButtons.forEach(button => {
-        const defaultIcon = button.querySelector('.default-icon');
-        const successIcon = button.querySelector('.success-icon');
-        // const feedbackTextSpan = button.querySelector('.copy-feedback-text'); // Removed as per new design
         const originalTitle = button.getAttribute('title'); // Store original title
 
         button.addEventListener('click', () => {
@@ -26,28 +23,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 const addressToCopy = targetElement.textContent.trim();
                 navigator.clipboard.writeText(addressToCopy)
                     .then(() => {
-                        if (defaultIcon) defaultIcon.style.display = 'none';
-                        if (successIcon) successIcon.style.display = 'inline-block'; // Or 'flex' if icon-wrapper is flex
-                        
                         button.setAttribute('title', 'Copied!');
-                        button.classList.add('copied');
-                        button.setAttribute('disabled', 'true'); // Briefly disable to prevent rapid clicks
+                        button.classList.add('copied'); // CSS will handle icon swap
+                        button.setAttribute('disabled', 'true');
 
                         setTimeout(() => {
-                            if (defaultIcon) defaultIcon.style.display = 'inline-block'; // Or 'flex'
-                            if (successIcon) successIcon.style.display = 'none';
-                            
-                            button.setAttribute('title', originalTitle); // Restore original title
-                            button.classList.remove('copied');
+                            button.setAttribute('title', originalTitle);
+                            button.classList.remove('copied'); // CSS will revert icon
                             button.removeAttribute('disabled');
-                        }, 2000); // Revert after 2 seconds
+                        }, 2000);
                     })
                     .catch(err => {
                         console.error('Failed to copy address: ', err);
                         button.setAttribute('title', 'Copy failed!');
-                        // Optionally add a visual error state to the button if desired
+                        // Optionally, add an error class for visual feedback
+                        // button.classList.add('copy-error'); 
                         setTimeout(() => {
                             button.setAttribute('title', originalTitle);
+                            // button.classList.remove('copy-error');
                         }, 2500);
                     });
             } else {
