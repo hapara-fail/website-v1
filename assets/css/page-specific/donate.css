@@ -4,14 +4,14 @@
 .content-wrapper h1 {
   margin-bottom: 0.5rem;
   font-size: clamp(2rem, 5vw, 2.8rem);
-  text-align: left; /* Left align main heading */
+  text-align: left; 
 }
 
 .content-wrapper .page-subtitle {
   margin-bottom: 3rem;
   font-size: clamp(1rem, 2.5vw, 1.2rem);
   color: #bbb;
-  text-align: left; /* Left align subtitle */
+  text-align: left; 
   max-width: 100%; 
 }
 
@@ -20,7 +20,7 @@
   line-height: 1.75;
   margin-bottom: 1.2em;
   color: #d0d0d0;
-  text-align: left; /* Left align intro text */
+  text-align: left; 
 }
 
 hr.section-divider {
@@ -33,19 +33,19 @@ hr.section-divider {
 
 .donation-methods h2,
 .discord-role h2,
-.open-source-contribution h2 { /* Apply to new section as well */
+.open-source-contribution h2 {
   color: #fff;
   margin-bottom: 1.8rem;
   padding-bottom: 0.8rem;
   font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-  text-align: left; /* Left align section headings */
+  text-align: left; 
   border-bottom: 1px solid #444;
 }
 
 .donation-option {
   margin-bottom: 2.5rem;
-  padding: 2rem; 
-  background-color: rgba(28, 28, 31, 0.7);
+  padding: 2rem 2.5rem; 
+  background-color: rgba(28, 28, 31, 0.7); 
   border-radius: 8px; 
   border: 1px solid #383838;
   box-shadow: 0 5px 15px rgba(0,0,0,0.25);
@@ -73,21 +73,21 @@ hr.section-divider {
   display: inline-flex; 
   align-items: center;
   gap: 10px;
-  background-color: #0070ba; /* PayPal blue */
+  background-color: #0070ba; 
   color: white !important;
-  padding: 10px 20px;
+  padding: 10px 20px; /* Consistent padding */
   text-decoration: none;
   border-radius: 5px;
   font-weight: 500;
   transition: background-color 0.2s ease-in-out, transform 0.1s ease-out;
   border: none;
-  font-size: 1rem;
+  font-size: 1rem; /* Consistent font size */
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 .paypal-logo-img { 
-    width: 20px;
+    width: 20px; /* Consistent icon size */
     height: 20px;
-    filter: brightness(0) invert(1); /* Makes a typically dark PayPal logo white */
+    filter: brightness(0) invert(1); 
 }
 
 .button-style-link.paypal-button:hover,
@@ -95,7 +95,7 @@ hr.section-divider {
   background-color: #005ea6;
   transform: translateY(-1px);
   box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  outline: 2px solid #61dafb; /* Added focus style */
+  outline: 2px solid #61dafb; 
   outline-offset: 2px;
 }
 
@@ -136,7 +136,7 @@ hr.section-divider {
   line-height: 1.4;
 }
 
-/* Copy Button Styling - Icon only feedback via title and icon swap */
+/* Copy Button Styling - Icon Centering & Visibility Fix */
 .copy-btn {
   display: inline-flex;
   align-items: center;
@@ -149,17 +149,20 @@ hr.section-divider {
   padding: 0; 
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, color 0.2s; /* Added color transition */
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s; /* Added color to transition */
   flex-shrink: 0;
-  opacity: 0.9; /* Slightly more opaque */
+  opacity: 0.85;
+  position: relative; 
 }
+
 .copy-btn .icon-wrapper {
-  display: inline-flex; 
-  align-items: center;   
+  display: inline-flex; /* This is the default state for visible icons */
+  align-items: center;    
   justify-content: center; 
   width: 100%;            
   height: 100%;
 }
+
 .copy-btn .icon-wrapper svg {
     width: 16px;
     height: 16px;
@@ -175,21 +178,22 @@ hr.section-divider {
   opacity: 1;
 }
 
-.copy-btn.copied { 
-    background-color: #2a5736; 
-    border-color: #3c7d4e;
-    opacity: 1;
+/* Control icon visibility using the .copied class on the button */
+.copy-btn .default-icon {
+    display: inline-flex; /* Ensure it's flex to center its SVG */
 }
+.copy-btn .success-icon {
+    display: none;        /* Hide by default */
+}
+
 .copy-btn.copied .default-icon {
-    display: none;
+    display: none !important; /* Force hide */
 }
 .copy-btn.copied .success-icon {
-    display: inline-flex; /* Ensure it's visible and flex centered */
-    color: #50fa7b;
+    display: inline-flex !important; /* Force show as flex to center its SVG */
+    color: #50fa7b; /* Green checkmark */
 }
-.copy-btn:not(.copied) .success-icon { 
-    display: none;
-}
+/* --- End Copy Button Styling --- */
 
 
 .contact-list {
@@ -248,7 +252,7 @@ hr.section-divider {
   color: #c5c5c5;
   margin-bottom: 1rem;
   line-height: 1.65;
-  text-align: left; /* Ensure left alignment */
+  text-align: left;
 }
 .open-source-contribution ul {
   list-style: disc;
@@ -256,7 +260,7 @@ hr.section-divider {
   margin-top: 0.5rem;
   margin-bottom: 1.5rem;
   color: #c5c5c5;
-  text-align: left; /* Ensure list items are left aligned */
+  text-align: left;
 }
 .open-source-contribution ul li {
   margin-bottom: 0.6rem;
@@ -266,32 +270,35 @@ hr.section-divider {
   margin-top: 1.5rem;
   text-align: left; 
 }
+
+/* GitHub Button - made consistent with PayPal button size */
 .button-style-link.github-button {
   display: inline-flex;
   align-items: center;
-  gap: 10px; 
-  background-color: #333; /* Darker, more neutral GitHub button */
+  gap: 10px; /* Consistent gap */
+  background-color: #333; 
   color: white !important;
-  padding: 10px 20px;
+  padding: 10px 20px; /* Consistent padding */
   text-decoration: none;
   border-radius: 5px;
   font-weight: 500;
   transition: background-color 0.2s ease-in-out, transform 0.1s ease-out;
   border: 1px solid #4d4d4d; 
-  font-size: 1rem;
+  font-size: 1rem; /* Consistent font size */
   box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
 .button-style-link.github-button .icon-github svg {
-  width: 18px;
+  width: 18px; /* Retained 18px, or can be 20px if preferred */
   height: 18px;
-  fill: currentColor; /* Will inherit white from link text */
+  fill: currentColor; 
 }
+
 .button-style-link.github-button:hover,
 .button-style-link.github-button:focus {
-  background-color: #454545; /* Slightly lighter on hover */
+  background-color: #454545; 
   transform: translateY(-1px);
   box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-  outline: 2px solid #61dafb; /* Added focus style */
+  outline: 2px solid #61dafb; 
   outline-offset: 2px;
 }
 
