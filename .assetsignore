@@ -1,0 +1,9 @@
+# .assetsignore
+
+# Ignore the Git directory
+.git/
+
+# Ignore development and documentation files
+.github/
+README.md
+LICENSE
