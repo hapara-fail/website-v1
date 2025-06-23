@@ -46,7 +46,7 @@ The website provides a collection of guides and tools related to ChromeOS custom
 
 7.  **Donation Page (`donate.html`):**
     * Provides various methods for users to financially support the `hapara.fail` project, including PayPal and cryptocurrency options.
-    * Includes information on claiming a Discord ` @Donator` role and how to contribute to the open-source projects.
+    * Includes information on claiming a Discord `@Donator` role and how to contribute to the open-source projects.
 
 
 **Supporting Resources:**
