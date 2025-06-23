@@ -6,7 +6,7 @@ This repository contains the source code for the [hapara.fail](https://hapara.fa
 
 Visit the live website at: **[https://hapara.fail](https://hapara.fail)**
 
-[![Better Stack Badge](https://uptime.betterstack.com/status-badges/v1/monitor/1wfyp.svg)](https://uptime.betterstack.com/?utm_source=status_badge)
+[![Better Stack Badge](https://uptime.betterstack.com/status-badges/v1/monitor/1wfyp.svg)](https://status.hapara.fail/)
 
 ## Quick Deploy
 
