@@ -6,6 +6,8 @@ This repository contains the source code for the [hapara.fail](https://hapara.fa
 
 Visit the live website at: **[https://hapara.fail](https://hapara.fail)**
 
+[![Better Stack Badge](https://uptime.betterstack.com/status-badges/v1/monitor/1wfyp.svg)](https://uptime.betterstack.com/?utm_source=status_badge)
+
 ## Quick Deploy
 
 You can deploy your own instance of this project to Netlify or Vercel using the buttons below. This will clone the source Git repository (`https://github.com/hapara-fail/website`) and guide you through the deployment process.
