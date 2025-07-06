@@ -1,4 +1,108 @@
 /* assets/css/page-specific/bypass.css */
 /* Styles specific to bypass.html (DNS bypass guide) */
 
-/* For future use, all styles covered by main.css */
+.dns-ip-box {
+  border-color: #61dafb; /* Match accent color */
+}
+.dns-ip-box p {
+  text-align: center;
+  font-size: 1.2em;
+  margin: 0;
+  font-weight: bold;
+  color: #fff;
+}
+
+.os-detection-note {
+  background-color: rgba(97, 218, 251, 0.1);
+  border-left: 4px solid #61dafb;
+  padding: 1em 1.2em;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+  font-weight: 500;
+  color: #e0e0e0;
+}
+
+.instructions-accordion {
+  margin-top: 1.5rem;
+  border: 1px solid #333;
+  border-radius: 6px;
+  overflow: hidden; /* To contain the rounded corners */
+}
+
+.instructions-accordion details {
+  border-bottom: 1px solid #333;
+  color: #ccc;
+}
+
+.instructions-accordion details:last-of-type {
+  border-bottom: none;
+}
+
+.instructions-accordion summary {
+  padding: 1rem 1.5rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #fff;
+  cursor: pointer;
+  list-style: none; /* Remove default marker */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.instructions-accordion summary::-webkit-details-marker {
+  display: none; /* Hide default marker for Chrome/Safari */
+}
+
+.instructions-accordion summary:hover {
+  background-color: #1a1a1a;
+}
+
+/* Custom Arrow Marker */
+.instructions-accordion summary::after {
+  content: '›';
+  font-size: 1.8em;
+  line-height: 0;
+  transform: rotate(90deg);
+  transition: transform 0.2s ease-in-out;
+}
+
+.instructions-accordion details[open] > summary {
+  background-color: #1f1f1f;
+}
+
+.instructions-accordion details[open] > summary::after {
+  transform: rotate(-90deg);
+}
+
+.details-content {
+  padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+  background-color: #111;
+  border-top: 1px solid #333;
+}
+
+.details-content h4 {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #61dafb;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #2a2a2a;
+  padding-bottom: 0.5rem;
+}
+.details-content h4:first-of-type {
+    margin-top: 0.5rem;
+}
+
+.details-content ol, .details-content ul {
+  padding-left: 20px;
+}
+.details-content li {
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+}
+.details-content hr {
+    border-color: #2a2a2a;
+    margin: 2rem 0;
+}

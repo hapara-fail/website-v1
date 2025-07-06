@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <title>ChromeOS DNS Bypass Guide | hapara.fail</title>
+  <title>DNS Bypass Guide | hapara.fail</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
 
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/particles.css">
   <link rel="stylesheet" href="assets/css/navigation.css">
-  </head>
+  <link rel="stylesheet" href="assets/css/page-specific/bypass.css"> <!-- New page-specific CSS -->
+</head>
 <body>
   <button class="menu-trigger" aria-label="Open navigation menu" aria-expanded="false">
     <svg class="menu-icon-lines" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -23,7 +24,8 @@
     <h2 id="menuTitleBypass" class="visually-hidden">Site Navigation</h2> 
     <nav>
       <ul class="fullscreen-menu-list">
-        </ul>
+        <!-- Populated by JS -->
+      </ul>
     </nav>
     <p class="command-palette-tip">Tip: Press Ctrl+K or Cmd+K for quick search</p>
   </div>
@@ -35,7 +37,8 @@
       <input type="search" class="command-palette-input" placeholder="Type a command or search..." id="commandPaletteLabelBypass" autocomplete="off">
     </div>
     <ul class="command-palette-results">
-      </ul>
+      <!-- Populated by JS -->
+    </ul>
     <div class="command-palette-no-results">No results found.</div>
   </div>
   
@@ -44,50 +47,162 @@
   <div id="tsparticles" aria-hidden="true"></div>
 
   <div class="content-wrapper">
-    <h1>ChromeOS DNS Bypass Guide</h1>
-    <p><strong>Last updated:</strong> May 20, 2025</p>
+    <h1>DNS Bypass Guide</h1>
+    <p class="meta-info"><strong>Last updated:</strong> July 4, 2025 🦅🇺🇸</p>
 
     <h2>Overview</h2>
-    <p>In restrictive school-managed environments, ChromeOS devices are often locked down using enterprise policies. These policies can block settings, enforce filters, and monitor usage through tools like Hapara. This guide explains a method to achieve DNS-level bypass using IPv4 with <code>NextDNS</code>, without needing special permissions.</p>
+    <p>In many school or corporate environments, network access is filtered at the DNS level. This guide explains how to change your device's DNS settings to use our public Pi-hole server, which can help bypass certain content blocks and enhance privacy by filtering trackers.</p>
 
-    <h2>1. NextDNS Configuration</h2>
-    <p>We utilize <a href="https://nextdns.io" target="_blank" rel="noopener noreferrer">NextDNS</a> with our <a href="https://raw.githubusercontent.com/hapara-fail/blocklist/main/blocklist.txt" target="_blank" rel="noopener noreferrer">curated blocklist</a>. This list is designed to intercept and block surveillance-related domains such as <code>hapara.com</code> or <code>linewize.net</code>.</p>
-    <p>Once fully configured by adding the blocklist URL to the NextDNS "Denylist" feature, NextDNS will automatically use the blocklist for devices using its resolvers.</p>
+    <h2>1. Our Public Pi-hole DNS</h2>
+    <p>We host our own public Pi-hole DNS resolver pre-configured with our curated blocklist. The only information you need is our server's IP address:</p>
+    <div class="note dns-ip-box">
+        <p><strong>Primary DNS Server IP:</strong> <code>34.48.64.47</code></p>
+    </div>
+    <p>Our Pi-hole instance uses the blocklist maintained at our <a href="https://raw.githubusercontent.com/hapara-fail/blocklist/main/blocklist.txt" target="_blank" rel="noopener noreferrer">GitHub repository</a>.</p>
 
-    <h2>2. Applying DNS on Locked Devices</h2>
-    <p>Access to system <code>Settings</code> is typically disabled on managed devices. Therefore, DNS changes must be made through the <code>chrome://network</code> interface, which allows direct editing of network properties.</p>
-    <ol>
-      <li>Navigate to <code>chrome://network</code> in your Chrome browser.</li>
-      <li>Click on <strong>Network Select</strong> at the top of the page.</li>
-      <li>Then, click <strong>Render Network Select</strong>.</li>
-      <li>Connect to a Wi-Fi network (e.g., <code>STAFFWIFI</code>).</li>
-      <li>If the network name is not visible, click in the area just below <strong>Render Network Select</strong> and above the first listed network (often near a <code>+</code> symbol).</li>
-      <li>Scroll down to the <strong>Name Servers</strong> section.</li>
-      <li>Change the setting from "Automatic name servers" to <code>Custom name servers</code>.</li>
-      <li>Paste your NextDNS resolver IP addresses into the four boxes that appear.</li>
-    </ol>
+    <h2>2. Applying the DNS on Your Device</h2>
+    <p>Select your operating system below for detailed instructions. We'll try to detect your OS and open the correct section for you automatically.</p>
+    <div id="os-detection-message" class="os-detection-note" style="display: none;"></div>
 
-    <p><strong>Important Note:</strong> On some ChromeOS devices, the DNS fields might revert to <code>0.0.0.0</code> while you are typing. This appears to be a UI bug. To work around this:</p>
-    <ul>
-      <li>Copy the DNS IP address to your clipboard.</li>
-      <li>Quickly paste it into the DNS field.</li>
-      <li>Immediately close the tab or window before the field has a chance to revert.</li>
-    </ul>
-    <p>Be aware that network restrictions can vary. For instance, a network like <code>WIFIONE</code> might be more heavily managed than <code>STAFFWIFI</code>. Whenever possible, choose an unmanaged or less restrictive network.</p>
+    <div class="instructions-accordion">
+      <!-- ChromeOS Instructions -->
+      <details id="os-chromeos">
+        <summary>ChromeOS</summary>
+        <div class="details-content">
+          <h4>Method 1: Standard Settings (For Personal/Unmanaged Chromebooks)</h4>
+          <ol>
+            <li>Click on the time in the bottom-right corner to open the Quick Settings panel, then click the <strong>Settings gear</strong> ⚙️.</li>
+            <li>In the Settings menu, go to the <strong>Network</strong> section and click on <strong>Wi-Fi</strong>.</li>
+            <li>Click the <strong>></strong> arrow next to the name of the Wi-Fi network you are currently connected to.</li>
+            <li>Scroll down and expand the <strong>Network</strong> section.</li>
+            <li>Under "Name servers," select <strong>Custom name servers</strong>.</li>
+            <li>In the first "Name server" field, enter our DNS IP address: <strong><code>34.48.64.47</code></strong>. You can leave the other fields blank.</li>
+          </ol>
+          <hr>
+          <h4>Method 2: chrome://network (For Managed/Locked-Down Chromebooks)</h4>
+          <p>If the standard settings are blocked, use this method:</p>
+          <ol>
+            <li>Navigate to <code>chrome://network</code> in your Chrome browser.</li>
+            <li>Click on <strong>Network Select</strong> at the top, then click <strong>Render Network Select</strong>.</li>
+            <li>If you haven't already, connect to the network you would like to apply the bypass to by clicking on it.</li>
+            <li>Click on your current WiFi network to open the dialog. If it isn't visible, click the empty area under <strong>Render Network Select</strong>.</li>
+            <li>Scroll down to the <strong>Name Servers</strong> section.</li>
+            <li>Change the setting from "Automatic name servers" to <strong><code>Custom name servers</code></strong>.</li>
+            <li>Paste our Pi-hole DNS IP address, <strong><code>34.48.64.47</code></strong>, into the first "Name server" box.</li>
+          </ol>
+          <p class="warning"><strong>Note:</strong> On some devices, the DNS field might revert to `0.0.0.0` while typing. To work around this, copy the IP address first, then quickly paste it and close the dialog.</p>
+        </div>
+      </details>
+
+      <!-- Windows Instructions -->
+      <details id="os-windows">
+        <summary>Windows</summary>
+        <div class="details-content">
+          <h4>Instructions for Windows 10 & 11</h4>
+          <ol>
+            <li>Press the <strong>Windows Key</strong>, type <strong>"Control Panel"</strong>, and press Enter.</li>
+            <li>Go to <strong>Network and Internet</strong> > <strong>Network and Sharing Center</strong>.</li>
+            <li>On the left, click <strong>Change adapter settings</strong>.</li>
+            <li>Right-click on your active network connection (usually "Wi-Fi" or "Ethernet") and select <strong>Properties</strong>.</li>
+            <li>Select <strong>Internet Protocol Version 4 (TCP/IPv4)</strong> from the list and click the <strong>Properties</strong> button.</li>
+            <li>Select the radio button for <strong>"Use the following DNS server addresses"</strong>.</li>
+            <li>In the "Preferred DNS server" box, enter: <strong><code>34.48.64.47</code></strong></li>
+            <li>Leave the "Alternate DNS server" box empty. Click <strong>OK</strong>, then <strong>Close</strong>.</li>
+          </ol>
+        </div>
+      </details>
+
+      <!-- macOS Instructions -->
+      <details id="os-macos">
+        <summary>macOS</summary>
+        <div class="details-content">
+          <h4>Instructions for macOS</h4>
+          <ol>
+            <li>Open <strong>System Settings</strong> (or System Preferences on older versions).</li>
+            <li>Click on <strong>Network</strong>.</li>
+            <li>Select your active connection (e.g., Wi-Fi) from the list on the left, then click the <strong>Details...</strong> (or Advanced...) button.</li>
+            <li>Go to the <strong>DNS</strong> tab.</li>
+            <li>Under "DNS Servers," click the <strong>+</strong> button to add a new server.</li>
+            <li>Enter our DNS IP address: <strong><code>34.48.64.47</code></strong></li>
+            <li>If there are other DNS servers listed, you can select them and click the <strong>-</strong> button to remove them for best results.</li>
+            <li>Click <strong>OK</strong>, then click <strong>Apply</strong>.</li>
+          </ol>
+        </div>
+      </details>
+
+      <!-- iOS Instructions -->
+      <details id="os-ios">
+        <summary>iOS / iPadOS</summary>
+        <div class="details-content">
+          <h4>Instructions for iPhone & iPad</h4>
+          <ol>
+            <li>Open the <strong>Settings</strong> app.</li>
+            <li>Tap on <strong>Wi-Fi</strong>.</li>
+            <li>Tap the blue "i" icon next to the Wi-Fi network you are connected to.</li>
+            <li>Scroll down and tap on <strong>Configure DNS</strong>.</li>
+            <li>Select <strong>Manual</strong>.</li>
+            <li>Tap <strong>Add Server</strong> and enter our DNS IP address: <strong><code>34.48.64.47</code></strong></li>
+            <li>If any other DNS servers are listed, tap the red minus (–) icon next to them to remove them.</li>
+            <li>Tap <strong>Save</strong> in the top-right corner.</li>
+          </ol>
+        </div>
+      </details>
+
+      <!-- Android Instructions -->
+      <details id="os-android">
+        <summary>Android</summary>
+        <div class="details-content">
+          <h4>Instructions for Android (using Private DNS)</h4>
+          <p>Modern Android versions use "Private DNS" which is more secure. Our server does not support this yet. Please use the Wi-Fi specific method below.</p>
+          <h4>Instructions for Android (Wi-Fi specific)</h4>
+          <ol>
+            <li>Open the <strong>Settings</strong> app.</li>
+            <li>Go to <strong>Network & internet</strong> > <strong>Wi-Fi</strong>.</li>
+            <li>Tap the gear icon ⚙️ next to your connected Wi-Fi network (or long-press the network and select "Modify network").</li>
+            <li>Tap the pencil icon ✏️ (Edit) in the top-right corner.</li>
+            <li>Expand <strong>Advanced options</strong>.</li>
+            <li>Change "IP settings" from "DHCP" to <strong>Static</strong>.</li>
+            <li>Leave the IP address and Gateway as they are, but scroll down to the <strong>DNS 1</strong> field.</li>
+            <li>Enter our DNS IP address: <strong><code>34.48.64.47</code></strong></li>
+            <li>Leave <strong>DNS 2</strong> blank. Tap <strong>Save</strong>.</li>
+          </ol>
+          <p class="warning">Note: The exact steps may vary slightly depending on your Android version and phone manufacturer.</p>
+        </div>
+      </details>
+
+      <!-- Linux Instructions -->
+      <details id="os-linux">
+        <summary>Linux</summary>
+        <div class="details-content">
+          <h4>Instructions for Linux</h4>
+          <p>Changing DNS settings on Linux varies widely depending on your distribution and desktop environment. Most modern desktop environments use <strong>NetworkManager</strong>.</p>
+          <h5>For GNOME (Ubuntu, Fedora, etc.) or KDE Plasma:</h5>
+          <ol>
+            <li>Open <strong>Settings</strong> and navigate to the <strong>Network</strong> or <strong>Connections</strong> section.</li>
+            <li>Find your active Wi-Fi or Ethernet connection and click the gear icon ⚙️ to edit its settings.</li>
+            <li>Go to the <strong>IPv4</strong> tab.</li>
+            <li>Disable the "Automatic" toggle next to DNS.</li>
+            <li>In the DNS entry field that appears, enter our server IP: <strong><code>34.48.64.47</code></strong></li>
+            <li>Click <strong>Apply</strong> to save the changes. You may need to disconnect and reconnect to the network for the new settings to take effect.</li>
+          </ol>
+          <h5>For Command-Line or Other Systems:</h5>
+          <p>If you are using a different desktop environment or prefer the command line, you will likely need to configure <code>systemd-resolved</code> or edit network configuration files directly. Due to the vast number of variations, we recommend consulting the official documentation for your specific distribution.</p>
+          <ul>
+            <li><a href="https://documentation.ubuntu.com/server/explanation/networking/configuring-networks/" target="_blank" rel="noopener noreferrer">Ubuntu Server/Command-Line Networking Guide</a></li>
+            <li><a href="https://fedoraproject.org/wiki/Networking/CLI" target="_blank" rel="noopener noreferrer">Fedora Networking Guide</a></li>
+            <li><a href="https://wiki.archlinux.org/title/systemd-resolved" target="_blank" rel="noopener noreferrer">Arch Linux Wiki for systemd-resolved</a></li>
+          </ul>
+        </div>
+      </details>
+    </div>
 
     <h2>3. MAC Address Randomization</h2>
-    <p>To enhance privacy and reduce device traceability across Wi-Fi networks, enable MAC address randomization. This feature is accessible via <code>chrome://flags</code>:</p>
-    <ol>
-      <li>Visit <code>chrome://flags</code> in your Chrome browser.</li>
-      <li>Use the search bar to find "MAC address randomization".</li>
-      <li>Set the corresponding flag to <code>Enabled</code>.</li>
-      <li>Restart your Chromebook for the changes to take effect.</li>
-    </ol>
-    <p>This setting helps prevent long-term Wi-Fi tracking by generating a new, randomized MAC address for each network connection.</p>
+    <p>To enhance privacy, especially on public or school networks, consider enabling MAC address randomization if your device supports it. This makes it harder to track your specific device across different Wi-Fi networks.</p>
+    <p>On most modern devices (Windows, macOS, iOS, Android), this is enabled by default or can be found in the specific Wi-Fi network's settings. For ChromeOS, you can enable it via <code>chrome://flags</code> by searching for "MAC address randomization" and setting it to "Enabled".</p>
 
     <h2>Conclusion</h2>
-    <p>By combining IPv4 DNS overrides through <code>chrome://network</code>, a custom NextDNS configuration, and MAC address randomization, users can achieve a more open and censorship-resistant internet experience on locked-down ChromeOS devices. This solution does not require elevated privileges.</p>
-    <p class="credits">Developed by the hapara.fail team.<br>This tool and guide are for educational purposes only. Please use responsibly.</p>
+    <p>By using our public Pi-hole DNS server, you can achieve a more open and censorship-resistant internet experience on a wide range of devices.</p>
+    <p class="credits">Developed by the hapara.fail team.<br>This guide is for educational purposes only. Please use responsibly.</p>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
@@ -95,5 +210,6 @@
   <script src="assets/js/nav-data.js"></script>
   <script src="assets/js/navigation.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/page-specific/bypass.js"></script> <!-- New page-specific JS -->
 </body>
 </html>
