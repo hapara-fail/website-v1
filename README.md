@@ -10,10 +10,11 @@ Visit the live website at: **[https://hapara.fail](https://hapara.fail)**
 
 ## Quick Deploy
 
-You can deploy your own instance of this project to Netlify or Vercel using the buttons below. This will clone the source Git repository (`https://github.com/hapara-fail/website`) and guide you through the deployment process.
+You can deploy your own instance of this project to Cloudflare, Netlify, or Vercel using the buttons below. This will clone the source Git repository (`https://github.com/hapara-fail/website`) and guide you through the deployment process.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhapara-fail%2Fwebsite)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Fhapara-fail%2Fwebsite)
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/integration/start/deploy?repository=https://github.com/hapara-fail/website)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhapara-fail%2Fwebsite)
 
 ## Project Overview
 
