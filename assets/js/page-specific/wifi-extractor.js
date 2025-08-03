@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const searchKey = `${hexSsid}&lt;||&gt;psk`; // Use &lt; and &gt; for HTML display
       outputHTML = `For SSID "<strong>${ssid}</strong>", your helper identifier is:<br>`;
       outputHTML += `<code style="font-size:0.9em; color:#61dafb; display:inline-block; background-color: #282c34; padding: 2px 5px; border-radius:3px; margin: 5px 0;">${searchKey}</code><br><br>`;
-      outputHTML += `After searching for <code>wifi_</code> in <code>chrome://sync-internals</code> (Search tab), use this identifier to visually locate your network in the list on the left, as described in <strong>Step B, instruction 4</strong> above.`;
+      outputHTML += `After searching for <code>wifi_</code> in <code>chrome://sync-internals</code> (Search tab), use this identifier to visually locate your network in the list on the left, as described in <strong>Step B, instruction 4</strong> below.`;
     } else {
       outputHTML = `You have not entered an SSID.<br>After searching for <code>wifi_</code> in <code>chrome://sync-internals</code> (Search tab), you will need to manually browse the list on the left to find your network, as detailed in <strong>Step B, instruction 4</strong> above.`;
     }
