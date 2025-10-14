@@ -1,10 +1,10 @@
 # hapara.fail Website Source Code
 
-This repository contains the source code for the [hapara.fail](https://hapara.fail) website. The site aims to provide resources, guides, and tools, primarily focusing on DNS bypass techniques and other methods for enhancing user freedom and privacy in restricted ChromeOS environments.
+This repository contains the source code for the [hapara.fail v1 website](https://v1.hapara.fail). The site aims to provide resources, guides, and tools, primarily focusing on DNS bypass techniques and other methods for enhancing user freedom and privacy in restricted ChromeOS environments.
 
 ## Live Site
 
-Visit the live website at: **[https://hapara.fail](https://hapara.fail)**
+Visit the live website at: **[https://v1.hapara.fail](https://v1.hapara.fail)**
 
 [![Better Stack Badge](https://uptime.betterstack.com/status-badges/v1/monitor/1wfyp.svg)](https://status.hapara.fail/)
 
@@ -12,9 +12,9 @@ Visit the live website at: **[https://hapara.fail](https://hapara.fail)**
 
 You can deploy your own instance of this project to Cloudflare, Netlify, or Vercel using the buttons below. This will clone the source Git repository (`https://github.com/hapara-fail/website`) and guide you through the deployment process.
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Fhapara-fail%2Fwebsite)
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/integration/start/deploy?repository=https://github.com/hapara-fail/website)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhapara-fail%2Fwebsite)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Fhapara-fail%2Fwebsite-v1)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/integration/start/deploy?repository=https://github.com/hapara-fail/website-v1)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhapara-fail%2Fwebsite-v1)
 
 ## Project Overview
 
@@ -91,4 +91,4 @@ The primary goal of `hapara.fail` is to offer a clean, accessible, and user-frie
 
 ---
 
-*This repository is maintained by the `hapara.fail` project under the GPL-3.0 License.*
+*This repository was maintained by the `hapara.fail` project under the GPL-3.0 License. Succeeded by hapara.fail v2.*
